@@ -1,0 +1,28 @@
+[debug] [2025-11-05T21:27:26.411Z] ----------------------------------------------------------------------
+[debug] [2025-11-05T21:27:26.414Z] Command:       /nix/store/ws50yvm6vzlzf7jzz6n7xh4szddrack1-nodejs-20.19.1/bin/node /nix/store/f77kilzcw5hh2gidh22k6pj8cp7pxp7h-firebase-tools-14.22.0/lib/node_modules/firebase-tools/lib/bin/firebase.js login --reauth
+[debug] [2025-11-05T21:27:26.415Z] CLI Version:   14.22.0
+[debug] [2025-11-05T21:27:26.415Z] Platform:      linux
+[debug] [2025-11-05T21:27:26.415Z] Node Version:  v20.19.1
+[debug] [2025-11-05T21:27:26.415Z] Time:          Wed Nov 05 2025 21:27:26 GMT+0000 (Coordinated Universal Time)
+[debug] [2025-11-05T21:27:26.415Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-11-05T21:27:26.420Z] No OAuth tokens found
+[debug] [2025-11-05T21:27:26.420Z] No OAuth tokens found
+[error] Failed to fetch Firebase Project from current Studio Workspace: Unable to refresh auth: not yet authenticated.
+[debug] [2025-11-05T21:27:26.426Z] >>> [apiv2][query] POST https://auth.firebase.tools/attest [none]
+[debug] [2025-11-05T21:27:26.426Z] >>> [apiv2][body] POST https://auth.firebase.tools/attest {"session_id":"c13fc119-1856-453c-9d45-680cdc443591"}
+[debug] [2025-11-05T21:27:26.637Z] <<< [apiv2][status] POST https://auth.firebase.tools/attest 200
+[debug] [2025-11-05T21:27:26.637Z] <<< [apiv2][body] POST https://auth.firebase.tools/attest {"token":"ouudsiAgPEfoPx_JqTYa302TTs0wh4y3NbMoUfIBfQo"}
+[info] 
+[info] To sign in to the Firebase CLI:
+[info] 
+[info] 1. Take note of your session ID:
+[info] 
+[info]    C13FC
+[info] 
+[info] 2. Visit the URL below on any device and follow the instructions to get your code:
+[info] 
+[info]    https://auth.firebase.tools/login?code_challenge=k1VaHAVIHXUm15PV5CwjlfJXqF8iILqrqbS8pozAa_U&session=c13fc119-1856-453c-9d45-680cdc443591&attest=ouudsiAgPEfoPx_JqTYa302TTs0wh4y3NbMoUfIBfQo
+[info] 
+[info] 3. Paste or enter the authorization code below once you have it:
+[info] 
