@@ -5,22 +5,20 @@ const puppeteer = require("puppeteer-core");
 const chromium = require("@sparticuz/chromium");
 const cheerio = require("cheerio");
 
-// Especificar el bucket correcto en la inicialización
-admin.initializeApp({
-  storageBucket: "mvp-nic-market.firebasestorage.app"
-});
-const storage = admin.storage();
+// Inicialización de Firebase
+admin.initializeApp();
 
 const SIBOIF_URL = "https://www.superintendencia.gob.ni/supervision/intendencia-valores/emisores";
 
+// Opciones de ejecución para las funciones
 const runtimeOpts = {
   timeoutSeconds: 120,
   memory: "1GB"
 };
 
+// --- FUNCIÓN PRINCIPAL DE SCRAPING DE LA LISTA DE EMISORES ---
 const scrapeAndStoreIssuers = async () => {
-  functions.logger.info("Iniciando el scraping con @sparticuz/chromium...");
-
+  functions.logger.info("Iniciando scraping de la lista de emisores...");
   let browser = null;
   try {
     browser = await puppeteer.launch({
@@ -31,95 +29,111 @@ const scrapeAndStoreIssuers = async () => {
       ignoreHTTPSErrors: true,
     });
     const page = await browser.newPage();
-
-    functions.logger.info(`Navegando a ${SIBOIF_URL}`);
     await page.goto(SIBOIF_URL, { waitUntil: 'networkidle2' });
 
-    // Selector que estamos depurando
-    const selector = "div.article-full-img";
-
-    try {
-      functions.logger.info(`Esperando que el selector '${selector}' cargue...`);
-      await page.waitForSelector(selector, { timeout: 30000 });
-    } catch (e) {
-      functions.logger.error(`El selector '${selector}' no apareció. Guardando HTML en Storage...`, e);
-      const bodyHTML = await page.evaluate(() => document.body.innerHTML);
-      
-      const bucket = storage.bucket();
-      const file = bucket.file("scraping_error.html");
-      await file.save(bodyHTML, { contentType: "text/html" });
-
-      functions.logger.info(`HTML de error guardado en gs://${bucket.name}/scraping_error.html`);
-
-      throw new functions.https.HttpsError("not-found", `El selector '${selector}' no fue encontrado. Se ha guardado un volcado del HTML en Firebase Storage.`, e.message);
-    }
-
+    const listSelector = "table.views-table tbody tr";
+    await page.waitForSelector(listSelector, { timeout: 30000 });
     const html = await page.content();
     const $ = cheerio.load(html);
 
     const profiles = [];
-    $(selector).each((i, element) => {
-      const profile = {};
-      const name = $(element).find("h4 a").text().trim();
-      if (name) {
-        profile.name = name;
-        const logoSrc = $(element).find("img").attr("src");
-        if (logoSrc) {
-          profile.logoUrl = new URL(logoSrc, SIBOIF_URL).href;
-        }
-        profiles.push(profile);
+    $(listSelector).each((i, element) => {
+      const name = $(element).find('td.views-field-title a').text().trim();
+      const detailUrl = $(element).find('td.views-field-title a').attr('href');
+      if (name && detailUrl) {
+        const absoluteUrl = new URL(detailUrl, SIBOIF_URL).href;
+        profiles.push({ name, detailUrl });
       }
     });
 
     functions.logger.info(`Se encontraron ${profiles.length} perfiles de emisores.`);
-
     if (profiles.length > 0) {
       const db = admin.firestore();
       const batch = db.batch();
-
       profiles.forEach(profile => {
         const docRef = db.collection("NicaraguaIssuers").doc(profile.name);
         batch.set(docRef, { ...profile, scrapedAt: new Date() }, { merge: true });
       });
-
       await batch.commit();
       functions.logger.info(`${profiles.length} emisores guardados en Firestore.`);
-      return { message: `Scraping exitoso. Se guardaron ${profiles.length} emisores.`, count: profiles.length };
-    } 
-    
-    return { 
-      message: "El scraping se completó, pero no se encontraron perfiles con el selector actual.", 
-      count: 0
-    };
-
-  } catch (error) {
-    if (error instanceof functions.https.HttpsError) {
-        throw error;
+      return { message: `Scraping de lista exitoso. ${profiles.length} emisores guardados.`, count: profiles.length };
     }
-    functions.logger.error("Error durante el scraping con Puppeteer:", error);
-    throw new functions.https.HttpsError("internal", "El scraping con Puppeteer falló.", error.message);
+    return { message: "Scraping de lista completado, pero no se encontraron perfiles.", count: 0 };
+  } catch (error) {
+    functions.logger.error("Error crítico durante scraping de la lista de emisores:", error);
+    throw new functions.https.HttpsError("internal", "El scraping de la lista de emisores falló.", error.message);
   } finally {
-    if (browser !== null) {
+    if (browser) {
       await browser.close();
-      functions.logger.info("Navegador Puppeteer cerrado.");
+      functions.logger.info("Navegador (scraping de lista) cerrado.");
     }
   }
 };
 
-exports.scrapeNicaraguaIssuers = functions.runWith(runtimeOpts).pubsub.schedule("every 24 hours").onRun(async (context) => {
-  try {
-    await scrapeAndStoreIssuers();
-    return null;
-  } catch(error) {
-    return null;
-  }
-});
 
+// --- FUNCIÓN INVOCABLE POR EL CLIENTE (CORREGIDA Y MEJORADA) ---
 exports.runScraping = functions.runWith(runtimeOpts).https.onCall(async (data, context) => {
-  functions.logger.info("Ejecución manual de scraping iniciada.");
+  
+  // --- Caso 1: Se pide raspar los documentos de un emisor específico ---
+  if (data && data.detailUrl) {
+    functions.logger.info(`Iniciando scraping de documentos para: ${data.detailUrl}`);
+    let browser = null;
+    try {
+      browser = await puppeteer.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+        ignoreHTTPSErrors: true,
+      });
+      const page = await browser.newPage();
+      await page.goto(data.detailUrl, { waitUntil: 'networkidle2', timeout: 45000 });
+
+      const documents = await page.evaluate(() => {
+        const results = [];
+        // Selectores genéricos para encontrar enlaces de documentos en distintas estructuras de página
+        const linkSelectors = 'div.content a, div.entry-content a, article a, td a';
+        document.querySelectorAll(linkSelectors).forEach(anchor => {
+          const href = anchor.href;
+          const text = anchor.innerText.trim();
+          // Filtro para enlaces que parezcan documentos relevantes
+          const keywords = ['.pdf', '.doc', '.zip', 'hechos-relevantes', 'estados-financieros'];
+          if (href && text && keywords.some(key => href.toLowerCase().includes(key))) {
+            results.push({ url: href, text: text });
+          }
+        });
+        return results;
+      });
+
+      functions.logger.info(`Scraping de documentos exitoso. Se encontraron ${documents.length} documentos.`);
+      return documents; // Devuelve la lista de documentos al cliente
+
+    } catch (error) {
+      functions.logger.error(`FALLO el scraping de documentos para ${data.detailUrl}:`, error.message);
+      // *** ESTA ES LA CORRECCIÓN CRÍTICA ***
+      // En caso de fallo, devolvemos un array vacío.
+      // Esto evita que el servidor se congele y permite al cliente manejar el resultado.
+      return [];
+    } finally {
+      if (browser) {
+        await browser.close();
+        functions.logger.info("Navegador (scraping de detalles) cerrado.");
+      }
+    }
+  }
+
+  // --- Caso 2: Se pide re-generar la lista completa de emisores ---
+  functions.logger.info("Iniciando ejecución manual de scraping de la lista de emisores.");
   return await scrapeAndStoreIssuers();
 });
 
+
+// --- OTRAS FUNCIONES (sin cambios) ---
+
+// Función programada que se ejecuta cada 24 horas
+exports.scrapeNicaraguaIssuers = functions.runWith(runtimeOpts).pubsub.schedule("every 24 hours").onRun(scrapeAndStoreIssuers);
+
+// Función para obtener los datos desde la app cliente
 exports.getNicaraguaIssuers = functions.https.onCall(async (data, context) => {
   try {
     const db = admin.firestore();

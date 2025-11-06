@@ -1,24 +1,39 @@
 { pkgs, ... }: {
-  # El canal de nixpkgs define qué versiones de paquetes están disponibles.
-  # "stable-24.05" ofrece paquetes probados y estables.
   channel = "stable-24.05";
 
-  # Lista de paquetes a instalar desde el canal especificado.
   packages = [
-    # Requerimos Node.js para desarrollar y desplegar las Cloud Functions.
     pkgs.nodejs_20
-    # Puppeteer para controlar un navegador headless.
-    pkgs.puppeteer
-    # Chromium es el navegador que Puppeteer controlará.
-    pkgs.chromium
   ];
 
-  # Configuraciones específicas del IDE de Firebase Studio.
   idx = {
-    # Lista de extensiones de VS Code para instalar.
     extensions = [
-      # Herramientas esenciales para el desarrollo en Firebase.
-      "firebase.firebase-vscode"
+      "vscodevim.vim",
+      "dbaeumer.vscode-eslint"
     ];
+
+    workspace = {
+      # Ejecuta este comando la primera vez que se crea el espacio de trabajo.
+      onCreate = {
+        # Instala las dependencias del frontend definidas en webapp/package.json
+        npm-install = "cd webapp && npm install";
+      };
+
+      # Ejecuta este comando cada vez que el espacio de trabajo se inicia.
+      onStart = {
+        # Inicia el servidor de desarrollo de Vite para el frontend.
+        dev-server = "cd webapp && npm run dev";
+      };
+    };
+
+    previews = {
+      enable = true;
+      previews = {
+        # Configura la vista previa para la aplicación web de React.
+        web = {
+          command = ["cd", "webapp", "&&", "npm", "run", "dev", "--", "--port", "$PORT"];
+          manager = "web";
+        };
+      };
+    };
   };
 }
