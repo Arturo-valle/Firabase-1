@@ -1,53 +1,49 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const { getIssuers } = require('./getIssuers');
-const { getBolsanicDocuments } = require('./getBolsanicDocuments');
-const { getSiboifFacts } = require('./getSiboifFacts');
+const functions = require("firebase-functions");
+const express = require("express");
+const cors = require("cors");
+const { scrapeIssuers } = require("./scrapers/getIssuers");
+const { scrapeBolsanicDocuments } = require("./scrapers/getBolsanicDocuments");
+const { scrapeSiboifFacts } = require("./scrapers/getSiboifFacts");
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+app.use(cors({ origin: true }));
 
-// 1. Middleware
-app.use(cors()); // Enable CORS for all routes
-app.use(express.json());
+// Middleware to log requests
+app.use((req, res, next) => {
+  console.log(`Request received: ${req.method} ${req.url}`);
+  next();
+});
 
-// Serve static files from the React app build directory
-const webappPath = path.join(__dirname, '..', '..', 'webapp', 'dist');
-app.use(express.static(webappPath));
-
-// 2. API Route
-app.get('/api/issuers', async (req, res) => {
+// Route to get the list of all issuers
+app.get("/getIssuers", async (req, res) => {
   try {
-    console.log('Fetching issuers...');
-    const issuers = await getIssuers();
-    console.log(`Found ${issuers.length} issuers.`);
-
-    const detailedIssuers = await Promise.all(issuers.map(async (issuer) => {
-      console.log(`Fetching documents for ${issuer.name}...`);
-      const bolsanicDocs = await getBolsanicDocuments(issuer.detailUrl);
-      console.log(`Fetching SIBOIF facts for ${issuer.name}...`);
-      const siboifFacts = await scrapeSiboifFacts(issuer.name);
-      
-      return {
-        ...issuer,
-        documents: [...bolsanicDocs, ...siboifFacts],
-      };
+    const issuers = await scrapeIssuers();
+    // Logic to determine sector based on name
+    const issuersWithSectors = issuers.map(issuer => ({
+      ...issuer,
+      sector: issuer.name.toLowerCase().includes("banco") || issuer.name.toLowerCase().includes("financiera") ? "Privado" : "Público"
     }));
-
-    res.status(200).json(detailedIssuers);
+    res.status(200).json({ issuers: issuersWithSectors });
   } catch (error) {
-    console.error('Error fetching issuer data:', error);
-    res.status(500).send('Failed to fetch issuer data');
+    console.error("Error in /getIssuers:", error);
+    res.status(500).send("Failed to get issuers.");
   }
 });
 
-// 3. Serve the frontend for any other request
-app.get('*', (req, res) => {
-  res.sendFile(path.join(webappPath, 'index.html'));
+// Route to get documents for a single issuer
+app.get("/getIssuerDocuments", async (req, res) => {
+  const { issuerName, detailUrl } = req.query;
+  if (!issuerName || !detailUrl) {
+    return res.status(400).send("Missing issuerName or detailUrl query parameter.");
+  }
+  try {
+    const bolsanicDocs = await scrapeBolsanicDocuments(detailUrl);
+    const siboifFacts = await scrapeSiboifFacts(issuerName);
+    res.status(200).json({ documents: [...bolsanicDocs, ...siboifFacts] });
+  } catch (error) {
+    console.error(`Error in /getIssuerDocuments for ${issuerName}:`, error);
+    res.status(500).send("Failed to get documents for the specified issuer.");
+  }
 });
 
-// 4. Start the server
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+exports.api = functions.https.onRequest(app);
