@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>CentraCapital</title>
+  </head>
+  <body>
+    <h1>Emisores</h1>
+    <div id="issuers-list"></div>
+
+    <script src="/__/firebase/9.6.1/firebase-app-compat.js"></script>
+    <script src="/__/firebase/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script>
+      const db = firebase.firestore();
+      const issuersList = document.getElementById('issuers-list');
+
+      db.collection('issuers').onSnapshot(snapshot => {
+        let html = '';
+        snapshot.forEach(doc => {
+          const issuer = doc.data();
+          html += `<div>${issuer.name}</div>`;
+        });
+        issuersList.innerHTML = html;
+      });
+    </script>
+  </body>
+</html>

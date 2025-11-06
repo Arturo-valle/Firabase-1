@@ -1,88 +1,133 @@
+
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const axios = require("axios");
+const puppeteer = require("puppeteer-core");
+const chromium = require("@sparticuz/chromium");
 const cheerio = require("cheerio");
 
-admin.initializeApp();
+// Especificar el bucket correcto en la inicialización
+admin.initializeApp({
+  storageBucket: "mvp-nic-market.firebasestorage.app"
+});
+const storage = admin.storage();
 
-const db = admin.firestore();
+const SIBOIF_URL = "https://www.superintendencia.gob.ni/supervision/intendencia-valores/emisores";
 
-/**
- * Genera un slug a partir de un texto.
- * @param {string} text Texto a convertir.
- * @return {string} Slug generado.
- */
-const slugify = (text) => {
-  return text
-    .toString()
-    .toLowerCase()
-    .replace(/\s+/g, "-")       // Reemplaza espacios con -
-    .replace(/[^\w\-]+/g, "")   // Elimina caracteres no alfanuméricos
-    .replace(/\-\-+/g, "-")     // Reemplaza múltiples - con uno solo
-    .replace(/^-+/, "")          // Elimina - del inicio
-    .replace(/-+$/, "");         // Elimina - del final
+const runtimeOpts = {
+  timeoutSeconds: 120,
+  memory: "1GB"
 };
 
-/**
- * Cloud Function que se ejecuta diariamente para buscar nuevos emisores
- * en el sitio de la Superintendencia de Nicaragua.
- */
-exports.scrapeNicaraguaIssuers = functions.pubsub
-  .schedule("every 24 hours")
-  .onRun(async (context) => {
-    const sourceUrl = "https://www.superintendencia.gob.ni/supervision/intendencia-valores/emisores";
+const scrapeAndStoreIssuers = async () => {
+  functions.logger.info("Iniciando el scraping con @sparticuz/chromium...");
+
+  let browser = null;
+  try {
+    browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
+    });
+    const page = await browser.newPage();
+
+    functions.logger.info(`Navegando a ${SIBOIF_URL}`);
+    await page.goto(SIBOIF_URL, { waitUntil: 'networkidle2' });
+
+    // Selector que estamos depurando
+    const selector = "div.article-full-img";
 
     try {
-      const response = await axios.get(sourceUrl);
-      const $ = cheerio.load(response.data);
+      functions.logger.info(`Esperando que el selector '${selector}' cargue...`);
+      await page.waitForSelector(selector, { timeout: 30000 });
+    } catch (e) {
+      functions.logger.error(`El selector '${selector}' no apareció. Guardando HTML en Storage...`, e);
+      const bodyHTML = await page.evaluate(() => document.body.innerHTML);
+      
+      const bucket = storage.bucket();
+      const file = bucket.file("scraping_error.html");
+      await file.save(bodyHTML, { contentType: "text/html" });
 
-      const issuerLinks = [];
-      $("a").each((index, element) => {
-        const href = $(element).attr("href");
-        const name = $(element).text().trim();
+      functions.logger.info(`HTML de error guardado en gs://${bucket.name}/scraping_error.html`);
 
-        // Filtrar enlaces que parecen ser de emisores
-        if (href && href.includes("perfil-del-emisor")) {
-          issuerLinks.push({
-            name,
-            sourceUrl: `https://www.superintendencia.gob.ni${href}`,
-          });
-        }
-      });
-
-      if (issuerLinks.length === 0) {
-        console.log("No se encontraron enlaces de emisores.");
-        return null;
-      }
-
-      console.log(`Se encontraron ${issuerLinks.length} enlaces de emisores.`);
-
-      // Procesar cada enlace de emisor
-      const promises = issuerLinks.map(async (issuer) => {
-        const issuerId = slugify(issuer.name);
-        const issuerRef = db.collection("issuers").doc(issuerId);
-        const doc = await issuerRef.get();
-
-        if (!doc.exists) {
-          console.log(`Nuevo emisor encontrado: ${issuer.name}`);
-          await issuerRef.set({
-            name: issuer.name,
-            country: "Nicaragua",
-            sourceUrl: issuer.sourceUrl,
-            lastScraped: null, // Se establece cuando se escanean los documentos
-            createdAt: admin.firestore.FieldValue.serverTimestamp(),
-          });
-        } else {
-          console.log(`El emisor ${issuer.name} ya existe.`);
-        }
-      });
-
-      await Promise.all(promises);
-      console.log("Proceso de scraping de emisores completado exitosamente.");
-      return null;
-
-    } catch (error) {
-      console.error("Error durante el scraping de emisores:", error);
-      return null;
+      throw new functions.https.HttpsError("not-found", `El selector '${selector}' no fue encontrado. Se ha guardado un volcado del HTML en Firebase Storage.`, e.message);
     }
-  });
+
+    const html = await page.content();
+    const $ = cheerio.load(html);
+
+    const profiles = [];
+    $(selector).each((i, element) => {
+      const profile = {};
+      const name = $(element).find("h4 a").text().trim();
+      if (name) {
+        profile.name = name;
+        const logoSrc = $(element).find("img").attr("src");
+        if (logoSrc) {
+          profile.logoUrl = new URL(logoSrc, SIBOIF_URL).href;
+        }
+        profiles.push(profile);
+      }
+    });
+
+    functions.logger.info(`Se encontraron ${profiles.length} perfiles de emisores.`);
+
+    if (profiles.length > 0) {
+      const db = admin.firestore();
+      const batch = db.batch();
+
+      profiles.forEach(profile => {
+        const docRef = db.collection("NicaraguaIssuers").doc(profile.name);
+        batch.set(docRef, { ...profile, scrapedAt: new Date() }, { merge: true });
+      });
+
+      await batch.commit();
+      functions.logger.info(`${profiles.length} emisores guardados en Firestore.`);
+      return { message: `Scraping exitoso. Se guardaron ${profiles.length} emisores.`, count: profiles.length };
+    } 
+    
+    return { 
+      message: "El scraping se completó, pero no se encontraron perfiles con el selector actual.", 
+      count: 0
+    };
+
+  } catch (error) {
+    if (error instanceof functions.https.HttpsError) {
+        throw error;
+    }
+    functions.logger.error("Error durante el scraping con Puppeteer:", error);
+    throw new functions.https.HttpsError("internal", "El scraping con Puppeteer falló.", error.message);
+  } finally {
+    if (browser !== null) {
+      await browser.close();
+      functions.logger.info("Navegador Puppeteer cerrado.");
+    }
+  }
+};
+
+exports.scrapeNicaraguaIssuers = functions.runWith(runtimeOpts).pubsub.schedule("every 24 hours").onRun(async (context) => {
+  try {
+    await scrapeAndStoreIssuers();
+    return null;
+  } catch(error) {
+    return null;
+  }
+});
+
+exports.runScraping = functions.runWith(runtimeOpts).https.onCall(async (data, context) => {
+  functions.logger.info("Ejecución manual de scraping iniciada.");
+  return await scrapeAndStoreIssuers();
+});
+
+exports.getNicaraguaIssuers = functions.https.onCall(async (data, context) => {
+  try {
+    const db = admin.firestore();
+    const snapshot = await db.collection("NicaraguaIssuers").get();
+    const issuers = snapshot.docs.map(doc => doc.data());
+    return { issuers };
+  } catch (error) {
+    functions.logger.error("Error al obtener los emisores:", error);
+    throw new functions.https.HttpsError("internal", "No se pudo obtener la lista de emisores.");
+  }
+});

@@ -2,23 +2,10 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // Emisores: Lectura pública, escritura solo para el backend.
-    match /issuers/{issuerId} {
-      allow read: if true;
-      allow write: if false; // Proteger contra escritura desde el cliente.
-
-      // Hechos Relevantes: Lectura pública, escritura solo para el backend.
-      match /relevantFacts/{statementId} {
-        allow read: if true;
-        allow write: if false;
-      }
-
-      // Estados Financieros: Lectura pública, escritura solo para el backend.
-      match /financialStatements/{statementId} {
-        allow read: if true;
-        allow write: if false;
-      }
+    // Solo permitir acceso a usuarios autenticados.
+    // Reglas más específicas se añadirán después.
+    match /{document=**} {
+      allow read, write: if request.auth != null;
     }
   }
 }
