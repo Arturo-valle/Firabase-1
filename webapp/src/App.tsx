@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { Issuer, Document } from './types';
 
-// --- Helper Functions ---
+// --- Funciones de Ayuda ---
 const groupDocumentsByCategory = (documents: Document[]) => {
   return documents.reduce((acc, doc) => {
     (acc[doc.category] = acc[doc.category] || []).push(doc);
@@ -9,7 +9,7 @@ const groupDocumentsByCategory = (documents: Document[]) => {
   }, {} as Record<string, Document[]>);
 };
 
-// --- Components ---
+// --- Componentes ---
 
 interface IssuerDetailViewProps {
   issuer: Issuer;
@@ -32,13 +32,13 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
-          throw new Error(`Server responded with ${response.status}`);
+          throw new Error(`El servidor respondió con ${response.status}`);
         }
         const data = await response.json();
         setDocuments(data.documents || []);
       } catch (err: any) {
-        console.error("Error fetching documents:", err);
-        setError("Could not load documents. The data source may be temporarily unavailable or the format may have changed.");
+        console.error("Error al obtener documentos:", err);
+        setError("No se pudieron cargar los documentos. La fuente de datos puede no estar disponible o su formato puede haber cambiado.");
       } finally {
         setIsLoading(false);
       }
@@ -51,7 +51,7 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md animate-fade-in">
-      <button onClick={onBack} className="mb-4 text-sm font-medium text-blue-600 hover:text-blue-800">{'‹ Back to List'}</button>
+      <button onClick={onBack} className="mb-4 text-sm font-medium text-blue-600 hover:text-blue-800">{'‹ Volver a la Lista'}</button>
       <div className="flex items-center mb-4">
         <img src={`https://www.bolsanic.com/wp-content/uploads/2016/12/logo.png`} alt="Logo" className="h-12 w-12 mr-4"/>
         <div>
@@ -59,13 +59,13 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
           {issuer.acronym && <p className="text-sm text-gray-600">{issuer.acronym}</p>}
         </div>
       </div>
-      <span className={`inline-block px-2 py-1 mt-2 text-xs font-semibold rounded-full ${issuer.sector === 'Public' ? 'bg-blue-200 text-blue-800' : 'bg-green-200 text-green-800'}`}>
+      <span className={`inline-block px-2 py-1 mt-2 text-xs font-semibold rounded-full ${issuer.sector === 'Público' ? 'bg-blue-200 text-blue-800' : 'bg-green-200 text-green-800'}`}>
         {issuer.sector || 'N/A'}
       </span>
       
       <div className="mt-6">
-        <h3 className="text-xl font-semibold border-b pb-2">Documents & Facts</h3>
-        {isLoading && <p className="text-sm text-gray-500 mt-4">Searching for documents...</p>}
+        <h3 className="text-xl font-semibold border-b pb-2">Documentos y Hechos Relevantes</h3>
+        {isLoading && <p className="text-sm text-gray-500 mt-4">Buscando documentos...</p>}
         {error && <p className="text-sm text-red-600 mt-4">{error}</p>}
         {!isLoading && !error && (
           documents.length > 0 ? (
@@ -86,7 +86,7 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
               ))}
             </div>
           ) : (
-            <p className="text-sm text-gray-500 mt-4">No documents found for this issuer.</p>
+            <p className="text-sm text-gray-500 mt-4">No se encontraron documentos para este emisor.</p>
           )
         )}
       </div>
@@ -106,13 +106,13 @@ const VaultModule = () => {
       setError(null);
       try {
         const response = await fetch('/api/getIssuers');
-        if (!response.ok) throw new Error(`Server responded with ${response.status}`);
+        if (!response.ok) throw new Error(`El servidor respondió con ${response.status}`);
         const data = await response.json();
         const sortedIssuers = (data.issuers || []).sort((a: Issuer, b: Issuer) => a.name.localeCompare(b.name));
         setIssuers(sortedIssuers);
       } catch (err) {
-        console.error("Error fetching issuers:", err);
-        setError("Could not load issuer data.");
+        console.error("Error al obtener emisores:", err);
+        setError("No se pudieron cargar los datos de los emisores.");
       } finally {
         setIsLoading(false);
       }
@@ -120,13 +120,13 @@ const VaultModule = () => {
     fetchIssuers();
   }, []);
 
-  if (isLoading) return <div className="p-4 text-center">Loading issuers...</div>;
+  if (isLoading) return <div className="p-4 text-center">Cargando emisores...</div>;
   if (error) return <div className="p-4 text-center text-red-600">{error}</div>;
   if (selectedIssuer) return <IssuerDetailView issuer={selectedIssuer} onBack={() => setSelectedIssuer(null)} />;
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-semibold mb-4">Module 1: The Smart Vault</h2>
+      <h2 className="text-2xl font-semibold mb-4">Módulo 1: La Bóveda Inteligente</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {issuers.map((issuer, index) => (
           <div 
@@ -135,7 +135,7 @@ const VaultModule = () => {
             className="bg-white p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-200 ease-in-out"
           >
             <h3 className="text-lg font-bold text-gray-800">{issuer.name}</h3>
-            <p className="text-sm text-gray-500">Click to view documents</p>
+            <p className="text-sm text-gray-500">Clic para ver documentos</p>
           </div>
         ))}
       </div>
@@ -143,10 +143,10 @@ const VaultModule = () => {
   );
 };
 
-const StandardizerModule = () => <div className="p-4"><h2 className="text-2xl font-semibold">Module 2: The Standardizer</h2><p className="mt-2">Functionality to extract, clean, and standardize data will be here.</p></div>;
-const ComparatorModule = () => <div className="p-4"><h2 className="text-2xl font-semibold">Module 3: The Comparator</h2><p className="mt-2">Tools for analyzing and comparing standardized metrics.</p></div>;
+const StandardizerModule = () => <div className="p-4"><h2 className="text-2xl font-semibold">Módulo 2: El Estandarizador</h2><p className="mt-2">Aquí estará la funcionalidad para extraer, limpiar y estandarizar datos.</p></div>;
+const ComparatorModule = () => <div className="p-4"><h2 className="text-2xl font-semibold">Módulo 3: El Comparador</h2><p className="mt-2">Herramientas para analizar y comparar métricas estandarizadas.</p></div>;
 
-// --- Main Application Component ---
+// --- Componente Principal de la Aplicación ---
 function App() {
   const [activeModule, setActiveModule] = useState('vault');
 
@@ -163,17 +163,17 @@ function App() {
     <div className="min-h-screen bg-gray-100 font-sans">
       <header className="bg-white shadow-md">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold leading-tight text-gray-900">The Standardizer (v2)</h1>
-          <p className="text-sm text-gray-500">Data Platform for the Nicaraguan Capital Market</p>
+          <h1 className="text-3xl font-bold leading-tight text-gray-900">El Estandarizador (v2)</h1>
+          <p className="text-sm text-gray-500">Plataforma de Datos para el Mercado de Capitales de Nicaragua</p>
         </div>
       </header>
       <nav className="bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center h-12">
             <div className="flex items-baseline space-x-4">
-              <button onClick={() => setActiveModule('vault')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeModule === 'vault' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>Smart Vault</button>
-              <button onClick={() => setActiveModule('standardizer')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeModule === 'standardizer' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>Standardizer</button>
-              <button onClick={() => setActiveModule('comparator')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeModule === 'comparator' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>Comparator</button>
+              <button onClick={() => setActiveModule('vault')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeModule === 'vault' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>Bóveda Inteligente</button>
+              <button onClick={() => setActiveModule('standardizer')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeModule === 'standardizer' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>Estandarizador</button>
+              <button onClick={() => setActiveModule('comparator')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeModule === 'comparator' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>Comparador</button>
             </div>
           </div>
         </div>

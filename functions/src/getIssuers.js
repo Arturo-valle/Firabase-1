@@ -8,12 +8,13 @@ async function scrapeIssuers() {
     const $ = cheerio.load(data);
     const issuers = [];
 
-    // Select the specific row that contains the lists of active issuers
-    $('.et_pb_row_1 .et_pb_text_inner ul li a').each((i, element) => {
+    // Use a more robust selector to find the list of issuers
+    $('.entry-content ul li a').each((i, element) => {
       const name = $(element).text().trim();
       const detailUrl = $(element).attr('href');
 
-      if (name && detailUrl) {
+      // Basic validation to ensure we're adding valid issuer data
+      if (name && detailUrl && !detailUrl.includes('mailto:')) {
         issuers.push({
           name: name,
           // Ensure the URL is absolute
@@ -22,10 +23,13 @@ async function scrapeIssuers() {
       }
     });
 
+    if (issuers.length === 0) {
+      console.warn("Cheerio selector found 0 issuers. The website structure might have changed.");
+    }
+
     return issuers;
   } catch (error) {
     console.error('Error scraping issuers from Bolsanic:', error);
-    // Return an empty array or throw the error, depending on desired error handling
     return [];
   }
 }
