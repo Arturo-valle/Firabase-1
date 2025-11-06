@@ -2,7 +2,9 @@
   channel = "stable-24.05";
 
   packages = [
-    pkgs.nodejs_20
+    pkgs.nodejs_20,
+    # Se agrega firebase-tools para poder usar los emuladores de Firebase.
+    pkgs.firebase-tools
   ];
 
   idx = {
@@ -14,19 +16,22 @@
     workspace = {
       # Ejecuta este comando la primera vez que se crea el espacio de trabajo.
       onCreate = {
-        # Instala las dependencias del frontend definidas en webapp/package.json
-        npm-install = "cd webapp && npm install";
+        # Instala las dependencias tanto para el backend (functions) como para el frontend (webapp).
+        install-deps = "cd functions && npm install && cd ../webapp && npm install";
       };
 
-      # Ejecuta este comando cada vez que el espacio de trabajo se inicia.
+      # Ejecuta estos comandos cada vez que el espacio de trabajo se inicia.
       onStart = {
         # Inicia el servidor de desarrollo de Vite para el frontend.
         dev-server = "cd webapp && npm run dev";
+        # Inicia los emuladores, ejecuta el script de prueba y luego los apaga.
+        # Esto verifica que el backend funciona como se espera.
+        verify-backend = "firebase emulators:exec \"node test-function.js\"";
       };
     };
 
     previews = {
-      enable = true;
+      enable = true,
       previews = {
         # Configura la vista previa para la aplicación web de React.
         web = {

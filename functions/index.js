@@ -1,39 +1,58 @@
 const functions = require("firebase-functions");
+const express = require("express");
+const path = require("path");
 const { scrapeIssuers } = require("./src/getIssuers");
-const { scrapeIssuerDocuments } = require("./src/getIssuerDocuments");
+const { scrapeBolsanicDocuments } = require("./src/getBolsanicDocuments");
+const { scrapeSiboifFacts } = require("./src/getSiboifFacts");
 
-/**
- * Cloud Function para obtener la lista de emisores.
- */
-exports.getIssuers = functions
-  .runWith({ memory: '1GB', timeoutSeconds: 120 })
-  .https.onCall(async (data, context) => {
-    functions.logger.info("Solicitud recibida para getIssuers");
-    try {
-      const issuers = await scrapeIssuers();
-      return { issuers };
-    } catch (error) {
-      throw error;
-    }
-  });
+const app = express();
 
-/**
- * Cloud Function para obtener los documentos de un emisor específico.
- */
-exports.getIssuerDocuments = functions
-  .runWith({ memory: '1GB', timeoutSeconds: 120 })
-  .https.onCall(async (data, context) => {
-    const { detailUrl } = data;
-    if (!detailUrl) {
-      throw new functions.https.HttpsError('invalid-argument', 'La función debe ser llamada con un argumento "detailUrl".');
-    }
+// Serve the static files from the React app
+app.use(express.static(path.join(__dirname, "..", "webapp", "dist")));
 
-    functions.logger.info(`Solicitud recibida para getIssuerDocuments con URL: ${detailUrl}`);
+// API endpoint to get the list of issuers
+app.get("/api/getIssuers", async (req, res) => {
+  functions.logger.info("Request received for getIssuers");
+  try {
+    const issuers = await scrapeIssuers();
+    res.json({ issuers });
+  } catch (error) {
+    functions.logger.error("Error in getIssuers:", error);
+    res.status(500).send("Error scraping issuers.");
+  }
+});
+
+// API endpoint to get the documents of a specific issuer
+app.get("/api/getIssuerDocuments", async (req, res) => {
+  const { detailUrl, issuerName } = req.query;
+  if (!detailUrl || !issuerName) {
+    return res.status(400).send('Missing "detailUrl" or "issuerName" query parameter.');
+  }
+
+  functions.logger.info(`Request for docs for ${issuerName} with URL: ${detailUrl}`);
+  try {
+    // Scrape documents from both sources in parallel
+    const [bolsanicDocs, siboifFacts] = await Promise.all([
+      scrapeBolsanicDocuments(detailUrl),
+      scrapeSiboifFacts(issuerName)
+    ]);
+
+    // Combine the results
+    const documents = [...bolsanicDocs, ...siboifFacts];
     
-    try {
-      const documents = await scrapeIssuerDocuments(detailUrl);
-      return { documents };
-    } catch (error) {
-      throw error;
-    }
-  });
+    res.json({ documents });
+  } catch (error) {
+    functions.logger.error("Error in getIssuerDocuments:", error);
+    res.status(500).send("Error scraping issuer documents.");
+  }
+});
+
+// Handles any requests that don't match the ones above
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "webapp", "dist", "index.html"));
+});
+
+// Expose the Express app as a Cloud Function with specific options
+exports.app = functions
+  .runWith({ memory: '1GB', timeoutSeconds: 120 })
+  .https.onRequest(app);

@@ -1,13 +1,5 @@
 {
-  "functions": {
-    "source": "functions"
-  },
-  "hosting": {
-    "public": "webapp/dist",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
+  "apphosting": {
+    "backendId": "arturo"
   }
 }

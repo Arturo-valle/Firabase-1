@@ -1,44 +1,31 @@
+const axios = require('axios');
+const cheerio = require('cheerio');
 
-const axios = require("axios");
-const cheerio = require("cheerio");
-
-const URL_EMISORES = "https://www.superintendencia.gob.ni/instituciones-supervisadas-siboif/puesto-de-bolsa";
-
-/**
- * Realiza scraping de la URL de la SIBOIF para obtener la lista de emisores.
- * @returns {Promise<any[]>} Una promesa que se resuelve con la lista de emisores.
- */
 async function scrapeIssuers() {
+  const url = 'https://www.bolsanic.com/empresas-en-bolsa/';
   try {
-    const { data } = await axios.get(URL_EMISORES);
+    const { data } = await axios.get(url);
     const $ = cheerio.load(data);
     const issuers = [];
 
-    $("div.view-content table.views-table tbody tr").each((i, row) => {
-      const nameAnchor = $(row).find("td.views-field-title a");
-      const name = nameAnchor.text().trim();
-      const detailUrl = nameAnchor.attr("href");
-      
-      // Manejo robusto de campos que pueden estar vacíos
-      const acronym = $(row).find("td.views-field-field-siglas").text().trim() || '';
-      const sector = $(row).find("td.views-field-field-sector").text().trim() || 'No especificado';
-      const description = $(row).find("td.views-field-field-descripcion").text().trim() || 'Descripción no disponible.';
+    // Select the specific row that contains the lists of active issuers
+    $('.et_pb_row_1 .et_pb_text_inner ul li a').each((i, element) => {
+      const name = $(element).text().trim();
+      const detailUrl = $(element).attr('href');
 
       if (name && detailUrl) {
         issuers.push({
-          name,
-          acronym,
-          description,
-          sector: sector || 'Público', // Asume Público si está vacío
-          detailUrl: `https://www.superintendencia.gob.ni${detailUrl}`,
+          name: name,
+          // Ensure the URL is absolute
+          detailUrl: detailUrl.startsWith('http') ? detailUrl : `https://www.bolsanic.com${detailUrl}`
         });
       }
     });
 
     return issuers;
   } catch (error) {
-    console.error("Error durante el scraping de emisores:", error);
-    // En lugar de lanzar el error, devolvemos un array vacío para no romper el frontend.
+    console.error('Error scraping issuers from Bolsanic:', error);
+    // Return an empty array or throw the error, depending on desired error handling
     return [];
   }
 }

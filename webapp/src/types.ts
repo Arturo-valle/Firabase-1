@@ -1,18 +1,19 @@
 /**
- * Define la estructura de un objeto Emisor tal como se recibe del backend.
+ * Defines the structure of an Issuer object as received from the backend.
  */
 export interface Issuer {
   name: string;
   acronym: string;
   sector: string;
-  detailUrl: string; // La URL a la página de detalles del emisor
-  description?: string; // Opcional, como antes
+  detailUrl?: string; // The URL to the issuer's detail page, now optional
+  description?: string;
 }
 
 /**
- * Define la estructura de un objeto Documento tal como se recibe del backend.
+ * Defines the structure of a Document object as received from the backend.
  */
 export interface Document {
-  text: string; // El texto del enlace del documento
-  url: string;  // La URL completa al archivo del documento
+  category: string; // The category of the document (e.g., 'Prospectos', 'Hechos Relevantes')
+  title: string;    // The title of the document
+  url: string;      // The full URL to the document file
 }

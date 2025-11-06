@@ -1,5 +1,15 @@
 {
-  "dependencies": {
-    "firebase": "^12.5.0"
+  "name": "mvp-market-monorepo",
+  "private": true,
+  "workspaces": [
+    "functions",
+    "webapp"
+  ],
+  "scripts": {
+    "build": "npm install --workspaces && npm run build -w webapp",
+    "start": "node functions/src/index.js"
+  },
+  "engines": {
+    "node": "20"
   }
 }
