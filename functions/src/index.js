@@ -6,13 +6,17 @@ const { scrapeBolsanicDocuments } = require("./scrapers/getBolsanicDocuments");
 const { scrapeSiboifFacts } = require("./scrapers/getSiboifFacts");
 const { scrapeBcnRates } = require("./scrapers/getBcnRates");
 
-// Create a router for our API
-const apiRouter = express.Router();
+// --- Caching Configuration ---
+const CACHE_DURATION_MS = 4 * 60 * 60 * 1000; // 4 hours
+let issuersCache = {
+  timestamp: null,
+  data: null,
+};
+// --- End Caching Configuration ---
 
-// Automatically allow cross-origin requests
+const apiRouter = express.Router();
 apiRouter.use(cors({ origin: true }));
 
-// New endpoint for BCN exchange rates
 apiRouter.get("/bcn", async (req, res) => {
   try {
     console.log("Fetching BCN rates...");
@@ -25,10 +29,18 @@ apiRouter.get("/bcn", async (req, res) => {
   }
 });
 
-// Rewritten and robust main API endpoint to get all issuer data
 apiRouter.get("/issuers", async (req, res) => {
+  const now = Date.now();
+
+  // --- Cache Check ---
+  if (issuersCache.timestamp && (now - issuersCache.timestamp < CACHE_DURATION_MS)) {
+    console.log("Serving from cache.");
+    return res.status(200).json(issuersCache.data);
+  }
+  // --- End Cache Check ---
+
   try {
-    console.log("Fetching issuers...");
+    console.log("Fetching issuers (cache stale or empty)...");
     const issuers = await scrapeIssuers();
     console.log(`Found ${issuers.length} issuers.`);
 
@@ -66,8 +78,15 @@ apiRouter.get("/issuers", async (req, res) => {
         });
       }
     }
+    
+    // --- Update Cache ---
+    console.log("Successfully processed all issuers. Updating cache.");
+    issuersCache = {
+      timestamp: Date.now(),
+      data: detailedIssuers,
+    };
+    // --- End Update Cache ---
 
-    console.log("Successfully processed all issuers.");
     res.status(200).json(detailedIssuers);
 
   } catch (error) {
@@ -76,11 +95,9 @@ apiRouter.get("/issuers", async (req, res) => {
   }
 });
 
-// Create a main Express app and mount the API router under /api
 const mainApp = express();
 mainApp.use('/api', apiRouter);
 
-// Expose the main Express app as a single Cloud Function
 exports.api = functions
   .runWith({ timeoutSeconds: 540 })
   .https.onRequest(mainApp);

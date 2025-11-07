@@ -1,58 +1,77 @@
+// Forcing a change for deployment.
 const functions = require("firebase-functions");
+const admin = require("firebase-admin");
 const express = require("express");
-const path = require("path");
-const { scrapeIssuers } = require("./src/getIssuers");
-const { scrapeBolsanicDocuments } = require("./src/getBolsanicDocuments");
-const { scrapeSiboifFacts } = require("./src/getSiboifFacts");
+const { scrapeAndStore } = require("./src/tasks/scrapeAndStore");
+const { getFirestore } = require("firebase-admin/firestore");
 
+// --- Inicialización ---
+admin.initializeApp();
 const app = express();
 
-// Serve the static files from the React app
-app.use(express.static(path.join(__dirname, "..", "webapp", "dist")));
+// --- API Endpoints (Ahora leen de Firestore) ---
 
-// API endpoint to get the list of issuers
-app.get("/api/getIssuers", async (req, res) => {
-  functions.logger.info("Request received for getIssuers");
+// Endpoint para obtener TODOS los emisores
+app.get("/issuers", async (req, res) => {
   try {
-    const issuers = await scrapeIssuers();
-    res.json({ issuers });
-  } catch (error) {
-    functions.logger.error("Error in getIssuers:", error);
-    res.status(500).send("Error scraping issuers.");
-  }
-});
-
-// API endpoint to get the documents of a specific issuer
-app.get("/api/getIssuerDocuments", async (req, res) => {
-  const { detailUrl, issuerName } = req.query;
-  if (!detailUrl || !issuerName) {
-    return res.status(400).send('Missing "detailUrl" or "issuerName" query parameter.');
-  }
-
-  functions.logger.info(`Request for docs for ${issuerName} with URL: ${detailUrl}`);
-  try {
-    // Scrape documents from both sources in parallel
-    const [bolsanicDocs, siboifFacts] = await Promise.all([
-      scrapeBolsanicDocuments(detailUrl),
-      scrapeSiboifFacts(issuerName)
-    ]);
-
-    // Combine the results
-    const documents = [...bolsanicDocs, ...siboifFacts];
+    const db = getFirestore();
+    const issuersSnapshot = await db.collection("issuers").orderBy("name").get();
+    const issuers = issuersSnapshot.docs.map(doc => doc.data());
     
-    res.json({ documents });
+    res.set("Cache-Control", "public, max-age=3600, s-maxage=3600"); // Cache de 1 hora
+    res.json({ issuers });
+
   } catch (error) {
-    functions.logger.error("Error in getIssuerDocuments:", error);
-    res.status(500).send("Error scraping issuer documents.");
+    functions.logger.error("Error fetching issuers from Firestore:", error);
+    res.status(500).send("Error reading from database.");
   }
 });
 
-// Handles any requests that don't match the ones above
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "webapp", "dist", "index.html"));
+// Endpoint para obtener los documentos de UN emisor
+app.get("/issuer-documents", async (req, res) => {
+  const { issuerName } = req.query;
+  if (!issuerName) {
+    return res.status(400).send('Missing "issuerName" query parameter.');
+  }
+
+  try {
+    const db = getFirestore();
+    const documentsSnapshot = await db.collection("issuers").doc(issuerName).collection("documents").get();
+    const documents = documentsSnapshot.docs.map(doc => doc.data());
+
+    res.set("Cache-control", "public, max-age=300, s-maxage=300"); // Cache de 5 minutos
+    res.json({ documents });
+
+  } catch (error) {
+    functions.logger.error(`Error fetching documents for ${issuerName}:`, error);
+    res.status(500).send("Error reading documents from database.");
+  }
 });
 
-// Expose the Express app as a Cloud Function with specific options
-exports.app = functions
-  .runWith({ memory: '1GB', timeoutSeconds: 120 })
-  .https.onRequest(app);
+// --- Funciones de Tareas (Ejecutan los Scrapers) ---
+
+/**
+ * Esta es nuestra función "trabajadora". 
+ * Puede ser ejecutada manualmente o programada para correr periódicamente.
+ * Su única misión es ejecutar los scrapers y guardar los datos en Firestore.
+ */
+const scrapeAndStoreTask = functions
+  .runWith({ memory: "1GB", timeoutSeconds: 540 })
+  .pubsub.topic('run-scraping') // Podemos invocarla publicando en este "tema"
+  .onPublish(async (message) => {
+    functions.logger.info("Starting scrapeAndStore task...");
+    try {
+      const result = await scrapeAndStore();
+      functions.logger.info("scrapeAndStore task finished successfully.", result);
+    } catch (error) {
+      functions.logger.error("Error executing scrapeAndStore task:", error);
+    }
+  });
+
+// --- Exportaciones ---
+
+// Exportamos la API para que el frontend pueda consultarla
+exports.api = functions.https.onRequest(app);
+
+// Exportamos la tarea para poder ejecutarla
+exports.scrapeAndStoreTask = scrapeAndStoreTask;

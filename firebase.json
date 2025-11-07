@@ -1,3 +1,4 @@
+
 {
   "hosting": {
     "public": "webapp/dist",
@@ -10,10 +11,6 @@
       {
         "source": "/api/**",
         "function": "api"
-      },
-      {
-        "source": "!/api/**",
-        "destination": "/index.html"
       }
     ]
   },

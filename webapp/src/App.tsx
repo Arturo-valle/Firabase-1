@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import type { Issuer, Document } from './types';
 
 // --- Funciones de Ayuda ---
 const groupDocumentsByCategory = (documents: Document[]) => {
   return documents.reduce((acc, doc) => {
-    const category = doc.type || 'Otros'; // Usar 'type' como categoría
+    const category = doc.type || 'Otros';
     (acc[category] = acc[category] || []).push(doc);
     return acc;
   }, {} as Record<string, Document[]>);
@@ -17,11 +18,45 @@ interface IssuerDetailViewProps {
   onBack: () => void;
 }
 
-// Vista de Detalle: Ya no necesita hacer su propia llamada a la API.
-// Recibe todos los datos necesarios a través de las props.
 const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) => {
-  // Los documentos ya están en el objeto 'issuer' que se pasa como prop.
-  const documents = issuer.documents || [];
+  const [documents, setDocuments] = useState<Document[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      if (!issuer || !issuer.name) {
+        setError('Información del emisor inválida.');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const params = new URLSearchParams({ issuerName: issuer.name });
+        const response = await fetch(`/api/issuer-documents?${params.toString()}`);
+
+        if (!response.ok) {
+          const errorBody = await response.text();
+          throw new Error(`Error al conectar con la API (${response.status}): ${errorBody}`);
+        }
+        
+        const data = await response.json();
+        setDocuments(data.documents || []);
+
+      } catch (e) {
+        setError(e instanceof Error ? e.message : 'Ocurrió un error desconocido al cargar los documentos.');
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDocuments();
+  }, [issuer]);
+
   const groupedDocuments = groupDocumentsByCategory(documents);
 
   return (
@@ -40,7 +75,11 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
       
       <div className="mt-6">
         <h3 className="text-xl font-semibold border-b pb-2">Documentos y Hechos Relevantes</h3>
-        {documents.length > 0 ? (
+        {loading ? (
+          <p className="text-sm text-gray-500 mt-4">Cargando documentos...</p>
+        ) : error ? (
+          <p className="text-sm text-red-500 mt-4">Error: {error}</p>
+        ) : documents.length > 0 ? (
           <div className="mt-4 space-y-4">
             {Object.entries(groupedDocuments).map(([category, docs]) => (
               <div key={category}>
@@ -67,45 +106,57 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
 };
 
 const VaultModule = () => {
-  const [selectedIssuer, setSelectedIssuer] = useState<Issuer | null>(null);
   const [issuers, setIssuers] = useState<Issuer[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [selectedIssuer, setSelectedIssuer] = useState<Issuer | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchIssuers = async () => {
-      setIsLoading(true);
-      setError(null);
       try {
-        const response = await fetch('/api/issuers'); 
-        if (!response.ok) throw new Error(`El servidor respondió con ${response.status}`);
-        
-        const data: Issuer[] = await response.json();
-        
-        const validIssuers = data.filter(issuer => !issuer.error);
-        const erroredIssuers = data.filter(issuer => issuer.error);
-        
-        if (erroredIssuers.length > 0) {
-          console.warn('Algunos emisores no se pudieron procesar:', erroredIssuers);
+        setLoading(true);
+        const response = await fetch('/api/issuers');
+        if (!response.ok) {
+          throw new Error(`Error de red o de API: ${response.status}`);
         }
-
-        const sortedIssuers = validIssuers.sort((a, b) => a.name.localeCompare(b.name));
-        setIssuers(sortedIssuers);
-
-      } catch (err) {
-        console.error("Error al obtener emisores:", err);
-        setError("No se pudieron cargar los datos de los emisores.");
+        const data = await response.json();
+        setIssuers(data.issuers.sort((a: Issuer, b: Issuer) => a.name.localeCompare(b.name)));
+      } catch (e) {
+        setError(e instanceof Error ? e.message : 'Ocurrió un error desconocido.');
+        console.error("Fallo al buscar en la API, usando fallback local...", e);
+        try {
+          const fallbackData = (await import('./issuers.json')).default;
+          // Transformar los datos del fallback para que coincidan con el tipo Issuer
+          const transformedIssuers: Issuer[] = fallbackData.map((issuer: any) => ({
+            ...issuer,
+            id: issuer.name, // Usar el nombre como id
+            acronym: issuer.acronym || '', // Asegurar que acronym exista
+            documents: issuer.documents || [], // Asegurar que documents exista
+          }));
+          setIssuers(transformedIssuers.sort((a, b) => a.name.localeCompare(b.name)));
+        } catch (fallbackError) {
+          console.error("Fallo al cargar el fallback local", fallbackError);
+          setError('No se pudo conectar a la API ni cargar datos locales.');
+        }
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
+
     fetchIssuers();
   }, []);
 
-  if (isLoading) return <div className="p-4 text-center">Cargando emisores...</div>;
-  if (error) return <div className="p-4 text-center text-red-600">{error}</div>;
-  
-  if (selectedIssuer) return <IssuerDetailView issuer={selectedIssuer} onBack={() => setSelectedIssuer(null)} />;
+  if (loading) {
+    return <div className="p-4 text-center">Cargando Emisores...</div>;
+  }
+
+  if (error && issuers.length === 0) {
+    return <div className="p-4 text-center text-red-500">Error al cargar datos: {error}. Se muestran datos de respaldo.</div>;
+  }
+
+  if (selectedIssuer) {
+    return <IssuerDetailView issuer={selectedIssuer} onBack={() => setSelectedIssuer(null)} />;
+  }
 
   return (
     <div className="p-4">
@@ -113,7 +164,7 @@ const VaultModule = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {issuers.map((issuer) => (
           <div 
-            key={issuer.name} // CORREGIDO: Usar 'name' como key única en lugar de 'id'
+            key={issuer.id}
             onClick={() => setSelectedIssuer(issuer)}
             className="bg-white p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-200 ease-in-out"
           >
