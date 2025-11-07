@@ -4,7 +4,8 @@ import type { Issuer, Document } from './types';
 // --- Funciones de Ayuda ---
 const groupDocumentsByCategory = (documents: Document[]) => {
   return documents.reduce((acc, doc) => {
-    (acc[doc.category] = acc[doc.category] || []).push(doc);
+    const category = doc.type || 'Otros'; // Usar 'type' como categoría
+    (acc[category] = acc[category] || []).push(doc);
     return acc;
   }, {} as Record<string, Document[]>);
 };
@@ -16,37 +17,11 @@ interface IssuerDetailViewProps {
   onBack: () => void;
 }
 
+// Vista de Detalle: Ya no necesita hacer su propia llamada a la API.
+// Recibe todos los datos necesarios a través de las props.
 const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) => {
-  const [documents, setDocuments] = useState<Document[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!issuer) return;
-
-    const fetchDocuments = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const apiUrl = `/api/getIssuerDocuments?issuerName=${encodeURIComponent(issuer.name)}&detailUrl=${encodeURIComponent(issuer.detailUrl || '')}`;
-        const response = await fetch(apiUrl);
-
-        if (!response.ok) {
-          throw new Error(`El servidor respondió con ${response.status}`);
-        }
-        const data = await response.json();
-        setDocuments(data.documents || []);
-      } catch (err: any) {
-        console.error("Error al obtener documentos:", err);
-        setError("No se pudieron cargar los documentos. La fuente de datos puede no estar disponible o su formato puede haber cambiado.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchDocuments();
-  }, [issuer]);
-
+  // Los documentos ya están en el objeto 'issuer' que se pasa como prop.
+  const documents = issuer.documents || [];
   const groupedDocuments = groupDocumentsByCategory(documents);
 
   return (
@@ -65,29 +40,26 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
       
       <div className="mt-6">
         <h3 className="text-xl font-semibold border-b pb-2">Documentos y Hechos Relevantes</h3>
-        {isLoading && <p className="text-sm text-gray-500 mt-4">Buscando documentos...</p>}
-        {error && <p className="text-sm text-red-600 mt-4">{error}</p>}
-        {!isLoading && !error && (
-          documents.length > 0 ? (
-            <div className="mt-4 space-y-4">
-              {Object.entries(groupedDocuments).map(([category, docs]) => (
-                <div key={category}>
-                  <h4 className="font-bold text-gray-700">{category}</h4>
-                  <ul className="list-disc list-inside mt-2 space-y-2 pl-4">
-                    {docs.map((doc, index) => (
-                      <li key={index}>
-                        <a href={doc.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                          {doc.title}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-gray-500 mt-4">No se encontraron documentos para este emisor.</p>
-          )
+        {documents.length > 0 ? (
+          <div className="mt-4 space-y-4">
+            {Object.entries(groupedDocuments).map(([category, docs]) => (
+              <div key={category}>
+                <h4 className="font-bold text-gray-700">{category}</h4>
+                <ul className="list-disc list-inside mt-2 space-y-2 pl-4">
+                  {docs.map((doc, index) => (
+                    <li key={index}>
+                      <a href={doc.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                        {doc.title}
+                      </a>
+                      {doc.date && <span className="text-xs text-gray-500 ml-2">({doc.date})</span>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-gray-500 mt-4">No se encontraron documentos para este emisor.</p>
         )}
       </div>
     </div>
@@ -105,11 +77,21 @@ const VaultModule = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch('/api/getIssuers');
+        const response = await fetch('/api/issuers'); 
         if (!response.ok) throw new Error(`El servidor respondió con ${response.status}`);
-        const data = await response.json();
-        const sortedIssuers = (data.issuers || []).sort((a: Issuer, b: Issuer) => a.name.localeCompare(b.name));
+        
+        const data: Issuer[] = await response.json();
+        
+        const validIssuers = data.filter(issuer => !issuer.error);
+        const erroredIssuers = data.filter(issuer => issuer.error);
+        
+        if (erroredIssuers.length > 0) {
+          console.warn('Algunos emisores no se pudieron procesar:', erroredIssuers);
+        }
+
+        const sortedIssuers = validIssuers.sort((a, b) => a.name.localeCompare(b.name));
         setIssuers(sortedIssuers);
+
       } catch (err) {
         console.error("Error al obtener emisores:", err);
         setError("No se pudieron cargar los datos de los emisores.");
@@ -122,15 +104,16 @@ const VaultModule = () => {
 
   if (isLoading) return <div className="p-4 text-center">Cargando emisores...</div>;
   if (error) return <div className="p-4 text-center text-red-600">{error}</div>;
+  
   if (selectedIssuer) return <IssuerDetailView issuer={selectedIssuer} onBack={() => setSelectedIssuer(null)} />;
 
   return (
     <div className="p-4">
       <h2 className="text-2xl font-semibold mb-4">Módulo 1: La Bóveda Inteligente</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {issuers.map((issuer, index) => (
+        {issuers.map((issuer) => (
           <div 
-            key={index}
+            key={issuer.name} // CORREGIDO: Usar 'name' como key única en lugar de 'id'
             onClick={() => setSelectedIssuer(issuer)}
             className="bg-white p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-200 ease-in-out"
           >

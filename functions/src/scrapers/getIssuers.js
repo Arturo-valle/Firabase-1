@@ -1,35 +1,48 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
 
+const axios = require("axios");
+const cheerio = require("cheerio");
+
+const BOLSANC_URL = "https://www.bolsanic.com/empresas-en-bolsa/";
+
+/**
+ * Scrapes the list of issuers from the new BOLSANC URL.
+ * @returns {Promise<Array<{name: string, detailUrl: string}>>} A promise that resolves to an array of issuer objects.
+ */
 async function scrapeIssuers() {
-  const url = 'https://www.bolsanic.com/empresas-en-bolsa/';
   try {
-    const { data } = await axios.get(url);
+    const { data } = await axios.get(BOLSANC_URL);
     const $ = cheerio.load(data);
+
     const issuers = [];
 
-    // Use a more robust selector to find the list of issuers
-    $('.entry-content ul li a').each((i, element) => {
-      const name = $(element).text().trim();
+    // Find all links within the main content area that point to an issuer page
+    $('div#content-area a[href*="/emisor-"]').each((index, element) => {
       const detailUrl = $(element).attr('href');
+      const name = $(element).text().trim();
+      
+      if (name && detailUrl) {
+        // Make sure the URL is absolute
+        const absoluteUrl = detailUrl.startsWith('http') ? detailUrl : `https://www.bolsanic.com${detailUrl}`;
 
-      // Basic validation to ensure we're adding valid issuer data
-      if (name && detailUrl && !detailUrl.includes('mailto:')) {
-        issuers.push({
-          name: name,
-          // Ensure the URL is absolute
-          detailUrl: detailUrl.startsWith('http') ? detailUrl : `https://www.bolsanic.com${detailUrl}`
-        });
+        // Clean up the name by removing "(EMISOR)" if it exists
+        const cleanedName = name.replace(/\(EMISOR\)/i, '').trim();
+          
+        if (!issuers.some(issuer => issuer.name === cleanedName)) {
+            issuers.push({
+              name: cleanedName,
+              detailUrl: absoluteUrl
+            });
+        }
       }
     });
 
     if (issuers.length === 0) {
-      console.warn("Cheerio selector found 0 issuers. The website structure might have changed.");
+      console.warn("scrapeIssuers finished but found 0 issuers from the new URL. The website layout may have changed.");
     }
 
     return issuers;
   } catch (error) {
-    console.error('Error scraping issuers from Bolsanic:', error);
+    console.error("Fatal error during scrapeIssuers with new URL:", error.message);
     return [];
   }
 }

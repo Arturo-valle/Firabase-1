@@ -1,8 +1,8 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+const axios = require("axios");
+const cheerio = require("cheerio");
 const https = require('https');
 
-const URL_HECHOS_RELEVANTES = "https://www.siboif.gob.ni/supervision/intendencia-valores/hechos-relevantes";
+const SIBOIF_URL = "https://www.siboif.gob.ni/supervision/intendencia-valores/hechos-relevantes";
 
 // Create an HTTPS agent that ignores self-signed certificates
 const agent = new https.Agent({
@@ -10,46 +10,55 @@ const agent = new https.Agent({
 });
 
 /**
- * Scrapes the SIBOIF URL to get the relevant facts for a specific issuer.
- * @param {string} issuerName The name of the issuer to filter the documents.
- * @returns {Promise<any[]>} A promise that resolves with the list of relevant facts.
+ * Normalizes a string by converting to lower case and removing diacritics.
+ * @param {string} str The string to normalize.
+ * @returns {string} The normalized string.
+ */
+function normalizeString(str) {
+  if (!str) return "";
+  return str.toLowerCase().normalize("NFD").replace(/[^\w\s]/gi, '');
+}
+
+/**
+ * Scrapes relevant facts (Hechos Relevantes) from the SIBOIF website.
+ * @param {string} issuerName The name of the issuer to filter by.
+ * @returns {Promise<Array<{title: string, url: string, date: string, type: string}>>} A promise that resolves to an array of fact objects.
  */
 async function scrapeSiboifFacts(issuerName) {
   try {
-    if (!issuerName) {
-      throw new Error("Issuer name is required.");
-    }
-
-    // Use the custom agent to bypass SSL certificate validation
-    const { data } = await axios.get(URL_HECHOS_RELEVANTES, { 
-      httpsAgent: agent,
-      timeout: 30000 
-    });
-    
+    const { data } = await axios.get(SIBOIF_URL, { httpsAgent: agent });
     const $ = cheerio.load(data);
-    const documents = [];
+    const facts = [];
 
-    $("div.view-hechos-relevantes table.views-table tbody tr").each((i, row) => {
-      const emisor = $(row).find("td.views-field-field-emisor").text().trim();
-      if (emisor.toLowerCase().includes(issuerName.toLowerCase())) {
-        const docAnchor = $(row).find("td.views-field-field-hecho-relevante a");
-        const title = docAnchor.text().trim();
-        const url = docAnchor.attr("href");
+    const normalizedIssuerName = normalizeString(issuerName);
 
-        if (title && url) {
-          documents.push({ 
-            category: 'Hechos Relevantes',
-            title: title, 
-            url: url.startsWith('http') ? url : `https://www.siboif.gob.ni${url}`
-          });
+    $('table.table-condensed tbody tr.accordion-toggle').each((index, element) => {
+      const tds = $(element).find("td");
+      const rowIssuerName = $(tds[3]).text().trim();
+      const normalizedRowIssuerName = normalizeString(rowIssuerName);
+
+      // Check if the normalized name from the page is a substring of the normalized name we are looking for
+      if (normalizedRowIssuerName && normalizedIssuerName.includes(normalizedRowIssuerName)) {
+        const title = $(tds[1]).text().trim();
+        const date = $(tds[2]).find('span.date-display-single').text().trim();
+        const detailRow = $(element).next('tr');
+        const url = detailRow.find('div.accordian-body a').attr('href');
+
+        if (title && url && date) {
+            facts.push({
+                title,
+                url: url.startsWith('http') ? url : `https://www.siboif.gob.ni${url}`,
+                date,
+                type: "Hecho Relevante"
+            });
         }
       }
     });
 
-    return documents;
+    return facts;
+
   } catch (error) {
-    console.error(`Error scraping relevant facts for ${issuerName}:`, error);
-    // Return an empty array on error to avoid breaking the entire process
+    console.error(`Error scraping SIBOIF facts for ${issuerName}:`, error.message);
     return [];
   }
 }

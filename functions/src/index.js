@@ -4,46 +4,83 @@ const cors = require("cors");
 const { scrapeIssuers } = require("./scrapers/getIssuers");
 const { scrapeBolsanicDocuments } = require("./scrapers/getBolsanicDocuments");
 const { scrapeSiboifFacts } = require("./scrapers/getSiboifFacts");
+const { scrapeBcnRates } = require("./scrapers/getBcnRates");
 
-const app = express();
-app.use(cors({ origin: true }));
+// Create a router for our API
+const apiRouter = express.Router();
 
-// Middleware to log requests
-app.use((req, res, next) => {
-  console.log(`Request received: ${req.method} ${req.url}`);
-  next();
+// Automatically allow cross-origin requests
+apiRouter.use(cors({ origin: true }));
+
+// New endpoint for BCN exchange rates
+apiRouter.get("/bcn", async (req, res) => {
+  try {
+    console.log("Fetching BCN rates...");
+    const rates = await scrapeBcnRates();
+    console.log("Successfully fetched BCN rates.");
+    res.status(200).json(rates);
+  } catch (error) {
+    console.error("Error fetching BCN rates:", error);
+    res.status(500).send("Failed to fetch BCN exchange rates.");
+  }
 });
 
-// Route to get the list of all issuers
-app.get("/getIssuers", async (req, res) => {
+// Rewritten and robust main API endpoint to get all issuer data
+apiRouter.get("/issuers", async (req, res) => {
   try {
+    console.log("Fetching issuers...");
     const issuers = await scrapeIssuers();
-    // Logic to determine sector based on name
-    const issuersWithSectors = issuers.map(issuer => ({
-      ...issuer,
-      sector: issuer.name.toLowerCase().includes("banco") || issuer.name.toLowerCase().includes("financiera") ? "Privado" : "Público"
-    }));
-    res.status(200).json({ issuers: issuersWithSectors });
+    console.log(`Found ${issuers.length} issuers.`);
+
+    const detailedIssuers = [];
+
+    for (const issuer of issuers) {
+      try {
+        console.log(`Fetching details for ${issuer.name}...`);
+        
+        const [bolsanicDocs, siboifFacts] = await Promise.all([
+          scrapeBolsanicDocuments(issuer.detailUrl),
+          scrapeSiboifFacts(issuer.name),
+        ]);
+
+        const isFinancial = [
+          "banco",
+          "financiera",
+          "fondo de inversion",
+          "puesto de bolsa",
+          "sociedad de inversion"
+        ].some(term => issuer.name.toLowerCase().includes(term));
+
+        detailedIssuers.push({
+          ...issuer,
+          sector: isFinancial ? "Privado" : "Público",
+          documents: [...bolsanicDocs, ...siboifFacts],
+        });
+
+      } catch (error) {
+        console.error(`Failed to process issuer ${issuer.name}. Error: ${error.message}`);
+        detailedIssuers.push({
+          ...issuer,
+          error: `Failed to fetch details: ${error.message}`,
+          documents: [],
+        });
+      }
+    }
+
+    console.log("Successfully processed all issuers.");
+    res.status(200).json(detailedIssuers);
+
   } catch (error) {
-    console.error("Error in /getIssuers:", error);
-    res.status(500).send("Failed to get issuers.");
+    console.error("Fatal error fetching the initial issuer list:", error);
+    res.status(500).send("Failed to fetch the main issuer list.");
   }
 });
 
-// Route to get documents for a single issuer
-app.get("/getIssuerDocuments", async (req, res) => {
-  const { issuerName, detailUrl } = req.query;
-  if (!issuerName || !detailUrl) {
-    return res.status(400).send("Missing issuerName or detailUrl query parameter.");
-  }
-  try {
-    const bolsanicDocs = await scrapeBolsanicDocuments(detailUrl);
-    const siboifFacts = await scrapeSiboifFacts(issuerName);
-    res.status(200).json({ documents: [...bolsanicDocs, ...siboifFacts] });
-  } catch (error) {
-    console.error(`Error in /getIssuerDocuments for ${issuerName}:`, error);
-    res.status(500).send("Failed to get documents for the specified issuer.");
-  }
-});
+// Create a main Express app and mount the API router under /api
+const mainApp = express();
+mainApp.use('/api', apiRouter);
 
-exports.api = functions.https.onRequest(app);
+// Expose the main Express app as a single Cloud Function
+exports.api = functions
+  .runWith({ timeoutSeconds: 540 })
+  .https.onRequest(mainApp);
