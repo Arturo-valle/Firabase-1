@@ -1,55 +1,62 @@
 
+// Main router for the Cloud Function
 const functions = require("firebase-functions");
+const admin = require("firebase-admin");
 const express = require("express");
-const { scrapeIssuers } = require("./src/scrapers/getIssuers");
-const { scrapeBolsanicDocuments } = require("./src/scrapers/getBolsanicDocuments");
-const { scrapeSiboifFacts } = require("./src/scrapers/getSiboifFacts");
+const { getFirestore } = require("firebase-admin/firestore");
+const { scrapeAndStore } = require("./src/tasks/scrapeAndStore");
 
+// --- Initialization ---
+// admin.initializeApp() is called in index.js, no need to repeat here.
 const app = express();
 
-// Middleware to set Cache-Control headers
-const setCache = (res, seconds) => {
-  res.set("Cache-Control", `public, max-age=${seconds}, s-maxage=${seconds}`);
-};
+// --- LOGGING MIDDLEWARE ---
+app.use((req, res, next) => {
+  functions.logger.info(`Request received: ${req.method} ${req.originalUrl}`);
+  next();
+});
 
-// API endpoint to get the list of issuers
+// --- API Endpoints ---
+
+// Endpoint to get ALL issuers from Firestore
 app.get("/issuers", async (req, res) => {
   try {
-    const issuers = await scrapeIssuers();
-    // Let's set a longer cache for the issuers list as it changes less frequently
-    setCache(res, 14400); // 4 hours
+    const db = getFirestore();
+    const issuersSnapshot = await db.collection("issuers").orderBy("name").get();
+    const issuers = issuersSnapshot.docs.map(doc => doc.data());
+    
+    res.set("Cache-Control", "public, max-age=3600, s-maxage=3600"); // 1-hour cache
     res.json({ issuers });
+
   } catch (error) {
-    functions.logger.error("Error in /issuers:", error);
-    res.status(500).send("Error scraping issuers.");
+    functions.logger.error("Error fetching issuers from Firestore:", error);
+    res.status(500).send("Error reading from database.");
   }
 });
 
-// API endpoint to get the documents of a specific issuer
+// Endpoint to get documents for ONE issuer from Firestore
 app.get("/issuer-documents", async (req, res) => {
-  const { detailUrl, issuerName } = req.query;
-  if (!detailUrl || !issuerName) {
-    return res.status(400).send('Missing "detailUrl" or "issuerName" query parameter.');
+  const { issuerName } = req.query;
+  if (!issuerName) {
+    return res.status(400).send('Missing "issuerName" query parameter.');
   }
 
   try {
-    const [bolsanicDocs, siboifFacts] = await Promise.all([
-      scrapeBolsanicDocuments(detailUrl),
-      scrapeSiboifFacts(issuerName),
-    ]);
-    const documents = [...bolsanicDocs, ...siboifFacts];
-    // Temporarily set a very short cache to force refresh for verification
-    setCache(res, 1);
+    const db = getFirestore();
+    // Get the subcollection of documents for the given issuer
+    const documentsSnapshot = await db.collection("issuers").doc(issuerName).collection("documents").get();
+    const documents = documentsSnapshot.docs.map(doc => doc.data());
+
+    res.set("Cache-Control", "public, max-age=300, s-maxage=300"); // 5-minute cache
     res.json({ documents });
+
   } catch (error) {
-    functions.logger.error("Error in /issuer-documents:", error);
-    res.status(500).send("Error scraping documents.");
+    functions.logger.error(`Error fetching documents for ${issuerName}:`, error);
+    res.status(500).send("Error reading documents from database.");
   }
 });
 
-// Main API function that wraps the Express app
-const api = functions
-  .runWith({ memory: "1GB", timeoutSeconds: 120 })
-  .https.onRequest(app);
+// --- Main API function ---
+const api = functions.https.onRequest(app);
 
 module.exports = { api };

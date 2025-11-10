@@ -1,42 +1,42 @@
+
 const axios = require("axios");
 const cheerio = require("cheerio");
+const functions = require("firebase-functions");
 
-const BCN_URL = "https://www.bcn.gob.ni/es/estadisticas/mercado-cambiario/tipo-de-cambio";
+// This is the new, correct URL for the BCN exchange rate page.
+const BCN_RATES_URL = "https://www.bcn.gob.ni/es/estadisticas/indicadores-economicos/tipo-de-cambio";
 
 /**
- * Scrapes the official exchange rate from the BCN website.
- * @returns {Promise<{buy: number, sell: number, date: string}>} A promise that resolves to an object with buy and sell rates.
+ * Scrapes the official exchange rate from the Central Bank of Nicaragua (BCN).
+ * @returns {Promise<number|null>} A promise that resolves to the exchange rate, or null if scraping fails.
  */
-async function scrapeBcnRates() {
+const scrapeBcnExchangeRate = async () => {
   try {
-    const { data } = await axios.get(BCN_URL);
+    functions.logger.info("Scraping BCN for official exchange rate...");
+    // The BCN site sometimes blocks requests without a user-agent.
+    const { data } = await axios.get(BCN_RATES_URL, { 
+      headers: { 'User-Agent': 'Mozilla/5.0' } 
+    });
     const $ = cheerio.load(data);
 
-    // Find the table with the exchange rates
-    const table = $('#table-tipo-cambio');
-    const firstRow = table.find('tbody tr').first();
-    const tds = firstRow.find('td');
+    // This new selector targets the main display box with the exchange rate.
+    // It is more robust than the previous table-based selector.
+    const rateText = $('div.kpi-value').text().trim();
 
-    // Extract the buy and sell rates
-    const buyRate = parseFloat($(tds[1]).text().trim().replace(/,/g, ''));
-    const sellRate = parseFloat($(tds[2]).text().trim().replace(/,/g, ''));
-    const date = $(tds[0]).text().trim();
+    const rate = parseFloat(rateText);
 
-    if (isNaN(buyRate) || isNaN(sellRate)) {
-      throw new Error('Could not parse exchange rates.');
+    if (!rateText || isNaN(rate)) {
+      functions.logger.error("Could not find or parse the exchange rate from the new BCN URL. The layout may have changed again.");
+      return null;
     }
-
-    return {
-      buy: buyRate,
-      sell: sellRate,
-      date: date
-    };
+    
+    functions.logger.info(`Successfully scraped BCN exchange rate: ${rate}`);
+    return rate;
 
   } catch (error) {
-    console.error(`Error scraping BCN rates:`, error.message);
-    // It's better to throw the error to be handled by the caller
-    throw new Error(`Failed to scrape BCN rates: ${error.message}`);
+    functions.logger.error(`Error scraping BCN exchange rate: ${error.message}`);
+    return null;
   }
-}
+};
 
-module.exports = { scrapeBcnRates };
+module.exports = { scrapeBcnExchangeRate };

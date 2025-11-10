@@ -1,181 +1,130 @@
-
 [
-  {
-    "name": "Financiera FDL, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-FDL",
-    "sector": "Privado",
-    "documents": []
-  },
-  {
-    "name": "FID, Sociedad Anónima (FID, S.A)",
-    "detailUrl": "https://www.bolsanic.com/emisor-fid",
-    "sector": "Público",
-    "documents": []
-  },
-  {
-    "name": "Banco De Finanzas, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-bancodefinanzas",
-    "sector": "Privado",
-    "documents": [
-      {
-        "title": "Desembolsos relacionados con contratos de préstamos para financiamiento de segmentos PYME",
-        "url": "https://www.siboif.gob.ni/system/files_force/documentos/hechos/09311-bdf-ref-gg-130-2025-comunciaciondehechorelevante03092025.pdf?download=1",
-        "date": "03/09/2025",
-        "type": "Hecho Relevante"
-      },
-      {
-        "title": "Calificación de Riesgos del Banco de Finanzas a julio 2025",
-        "url": "https://www.siboif.gob.ni/system/files_force/documentos/hechos/121mlniinforme-publico-bdf-23072025v1rev-2025-05-14.pdf?download=1",
-        "date": "31/07/2025",
-        "type": "Hecho Relevante"
-      }
-    ]
-  },
-  {
-    "name": "Corporación Agricola, S.A. (Agri-Corp)",
-    "detailUrl": "https://www.bolsanic.com/emisor-corporacionesagricolas",
-    "sector": "Público",
-    "documents": [
-      {
-        "title": "Estrategia de Agricorp enfocada en el negocio del arroz y subproductos.",
-        "url": "https://www.siboif.gob.ni/system/files_force/documentos/hechos/230925hechorelevante-executeddocs.pdf?download=1",
-        "date": "23/09/2025",
-        "type": "Hecho Relevante"
-      },
-      {
-        "title": "Aumento del capital social autorizado",
-        "url": "https://www.siboif.gob.ni/system/files_force/documentos/hechos/07973-agricorp-sr-29julio2025-informaciondehechorelevante.pdf?download=1",
-        "date": "29/07/2025",
-        "type": "Hecho Relevante"
-      }
-    ]
-  },
-  {
-    "name": "FAMA, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-financierafama/",
-    "sector": "Público",
-    "documents": [
-      {
-        "title": "Calificación de Riesgos de FAMA, S.A. al mes de Agosto 2025",
-        "url": "https://www.siboif.gob.ni/system/files_force/documentos/hechos/informedecalificacionderiesgo190825.pdf?download=1",
-        "date": "19/08/2025",
-        "type": "Hecho Relevante"
-      }
-    ]
-  },
-  {
-    "name": "Banco De La Producción, S.A. (Banpro)",
-    "detailUrl": "https://www.bolsanic.com/emisor-bancodelaproduccion",
-    "sector": "Privado",
-    "documents": [
-      {
-        "title": "Banpro firma contratos de financiamiento Senior sin Garantía",
-        "url": "https://www.siboif.gob.ni/system/files_force/documentos/hechos/11181-banpro-ref-vggr-998-10-2025-fco-comunicadodehechorelevante.pdf?download=1",
-        "date": "23/10/2025",
-        "type": "Hecho Relevante"
-      }
-    ]
-  },
-  {
-    "name": "ACOBO VISTA Sociedad de Fondos de Inversión, S.A. GRUPO ACOBO",
-    "detailUrl": "https://www.bolsanic.com/emisor-acobovistasociedad/",
-    "sector": "Público",
-    "documents": []
-  },
-  {
-    "name": "Banco Popular Y De Desarrollo Comunal (Bpdc)",
-    "detailUrl": "https://www.bolsanic.com/emisor-bancopopularydedesarrollocomunal/",
-    "sector": "Privado",
-    "documents": []
-  },
-  {
-    "name": "Eurobonos Emitidos Por La República De Costa Rica",
-    "detailUrl": "https://www.bolsanic.com/emisor-eurobonosemitidospor/",
-    "sector": "Público",
-    "documents": []
-  },
-  {
-    "name": "Grupo Tenedora Mundial. S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-grupotenedoramundial/",
-    "sector": "Público",
-    "documents": []
-  },
-  {
-    "name": "Horizonte Fondo De Inversión Financiero De Crecimiento Dólares, No Diversificado",
-    "detailUrl": "https://www.bolsanic.com/emisor-horizontefondodeinversion/",
-    "sector": "Público",
-    "documents": []
-  },
-  {
-    "name": "Improsa Sociedad Administradora De Fondos De Inversión",
-    "detailUrl": "https://www.bolsanic.com/emisor-improsasafi/",
-    "sector": "Público",
-    "documents": []
-  },
-  {
-    "name": "Popular Sociedad Administradora De Fondos De Inversión",
-    "detailUrl": "https://www.bolsanic.com/emisor-popularfondosdeinversion/",
-    "sector": "Público",
-    "documents": []
-  },
-  {
-    "name": "Fondos BCR",
-    "detailUrl": "https://www.bolsanic.com/emisor-fondosbcr/",
-    "sector": "Público",
-    "documents": []
-  },
-  {
-    "name": "CREDIFACTOR, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-credifactor/",
-    "sector": "Público",
-    "documents": []
-  },
-  {
-    "name": "FINANCIA CAPITAL, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-financieracapital/",
-    "sector": "Público",
-    "documents": []
-  },
-  {
-    "name": "Financiera Fundeser, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-financierafundeser/",
-    "sector": "Privado",
-    "documents": []
-  },
-  {
-    "name": "Financiera Finca, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-financierafinca/",
-    "sector": "Privado",
-    "documents": []
-  },
-  {
-    "name": "Factoring Nicaragüense, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-factoringnicaraguense/",
-    "sector": "Público",
-    "documents": []
-  },
-  {
-    "name": "Banco De América Central, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-bancodeamericacentral/",
-    "sector": "Privado",
-    "documents": []
-  },
-  {
-    "name": "Banco FICOHSA Nicaragua, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-bancoficohsanicaragua/",
-    "sector": "Privado",
-    "documents": []
-  },
-  {
-    "name": "Banco Lafise Bancentro, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-bancolafisebancentro/",
-    "sector": "Privado",
-    "documents": []
-  },
-  {
-    "name": "EMPRESA ADMINISTRADORA DE AEROPUERTOS",
-    "detailUrl": "https://www.bolsanic.com/emisor-empresaadministradoradeaereopuertos/",
-    "sector": "Público",
-    "documents": []
-  }
+    {
+        "name": "BCR Sociedad Administradora de Fondos de Inversión, S.A.",
+        "detailUrl": "https://www.bolsanic.com/emisor-fondosbcr/",
+        "id": "BCR Sociedad Administradora de Fondos de Inversión, S.A.",
+        "sector": "Público",
+        "documents": [],
+        "lastScraped": "2025-11-09T20:56:32.764Z"
+    },
+    {
+        "name": "Banco De Finanzas, S.A.",
+        "detailUrl": "https://www.bolsanic.com/emisor-bancodefinanzas/",
+        "id": "Banco De Finanzas, S.A.",
+        "sector": "Privado",
+        "documents": [
+            {
+                "title": "Desembolsos relacionados con contratos de préstamos para financiamiento de segmentos  PYME",
+                "url": "https://www.siboif.gob.ni/system/files_force/documentos/hechos/09311-bdf-ref-gg-130-2025-comunciaciondehechorelevante03092025.pdf?download=1",
+                "date": "03/09/2025",
+                "type": "Hecho Relevante"
+            },
+            {
+                "title": "Calificación de Riesgos del Banco de Finanzas a julio 2025",
+                "url": "https://www.siboif.gob.ni/system/files_force/documentos/hechos/121mlniinforme-publico-bdf-23072025v1rev-2025-05-14.pdf?download=1",
+                "date": "31/07/2025",
+                "type": "Hecho Relevante"
+            }
+        ],
+        "lastScraped": "2025-11-09T20:56:25.318Z"
+    },
+    {
+        "name": "Banco De La Producción, S.A. (Banpro)",
+        "detailUrl": "https://www.bolsanic.com/emisor-bancodelaproduccion/",
+        "id": "Banco De La Producción, S.A. (Banpro)",
+        "sector": "Privado",
+        "documents": [
+            {
+                "title": "Banpro firma contratos de financiamiento Senior sin Garantía",
+                "url": "https://www.siboif.gob.ni/system/files_force/documentos/hechos/11181-banpro-ref-vggr-998-10-2025-fco-comunicadodehechorelevante.pdf?download=1",
+                "date": "23/10/2025",
+                "type": "Hecho Relevante"
+            }
+        ],
+        "lastScraped": "2025-11-09T20:56:29.349Z"
+    },
+    {
+        "name": "Corporación Agricola, S.A. (Agri-Corp)",
+        "detailUrl": "https://www.bolsanic.com/emisor-corporacionesagricolas/",
+        "id": "Corporación Agricola, S.A. (Agri-Corp)",
+        "sector": "Público",
+        "documents": [
+            {
+                "title": "Estrategia de Agricorp enfocada en el negocio del arroz y subproductos.",
+                "url": "https://www.siboif.gob.ni/system/files_force/documentos/hechos/230925hechorelevante-executeddocs.pdf?download=1",
+                "date": "23/09/2025",
+                "type": "Hecho Relevante"
+            },
+            {
+                "title": "Aumento del capital social autorizado",
+                "url": "https://www.siboif.gob.ni/system/files_force/documentos/hechos/07973-agricorp-sr-29julio2025-informaciondehechorelevante.pdf?download=1",
+                "date": "29/07/2025",
+                "type": "Hecho Relevante"
+            }
+        ],
+        "lastScraped": "2025-11-09T20:56:26.725Z"
+    },
+    {
+        "name": "FAMA, S.A.",
+        "detailUrl": "https://www.bolsanic.com/emisor-financierafama/",
+        "id": "FAMA, S.A.",
+        "sector": "Público",
+        "documents": [
+            {
+                "title": "Calificación de Riesgos de FAMA,S.A. . al mes de Agosto  2025",
+                "url": "https://www.siboif.gob.ni/system/files_force/documentos/hechos/informedecalificacionderiesgo190825.pdf?download=1",
+                "date": "19/08/2025",
+                "type": "Hecho Relevante"
+            }
+        ],
+        "lastScraped": "2025-11-09T20:56:28.110Z"
+    },
+    {
+        "name": "FID, Sociedad Anónima (FID, S.A)",
+        "detailUrl": "https://www.bolsanic.com/emisor-fid/",
+        "id": "FID, Sociedad Anónima (FID, S.A)",
+        "sector": "Público",
+        "documents": [],
+        "lastScraped": "2025-11-09T20:56:24.006Z"
+    },
+    {
+        "name": "Financiera FDL, S.A.",
+        "detailUrl": "https://www.bolsanic.com/emisor-fdl/",
+        "id": "Financiera FDL, S.A.",
+        "sector": "Privado",
+        "documents": [],
+        "lastScraped": "2025-11-09T20:56:22.705Z"
+    },
+    {
+        "name": "HORIZONTE FONDO DE INVERSIÓN FINANCIERO DE CRECIMIENTO DÓLARES, NO DIVERSIFICADO",
+        "detailUrl": "https://www.bolsanic.com/emisor-horizontefondodeinversion/",
+        "id": "HORIZONTE FONDO DE INVERSIÓN FINANCIERO DE CRECIMIENTO DÓLARES, NO DIVERSIFICADO",
+        "sector": "Público",
+        "documents": [],
+        "lastScraped": "2025-11-09T20:56:30.466Z"
+    },
+    {
+        "name": "Improsa Sociedad Administradora de Fondos de Inversión, S.A.",
+        "detailUrl": "https://www.bolsanic.com/emisor-improsasafi/",
+        "id": "Improsa Sociedad Administradora de Fondos de Inversión, S.A.",
+        "sector": "Público",
+        "documents": [],
+        "lastScraped": "2025-11-09T20:56:33.885Z"
+    },
+    {
+        "name": "Popular Sociedad Administradora de Fondos de Inversión",
+        "detailUrl": "https://www.bolsanic.com/emisor-popularfondosdeinversion/",
+        "id": "Popular Sociedad Administradora de Fondos de Inversión",
+        "sector": "Público",
+        "documents": [],
+        "lastScraped": "2025-11-09T20:56:35.033Z"
+    },
+    {
+        "name": "Vista, Sociedad Administradora de Fondos de Inversión, S.A.",
+        "detailUrl": "https://www.bolsanic.com/emisor-acobovistasociedad/",
+        "id": "Vista, Sociedad Administradora de Fondos de Inversión, S.A.",
+        "sector": "Público",
+        "documents": [],
+        "lastScraped": "2025-11-09T20:56:31.608Z"
+    }
 ]

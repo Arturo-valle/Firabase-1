@@ -35,11 +35,12 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
         setLoading(true);
         setError(null);
         
-        const params = new URLSearchParams({ issuerName: issuer.name });
-        const response = await fetch(`/api/issuer-documents?${params.toString()}`);
+        // CORREGIDO: Se construye la URL con el parámetro issuerName
+        const API_URL = `https://us-central1-mvp-nic-market.cloudfunctions.net/api/issuer-documents?issuerName=${encodeURIComponent(issuer.name)}`;
+        const response = await fetch(API_URL);
 
         if (!response.ok) {
-          const errorBody = await response.text();
+          const errorBody = await response.text(); // Leer el cuerpo del error
           throw new Error(`Error al conectar con la API (${response.status}): ${errorBody}`);
         }
         
@@ -63,7 +64,7 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
     <div className="p-4 bg-white rounded-lg shadow-md animate-fade-in">
       <button onClick={onBack} className="mb-4 text-sm font-medium text-blue-600 hover:text-blue-800">{'‹ Volver a la Lista'}</button>
       <div className="flex items-center mb-4">
-        <img src={`https://www.bolsanic.com/wp-content/uploads/2016/12/logo.png`} alt="Logo" className="h-12 w-12 mr-4"/>
+         <img src={`https://www.bolsanic.com/wp-content/uploads/2016/12/logo.png`} alt="Logo" className="h-12 w-12 mr-4"/>
         <div>
           <h2 className="text-2xl font-bold text-gray-900">{issuer.name}</h2>
           {issuer.acronym && <p className="text-sm text-gray-600">{issuer.acronym}</p>}
@@ -78,7 +79,7 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
         {loading ? (
           <p className="text-sm text-gray-500 mt-4">Cargando documentos...</p>
         ) : error ? (
-          <p className="text-sm text-red-500 mt-4">Error: {error}</p>
+          <p className="text-sm text-red-500 mt-4">{error}</p>
         ) : documents.length > 0 ? (
           <div className="mt-4 space-y-4">
             {Object.entries(groupedDocuments).map(([category, docs]) => (
@@ -115,7 +116,8 @@ const VaultModule = () => {
     const fetchIssuers = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/issuers');
+        // APUNTAMOS A LA URL ABSOLUTA DE LA FUNCIÓN
+        const response = await fetch('https://us-central1-mvp-nic-market.cloudfunctions.net/api/issuers');
         if (!response.ok) {
           throw new Error(`Error de red o de API: ${response.status}`);
         }
@@ -124,14 +126,14 @@ const VaultModule = () => {
       } catch (e) {
         setError(e instanceof Error ? e.message : 'Ocurrió un error desconocido.');
         console.error("Fallo al buscar en la API, usando fallback local...", e);
+        // El fallback a issuers.json se mantiene como un mecanismo de respaldo útil
         try {
           const fallbackData = (await import('./issuers.json')).default;
-          // Transformar los datos del fallback para que coincidan con el tipo Issuer
           const transformedIssuers: Issuer[] = fallbackData.map((issuer: any) => ({
             ...issuer,
-            id: issuer.name, // Usar el nombre como id
-            acronym: issuer.acronym || '', // Asegurar que acronym exista
-            documents: issuer.documents || [], // Asegurar que documents exista
+            id: issuer.name, 
+            acronym: issuer.acronym || '',
+            documents: issuer.documents || [],
           }));
           setIssuers(transformedIssuers.sort((a, b) => a.name.localeCompare(b.name)));
         } catch (fallbackError) {
@@ -150,9 +152,14 @@ const VaultModule = () => {
     return <div className="p-4 text-center">Cargando Emisores...</div>;
   }
 
+  // No mostrar error si tenemos datos del fallback
   if (error && issuers.length === 0) {
-    return <div className="p-4 text-center text-red-500">Error al cargar datos: {error}. Se muestran datos de respaldo.</div>;
+    return <div className="p-4 text-center text-red-500">Error al cargar datos: {error}.</div>;
+  } else if (error) {
+    // Muestra un aviso sutil si la API falló pero el fallback funcionó
+    console.warn("API fallida, mostrando datos de respaldo. Error:", error)
   }
+
 
   if (selectedIssuer) {
     return <IssuerDetailView issuer={selectedIssuer} onBack={() => setSelectedIssuer(null)} />;
