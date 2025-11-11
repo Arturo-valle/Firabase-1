@@ -2,120 +2,191 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const express = require("express");
 const cors = require("cors");
+const { getFirestore } = require("firebase-admin/firestore");
+
 const { scrapeIssuers } = require("./scrapers/getIssuers");
 const { scrapeBolsanicDocuments } = require("./scrapers/getBolsanicDocuments");
-const { scrapeSiboifFacts } = require("./scrapers/getSiboifFacts");
+const { scrapeBolsanicFacts } = require("./scrapers/getBolsanicFacts");
 const { scrapeBcnRates } = require("./scrapers/getBcnRates");
 
 // Initialize Firebase Admin SDK
 admin.initializeApp();
-const db = admin.firestore();
+const db = getFirestore();
 
-// API Router Setup
-const apiRouter = express.Router();
-apiRouter.use(cors({ origin: true }));
+// --- Helper Functions ---
+
+/**
+ * Normalizes an issuer name to create a consistent ID.
+ * - Removes common suffixes like ", S.A."
+ * - Removes content in parentheses, e.g., "(Banpro)"
+ * - Trims whitespace
+ * @param {string} name The original issuer name.
+ * @returns {string} The normalized name.
+ */
+function normalizeIssuerName(name) {
+  if (!name) return "";
+  return name
+    .replace(/, S\.A\./gi, '')
+    .replace(/, S\.A/gi, '')
+    .replace(/\s*\(.*?\)/g, '')
+    .replace(/,$/g, '')
+    .trim();
+}
+
+// --- API Router Setup ---
+const app = express();
+app.use(cors({ origin: true }));
+
+app.use((req, res, next) => {
+  functions.logger.info(`API Request: ${req.method} ${req.originalUrl}`);
+  next();
+});
 
 // --- API Endpoints ---
 
-// BCN Rates Endpoint
-apiRouter.get("/bcn", async (req, res) => {
+app.get("/bcn", async (req, res) => {
   try {
     const rates = await scrapeBcnRates();
+    res.set("Cache-Control", "public, max-age=3600, s-maxage=3600");
     res.status(200).json(rates);
   } catch (error) {
-    console.error("Error fetching BCN rates:", error);
+    functions.logger.error("Error in /bcn endpoint:", error);
     res.status(500).send("Failed to fetch BCN exchange rates.");
   }
 });
 
-// Issuers Endpoint (reads from Firestore)
-apiRouter.get("/issuers", async (req, res) => {
+app.get("/issuers", async (req, res) => {
   try {
     const issuersSnapshot = await db.collection("issuers").orderBy("name").get();
-    if (issuersSnapshot.empty) {
-      return res.status(404).json({ message: "No issuers found. Please run the scraping task first." });
-    }
     const issuers = issuersSnapshot.docs.map(doc => doc.data());
-    res.status(200).json({ issuers });
+    res.set("Cache-Control", "public, max-age=3600, s-maxage=3600");
+    res.json({ issuers });
   } catch (error) {
-    console.error("Error fetching issuers from Firestore:", error);
-    res.status(500).send("Failed to fetch issuers from the database.");
+    functions.logger.error("Error in /issuers endpoint:", error);
+    res.status(500).send("Error reading from database.");
   }
 });
 
-// Issuer Documents Endpoint (reads from Firestore)
-apiRouter.get("/issuer-documents", async (req, res) => {
-    const issuerName = req.query.issuerName;
-    if (!issuerName) {
-        return res.status(400).send("issuerName query parameter is required.");
+app.get("/issuer-documents", async (req, res) => {
+  const { issuerName } = req.query;
+  if (!issuerName) {
+    return res.status(400).send('Missing "issuerName" query parameter.');
+  }
+  try {
+    const normalizedName = normalizeIssuerName(decodeURIComponent(issuerName));
+    const docRef = db.collection("issuers").doc(normalizedName);
+    const doc = await docRef.get();
+    if (!doc.exists) {
+      return res.status(404).send("Issuer not found.");
     }
-    try {
-        const docRef = db.collection("issuers").doc(issuerName);
-        const doc = await docRef.get();
-        if (!doc.exists) {
-            return res.status(404).json({ message: "Issuer not found." });
-        }
-        res.status(200).json({ documents: doc.data().documents || [] });
-    } catch (error) {
-        console.error(`Error fetching documents for ${issuerName}:`, error);
-        res.status(500).send("Failed to fetch documents.");
-    }
+    res.set("Cache-Control", "public, max-age=300, s-maxage=300");
+    res.json({ documents: doc.data().documents || [] });
+  } catch (error) {
+    functions.logger.error(`Error in /issuer-documents for ${issuerName}:`, error);
+    res.status(500).send("Error reading documents from database.");
+  }
 });
-
-const mainApp = express();
-mainApp.use('/', apiRouter); // Corrected route registration
 
 // --- Cloud Function Exports ---
 
-// HTTP API Function
 exports.api = functions
   .region('us-central1')
   .runWith({ timeoutSeconds: 120, memory: '256MB' })
-  .https.onRequest(mainApp);
+  .https.onRequest(app);
 
-// Background Scraping Function
 exports.scrapeAndStoreTask = functions
   .region('us-central1')
-  .runWith({ timeoutSeconds: 540, memory: '1GB' })
-  .pubsub.topic('run-scraping')
-  .onPublish(async (message) => {
-    console.log("Scraping task triggered...");
-    try {
-      const issuers = await scrapeIssuers();
-      console.log(`Found ${issuers.length} issuers.`);
-      const batch = db.batch();
-      for (const issuer of issuers) {
-        try {
-          const [bolsanicDocs, siboifFacts] = await Promise.all([
-            scrapeBolsanicDocuments(issuer.detailUrl),
-            scrapeSiboifFacts(issuer.name),
-          ]);
-          const isFinancial = ["banco", "financiera", "fondo de inversion", "puesto de bolsa", "sociedad de inversion"].some(term => issuer.name.toLowerCase().includes(term));
-          const finalIssuerData = {
-            ...issuer,
-            id: issuer.name,
-            sector: isFinancial ? "Privado" : "Público",
-            documents: [...bolsanicDocs, ...siboifFacts],
-            lastScraped: new Date().toISOString(),
-          };
-          const docRef = db.collection("issuers").doc(finalIssuerData.id);
-          batch.set(docRef, finalIssuerData);
-        } catch (error) {
-          console.error(`Failed to process issuer ${issuer.name}. Error: ${error.message}`);
-          const errorData = {
-            ...issuer,
-            id: issuer.name,
-            error: `Failed to fetch details: ${error.message}`,
-            documents: [],
-            lastScraped: new Date().toISOString(),
-          };
-          const docRef = db.collection("issuers").doc(errorData.id);
-          batch.set(docRef, errorData);
-        }
+  .runWith({ timeoutSeconds: 540, memory: '2GB' })
+  .pubsub.schedule('every 24 hours')
+  .onRun(async (context) => {
+    functions.logger.info("Daily scraping task triggered...");
+    
+    const consolidatedIssuers = {};
+
+    // 1. Scrape all data sources
+    const [issuersFromList, factsFromBolsanic] = await Promise.all([
+      scrapeIssuers(),
+      scrapeBolsanicFacts(),
+    ]);
+    functions.logger.info(`Scraped ${issuersFromList.length} issuers from list and ${factsFromBolsanic.length} facts.`);
+
+    // 2. Consolidate issuers from the main list
+    for (const issuer of issuersFromList) {
+      const normalizedName = normalizeIssuerName(issuer.name);
+      if (!consolidatedIssuers[normalizedName]) {
+        consolidatedIssuers[normalizedName] = {
+          ...issuer,
+          id: normalizedName,
+          name: normalizedName,
+          documents: [],
+        };
       }
-      await batch.commit();
-      console.log("Successfully scraped and stored all issuers in Firestore.");
-    } catch (error) {
-      console.error("Fatal error during scraping task:", error);
     }
-  });
+
+    // 3. Scrape and merge documents for each issuer
+    const documentPromises = Object.values(consolidatedIssuers)
+      .filter(issuer => issuer.detailUrl)
+      .map(issuer => 
+        scrapeBolsanicDocuments(issuer.detailUrl).then(docs => ({
+          normalizedName: issuer.id,
+          documents: docs,
+        }))
+      );
+    
+    const results = await Promise.allSettled(documentPromises);
+    results.forEach(result => {
+      if (result.status === 'fulfilled') {
+        const { normalizedName, documents } = result.value;
+        if (consolidatedIssuers[normalizedName]) {
+          consolidatedIssuers[normalizedName].documents.push(...documents);
+        }
+      } else {
+        functions.logger.error(`Failed to scrape documents for an issuer: ${result.reason}`);
+      }
+    });
+    
+    // 4. Merge "Hechos Relevantes"
+    for (const fact of factsFromBolsanic) {
+      const normalizedIssuerName = normalizeIssuerName(fact.issuerName);
+      if (consolidatedIssuers[normalizedIssuerName]) {
+        consolidatedIssuers[normalizedIssuerName].documents.push(fact);
+      } else {
+        functions.logger.warn(`Fact found for an unlisted issuer: '${fact.issuerName}'. Creating new entry.`);
+        consolidatedIssuers[normalizedIssuerName] = {
+          id: normalizedIssuerName,
+          name: normalizedIssuerName,
+          acronym: "",
+          sector: "Desconocido",
+          detailUrl: "",
+          documents: [fact],
+        };
+      }
+    }
+
+    // 5. Delete old data
+    const snapshot = await db.collection("issuers").get();
+    if (!snapshot.empty) {
+      const deleteBatch = db.batch();
+      snapshot.docs.forEach(doc => deleteBatch.delete(doc.ref));
+      await deleteBatch.commit();
+      functions.logger.info(`Cleared ${snapshot.size} old issuer documents.`);
+    }
+
+    // 6. Write new, consolidated data
+    const writeBatch = db.batch();
+    for (const issuer of Object.values(consolidatedIssuers)) {
+        const isFinancial = ["banco", "financiera", "fondo de inversion", "puesto de bolsa", "sociedad de inversion"].some(term => issuer.name.toLowerCase().includes(term));
+        issuer.sector = isFinancial ? "Privado" : "Público";
+        issuer.lastScraped = new Date().toISOString();
+        
+        // Remove duplicate documents by URL
+        const uniqueDocuments = Array.from(new Map(issuer.documents.map(doc => [doc.url, doc])).values());
+        issuer.documents = uniqueDocuments;
+
+        const docRef = db.collection("issuers").doc(issuer.id);
+        writeBatch.set(docRef, issuer);
+    }
+    await writeBatch.commit();
+
+    functions.logger.info(`Scraping task finished. Stored ${Object.keys(consolidatedIssuers).length} consolidated issuers.`);
+});

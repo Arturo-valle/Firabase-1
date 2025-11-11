@@ -43,9 +43,18 @@ app.get("/issuer-documents", async (req, res) => {
 
   try {
     const db = getFirestore();
-    // Get the subcollection of documents for the given issuer
-    const documentsSnapshot = await db.collection("issuers").doc(issuerName).collection("documents").get();
-    const documents = documentsSnapshot.docs.map(doc => doc.data());
+    // Get the document for the given issuer
+    const issuerDocRef = db.collection("issuers").doc(issuerName);
+    const issuerDoc = await issuerDocRef.get();
+
+    if (!issuerDoc.exists) {
+        functions.logger.warn(`Issuer document not found: ${issuerName}`);
+        return res.status(404).send("Issuer not found.");
+    }
+
+    // Get the documents array from the document data
+    const issuerData = issuerDoc.data();
+    const documents = issuerData.documents || [];
 
     res.set("Cache-Control", "public, max-age=300, s-maxage=300"); // 5-minute cache
     res.json({ documents });
