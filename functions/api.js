@@ -1,16 +1,44 @@
 
 // Main router for the Cloud Function
 const functions = require("firebase-functions");
-const admin = require("firebase-admin");
 const express = require("express");
 const { getFirestore } = require("firebase-admin/firestore");
-const { scrapeAndStore } = require("./src/tasks/scrapeAndStore");
 
 // --- Initialization ---
-// admin.initializeApp() is called in index.js, no need to repeat here.
 const app = express();
 
-// --- LOGGING MIDDLEWARE ---
+// --- Helper Functions for Data Consolidation ---
+
+const getBaseName = (name) => {
+  if (!name) return '';
+  return name.split(',')[0].split('(')[0].trim();
+};
+
+const consolidateIssuers = (issuers) => {
+  const issuerMap = new Map();
+  const sortedIssuers = [...issuers].sort((a, b) => b.name.length - a.name.length);
+
+  sortedIssuers.forEach(issuer => {
+    const baseName = getBaseName(issuer.name);
+    if (!issuerMap.has(baseName)) {
+      const newIssuer = JSON.parse(JSON.stringify(issuer));
+      newIssuer.id = baseName;
+      issuerMap.set(baseName, newIssuer);
+    } else {
+      const existing = issuerMap.get(baseName);
+      const existingDocsUrls = new Set(existing.documents.map(d => d.url));
+      issuer.documents.forEach(doc => {
+        if (!existingDocsUrls.has(doc.url)) {
+          existing.documents.push(doc);
+        }
+      });
+    }
+  });
+
+  return Array.from(issuerMap.values());
+};
+
+// --- Logging Middleware ---
 app.use((req, res, next) => {
   functions.logger.info(`Request received: ${req.method} ${req.originalUrl}`);
   next();
@@ -18,23 +46,26 @@ app.use((req, res, next) => {
 
 // --- API Endpoints ---
 
-// Endpoint to get ALL issuers from Firestore
+// CORRECTED Endpoint: Gets ALL issuers, consolidates them, and then returns.
 app.get("/issuers", async (req, res) => {
   try {
     const db = getFirestore();
-    const issuersSnapshot = await db.collection("issuers").orderBy("name").get();
-    const issuers = issuersSnapshot.docs.map(doc => doc.data());
+    const issuersSnapshot = await db.collection("issuers").get();
+    const allIssuers = issuersSnapshot.docs.map(doc => doc.data());
     
-    res.set("Cache-Control", "public, max-age=3600, s-maxage=3600"); // 1-hour cache
-    res.json({ issuers });
+    const consolidated = consolidateIssuers(allIssuers);
+    const sorted = consolidated.sort((a, b) => a.name.localeCompare(b.name));
+
+    res.set("Cache-Control", "public, max-age=3600, s-maxage=3600");
+    res.json({ issuers: sorted });
 
   } catch (error) {
-    functions.logger.error("Error fetching issuers from Firestore:", error);
-    res.status(500).send("Error reading from database.");
+    functions.logger.error("Error fetching and consolidating issuers:", error);
+    res.status(500).send("Error processing issuers from the database.");
   }
 });
 
-// Endpoint to get documents for ONE issuer from Firestore
+// Endpoint to get documents for ONE issuer (remains as is)
 app.get("/issuer-documents", async (req, res) => {
   const { issuerName } = req.query;
   if (!issuerName) {
@@ -43,7 +74,6 @@ app.get("/issuer-documents", async (req, res) => {
 
   try {
     const db = getFirestore();
-    // Get the document for the given issuer
     const issuerDocRef = db.collection("issuers").doc(issuerName);
     const issuerDoc = await issuerDocRef.get();
 
@@ -52,11 +82,10 @@ app.get("/issuer-documents", async (req, res) => {
         return res.status(404).send("Issuer not found.");
     }
 
-    // Get the documents array from the document data
     const issuerData = issuerDoc.data();
     const documents = issuerData.documents || [];
 
-    res.set("Cache-Control", "public, max-age=300, s-maxage=300"); // 5-minute cache
+    res.set("Cache-Control", "public, max-age=300, s-maxage=300");
     res.json({ documents });
 
   } catch (error) {

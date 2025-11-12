@@ -1,10 +1,25 @@
 [
   {
-    "id": "Banco De Finanzas",
-    "name": "Banco De Finanzas",
+    "id": "BCR",
+    "name": "BCR",
     "acronym": "",
-    "sector": "Privado",
+    "sector": "Internacional",
+    "detailUrl": "https://www.bolsanic.com/emisor-fondosbcr/",
+    "documents": []
+  },
+  {
+    "name": "BCR Sociedad Administradora de Fondos de Inversión, S.A.",
+    "detailUrl": "https://www.bolsanic.com/emisor-fondosbcr/",
+    "id": "BCR Sociedad Administradora de Fondos de Inversión",
+    "sector": "Público",
+    "documents": [],
+    "lastScraped": "2025-11-09T20:56:32.764Z"
+  },
+  {
+    "name": "Banco De Finanzas, S.A.",
     "detailUrl": "https://www.bolsanic.com/emisor-bancodefinanzas/",
+    "id": "Banco De Finanzas",
+    "sector": "Privado",
     "documents": [
       {
         "title": "BDF CALIFICACION DE RIESGO 032020 (PDF)",
@@ -672,22 +687,14 @@
         "date": "",
         "type": "Prospectos"
       }
-    ]
-  },
-  {
-    "name": "Banco De Finanzas, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-bancodefinanzas/",
-    "id": "Banco De Finanzas, S.A.",
-    "sector": "Privado",
-    "documents": [],
+    ],
     "lastScraped": "2025-11-09T20:56:25.318Z"
   },
   {
-    "id": "Banco De La Producción (Banpro)",
-    "name": "Banco De La Producción (Banpro)",
-    "acronym": "",
-    "sector": "Privado",
+    "name": "Banco De La Producción, S.A. (Banpro)",
     "detailUrl": "https://www.bolsanic.com/emisor-bancodelaproduccion/",
+    "id": "Banco De La Producción",
+    "sector": "Privado",
     "documents": [
       {
         "title": "BANPOR CALIFICACION DE RIESGO MARZO 2022 (PDF)",
@@ -1199,38 +1206,14 @@
         "date": "",
         "type": "Prospectos"
       }
-    ]
-  },
-  {
-    "name": "Banco De La Producción, S.A. (Banpro)",
-    "detailUrl": "https://www.bolsanic.com/emisor-bancodelaproduccion/",
-    "id": "Banco De La Producción, S.A. (Banpro)",
-    "sector": "Privado",
-    "documents": [],
+    ],
     "lastScraped": "2025-11-09T20:56:29.349Z"
   },
   {
-    "id": "BCR",
-    "name": "BCR",
-    "acronym": "",
-    "sector": "Internacional",
-    "detailUrl": "https://www.bolsanic.com/emisor-fondosbcr/",
-    "documents": []
-  },
-  {
-    "name": "BCR Sociedad Administradora de Fondos de Inversión, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-fondosbcr/",
-    "id": "BCR Sociedad Administradora de Fondos de Inversión, S.A.",
-    "sector": "Público",
-    "documents": [],
-    "lastScraped": "2025-11-09T20:56:32.764Z"
-  },
-  {
-    "id": "Corporación Agricola (Agri-Corp)",
-    "name": "Corporación Agricola (Agri-Corp)",
-    "acronym": "",
-    "sector": "Privado",
+    "name": "Corporación Agricola, S.A. (Agri-Corp)",
     "detailUrl": "https://www.bolsanic.com/emisor-corporacionesagricolas/",
+    "id": "Corporación Agricola",
+    "sector": "Público",
     "documents": [
       {
         "title": "AGRI CORP CERTIFICACION SIBOIF 220413 (PDF)",
@@ -1940,22 +1923,14 @@
         "date": "",
         "type": "Prospectos"
       }
-    ]
-  },
-  {
-    "name": "Corporación Agricola, S.A. (Agri-Corp)",
-    "detailUrl": "https://www.bolsanic.com/emisor-corporacionesagricolas/",
-    "id": "Corporación Agricola, S.A. (Agri-Corp)",
-    "sector": "Público",
-    "documents": [],
+    ],
     "lastScraped": "2025-11-09T20:56:26.725Z"
   },
   {
-    "id": "FAMA",
-    "name": "FAMA",
-    "acronym": "",
-    "sector": "Privado",
+    "name": "FAMA, S.A.",
     "detailUrl": "https://www.bolsanic.com/emisor-financierafama/",
+    "id": "FAMA",
+    "sector": "Público",
     "documents": [
       {
         "title": "CALIFICACION AGOSTO2025 (PDF)",
@@ -2685,18 +2660,11 @@
         "date": "",
         "type": "Prospectos"
       }
-    ]
-  },
-  {
-    "name": "FAMA, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-financierafama/",
-    "id": "FAMA, S.A.",
-    "sector": "Público",
-    "documents": [],
+    ],
     "lastScraped": "2025-11-09T20:56:28.110Z"
   },
   {
-    "id": "FID, Sociedad Anónima (FID, S.A)",
+    "id": "FID",
     "name": "FID, Sociedad Anónima (FID, S.A)",
     "acronym": "",
     "sector": "Privado",
@@ -2957,11 +2925,10 @@
     ]
   },
   {
-    "id": "Financiera FDL",
-    "name": "Financiera FDL",
-    "acronym": "",
-    "sector": "Privado",
+    "name": "Financiera FDL, S.A.",
     "detailUrl": "https://www.bolsanic.com/emisor-fdl/",
+    "id": "Financiera FDL",
+    "sector": "Privado",
     "documents": [
       {
         "title": "FDL CALIFICACION RIESGO 040924 (PDF)",
@@ -3090,18 +3057,11 @@
         "date": "",
         "type": "Prospectos"
       }
-    ]
-  },
-  {
-    "name": "Financiera FDL, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-fdl/",
-    "id": "Financiera FDL, S.A.",
-    "sector": "Privado",
-    "documents": [],
+    ],
     "lastScraped": "2025-11-09T20:56:22.705Z"
   },
   {
-    "id": "HORIZONTE FONDO DE INVERSIÓN FINANCIERO DE CRECIMIENTO DÓLARES, NO DIVERSIFICADO",
+    "id": "HORIZONTE FONDO DE INVERSIÓN FINANCIERO DE CRECIMIENTO DÓLARES",
     "name": "HORIZONTE FONDO DE INVERSIÓN FINANCIERO DE CRECIMIENTO DÓLARES, NO DIVERSIFICADO",
     "acronym": "",
     "sector": "Privado",
@@ -3119,7 +3079,7 @@
   {
     "name": "Improsa Sociedad Administradora de Fondos de Inversión, S.A.",
     "detailUrl": "https://www.bolsanic.com/emisor-improsasafi/",
-    "id": "Improsa Sociedad Administradora de Fondos de Inversión, S.A.",
+    "id": "Improsa Sociedad Administradora de Fondos de Inversión",
     "sector": "Público",
     "documents": [],
     "lastScraped": "2025-11-09T20:56:33.885Z"
@@ -3141,17 +3101,9 @@
     "lastScraped": "2025-11-09T20:56:35.033Z"
   },
   {
-    "id": "Vista,",
-    "name": "Vista,",
-    "acronym": "",
-    "sector": "Internacional",
-    "detailUrl": "https://www.bolsanic.com/emisor-acobovistasociedad/",
-    "documents": []
-  },
-  {
     "name": "Vista, Sociedad Administradora de Fondos de Inversión, S.A.",
     "detailUrl": "https://www.bolsanic.com/emisor-acobovistasociedad/",
-    "id": "Vista, Sociedad Administradora de Fondos de Inversión, S.A.",
+    "id": "Vista",
     "sector": "Público",
     "documents": [],
     "lastScraped": "2025-11-09T20:56:31.608Z"
