@@ -11,7 +11,14 @@ const app = express();
 
 const getBaseName = (name) => {
   if (!name) return '';
-  return name.split(',')[0].split('(')[0].trim();
+  // Normalize to handle case, accents, and common suffixes/delimiters.
+  const normalized = name
+    .normalize("NFD") // Decompose accented characters
+    .replace(/[\u0300-\u036f]/g, "") // Remove diacritical marks
+    .toLowerCase(); // Convert to lowercase
+
+  // Take the part before a comma, parenthesis, or hyphen
+  return normalized.split(',')[0].split('(')[0].split('-')[0].trim();
 };
 
 const consolidateIssuers = (issuers) => {

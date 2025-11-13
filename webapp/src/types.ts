@@ -16,6 +16,7 @@ export interface Issuer {
   name: string;
   acronym: string;
   sector: string;
+  logoUrl?: string;    // Optional: URL for the issuer's logo
   documents: Document[]; // An array of documents related to the issuer
   error?: string;       // An optional error message if data scraping failed for this issuer
   detailUrl?: string;   // Original URL, kept for reference but no longer used for fetching

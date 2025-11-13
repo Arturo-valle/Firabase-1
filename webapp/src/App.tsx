@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import type { Issuer, Document } from './types';
+import { getIssuers, getIssuerDocuments } from './api'; // Importar desde el nuevo módulo de API
 
 // --- Funciones de Ayuda ---
 const groupDocumentsByCategory = (documents: Document[]) => {
@@ -34,18 +35,14 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
       try {
         setLoading(true);
         setError(null);
-        
-        // CORREGIDO: Se construye la URL con el parámetro issuerName
-        const API_URL = `https://us-central1-mvp-nic-market.cloudfunctions.net/api/issuer-documents?issuerName=${encodeURIComponent(issuer.name)}`;
-        const response = await fetch(API_URL);
 
-        if (!response.ok) {
-          const errorBody = await response.text(); // Leer el cuerpo del error
-          throw new Error(`Error al conectar con la API (${response.status}): ${errorBody}`);
+        const { data, error } = await getIssuerDocuments(issuer.name);
+
+        if (error) {
+          throw new Error(error);
         }
-        
-        const data = await response.json();
-        setDocuments(data.documents || []);
+
+        setDocuments(data?.documents || []);
 
       } catch (e) {
         setError(e instanceof Error ? e.message : 'Ocurrió un error desconocido al cargar los documentos.');
@@ -59,12 +56,18 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
   }, [issuer]);
 
   const groupedDocuments = groupDocumentsByCategory(documents);
+  const FALLBACK_LOGO_URL = 'https://www.bolsanic.com/wp-content/uploads/2016/12/logo.png';
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md animate-fade-in">
       <button onClick={onBack} className="mb-4 text-sm font-medium text-blue-600 hover:text-blue-800">{'‹ Volver a la Lista'}</button>
       <div className="flex items-center mb-4">
-         <img src={`https://www.bolsanic.com/wp-content/uploads/2016/12/logo.png`} alt="Logo" className="h-12 w-12 mr-4"/>
+         <img 
+           src={issuer.logoUrl || FALLBACK_LOGO_URL} 
+           alt={`${issuer.name} Logo`} 
+           className="h-12 w-12 mr-4"
+           onError={(e) => { e.currentTarget.src = FALLBACK_LOGO_URL; }}
+         />
         <div>
           <h2 className="text-2xl font-bold text-gray-900">{issuer.name}</h2>
           {issuer.acronym && <p className="text-sm text-gray-600">{issuer.acronym}</p>}
@@ -111,22 +114,22 @@ const VaultModule = () => {
   const [selectedIssuer, setSelectedIssuer] = useState<Issuer | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchIssuers = async () => {
       try {
         setLoading(true);
-        // APUNTAMOS A LA URL ABSOLUTA DE LA FUNCIÓN
-        const response = await fetch('https://us-central1-mvp-nic-market.cloudfunctions.net/api/issuers');
-        if (!response.ok) {
-          throw new Error(`Error de red o de API: ${response.status}`);
+        const { data, error } = await getIssuers();
+
+        if (error) {
+          throw new Error(error);
         }
-        const data = await response.json();
-        setIssuers(data.issuers.sort((a: Issuer, b: Issuer) => a.name.localeCompare(b.name)));
+
+        setIssuers(data?.issuers.sort((a: Issuer, b: Issuer) => a.name.localeCompare(b.name)) || []);
       } catch (e) {
         setError(e instanceof Error ? e.message : 'Ocurrió un error desconocido.');
         console.error("Fallo al buscar en la API, usando fallback local...", e);
-        // El fallback a issuers.json se mantiene como un mecanismo de respaldo útil
         try {
           const fallbackData = (await import('./issuers.json')).default;
           const transformedIssuers: Issuer[] = fallbackData.map((issuer: any) => ({
@@ -148,18 +151,9 @@ const VaultModule = () => {
     fetchIssuers();
   }, []);
 
-  if (loading) {
-    return <div className="p-4 text-center">Cargando Emisores...</div>;
-  }
-
-  // No mostrar error si tenemos datos del fallback
-  if (error && issuers.length === 0) {
-    return <div className="p-4 text-center text-red-500">Error al cargar datos: {error}.</div>;
-  } else if (error) {
-    // Muestra un aviso sutil si la API falló pero el fallback funcionó
-    console.warn("API fallida, mostrando datos de respaldo. Error:", error)
-  }
-
+  const filteredIssuers = issuers.filter((issuer) =>
+    issuer.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (selectedIssuer) {
     return <IssuerDetailView issuer={selectedIssuer} onBack={() => setSelectedIssuer(null)} />;
@@ -168,24 +162,63 @@ const VaultModule = () => {
   return (
     <div className="p-4">
       <h2 className="text-2xl font-semibold mb-4">Módulo 1: La Bóveda Inteligente</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {issuers.map((issuer) => (
-          <div 
-            key={issuer.id}
-            onClick={() => setSelectedIssuer(issuer)}
-            className="bg-white p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-200 ease-in-out"
-          >
-            <h3 className="text-lg font-bold text-gray-800">{issuer.name}</h3>
-            <p className="text-sm text-gray-500">Clic para ver documentos</p>
-          </div>
-        ))}
-      </div>
+      <input
+        type="text"
+        placeholder="Buscar emisor..."
+        className="w-full p-2 mb-4 border rounded-lg"
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="bg-white p-4 rounded-lg shadow-md animate-pulse">
+              <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2 mt-2"></div>
+            </div>
+          ))}
+        </div>
+      ) : error && issuers.length === 0 ? (
+        <div className="p-4 text-center text-red-500">Error al cargar datos: {error}.</div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredIssuers.map((issuer) => (
+            <div 
+              key={issuer.id}
+              onClick={() => setSelectedIssuer(issuer)}
+              className="bg-white p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-200 ease-in-out"
+            >
+              <h3 className="text-lg font-bold text-gray-800">{issuer.name}</h3>
+              <p className="text-sm text-gray-500">Clic para ver documentos</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-const StandardizerModule = () => <div className="p-4"><h2 className="text-2xl font-semibold">Módulo 2: El Estandarizador</h2><p className="mt-2">Aquí estará la funcionalidad para extraer, limpiar y estandarizar datos.</p></div>;
-const ComparatorModule = () => <div className="p-4"><h2 className="text-2xl font-semibold">Módulo 3: El Comparador</h2><p className="mt-2">Herramientas para analizar y comparar métricas estandarizadas.</p></div>;
+const StandardizerModule = () => (
+  <div className="p-4 bg-white rounded-lg shadow-md">
+    <h2 className="text-2xl font-semibold">Módulo 2: El Estandarizador</h2>
+    <p className="mt-2 text-gray-600">Esta sección contendrá herramientas para extraer, limpiar y estandarizar datos de los documentos financieros. Próximamente.</p>
+    <div className="mt-4 p-4 border-l-4 border-blue-500 bg-blue-50">
+      <h4 className="font-bold text-blue-800">En Desarrollo</h4>
+      <p className="text-sm text-blue-700">Esta funcionalidad está actualmente en construcción. ¡Vuelve pronto para ver las actualizaciones!</p>
+    </div>
+  </div>
+);
+
+const ComparatorModule = () => (
+  <div className="p-4 bg-white rounded-lg shadow-md">
+    <h2 className="text-2xl font-semibold">Módulo 3: El Comparador</h2>
+    <p className="mt-2 text-gray-600">Esta sección ofrecerá herramientas para analizar y comparar métricas financieras estandarizadas entre diferentes emisores. Próximamente.</p>
+    <div className="mt-4 p-4 border-l-4 border-green-500 bg-green-50">
+      <h4 className="font-bold text-green-800">En Desarrollo</h4>
+      <p className="text-sm text-green-700">Esta funcionalidad está actualmente en construcción. ¡Vuelve pronto para ver las actualizaciones!</p>
+    </div>
+  </div>
+);
+
 
 // --- Componente Principal de la Aplicación ---
 function App() {
