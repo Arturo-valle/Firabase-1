@@ -1,0 +1,1 @@
+jq: error (at webapp/src/documents.json:3043): Cannot index array with string

@@ -1,0 +1,79 @@
+[
+  {
+    "name": "BCR Sociedad Administradora de Fondos de Inversión, S.A.",
+    "detailUrl": "https://www.bolsanic.com/emisor-fondosbcr/",
+    "id": "BCR Sociedad Administradora de Fondos de Inversión",
+    "sector": "Público",
+    "documents": []
+  },
+  {
+    "name": "Banco De Finanzas, S.A.",
+    "detailUrl": "https://www.bolsanic.com/emisor-bancodefinanzas/",
+    "id": "Banco De Finanzas",
+    "sector": "Privado",
+    "documents": []
+  },
+  {
+    "name": "Banco De La Producción, S.A. (Banpro)",
+    "detailUrl": "https://www.bolsanic.com/emisor-bancodelaproduccion/",
+    "id": "Banco De La Producción",
+    "sector": "Privado",
+    "documents": []
+  },
+  {
+    "name": "Corporación Agricola, S.A. (Agri-Corp)",
+    "detailUrl": "https://www.bolsanic.com/emisor-corporacionesagricolas/",
+    "id": "Corporación Agricola",
+    "sector": "Público",
+    "documents": []
+  },
+  {
+    "name": "FAMA, S.A.",
+    "detailUrl": "https://www.bolsanic.com/emisor-financierafama/",
+    "id": "FAMA",
+    "sector": "Público",
+    "documents": []
+  },
+  {
+    "name": "FID, Sociedad Anónima (FID, S.A)",
+    "detailUrl": "https://www.bolsanic.com/emisor-fid/",
+    "id": "FID",
+    "sector": "Privado",
+    "documents": []
+  },
+  {
+    "name": "Financiera FDL, S.A.",
+    "detailUrl": "https://www.bolsanic.com/emisor-fdl/",
+    "id": "Financiera FDL",
+    "sector": "Privado",
+    "documents": []
+  },
+  {
+    "name": "HORIZONTE FONDO DE INVERSIÓN FINANCIERO DE CRECIMIENTO DÓLARES, NO DIVERSIFICADO",
+    "detailUrl": "https://www.bolsanic.com/emisor-horizontefondodeinversion/",
+    "id": "HORIZONTE FONDO DE INVERSIÓN FINANCIERO DE CRECIMIENTO DÓLARES",
+    "sector": "Privado",
+    "documents": []
+  },
+  {
+    "name": "Improsa Sociedad Administradora de Fondos de Inversión, S.A.",
+    "detailUrl": "https://www.bolsanic.com/emisor-improsasafi/",
+    "id": "Improsa Sociedad Administradora de Fondos de Inversión",
+    "sector": "Público",
+    "documents": []
+  },
+  {
+    "name": "Popular Sociedad Administradora de Fondos de Inversión",
+    "detailUrl": "https://www.bolsanic.com/emisor-popularfondosdeinversion/",
+    "id": "Popular Sociedad Administradora de Fondos de Inversión",
+    "sector": "Público",
+    "documents": []
+  },
+  {
+    "name": "Vista, Sociedad Administradora de Fondos de Inversión, S.A.",
+    "detailUrl": "https://www.bolsanic.com/emisor-acobovistasociedad/",
+    "id": "Vista",
+    "sector": "Público",
+    "documents": []
+  }
+]

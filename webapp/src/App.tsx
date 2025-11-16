@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import type { Issuer, Document } from './types';
-import { getIssuers, getIssuerDocuments } from './api'; // Importar desde el nuevo módulo de API
 
 // --- Funciones de Ayuda ---
 const groupDocumentsByCategory = (documents: Document[]) => {
@@ -35,14 +34,9 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
       try {
         setLoading(true);
         setError(null);
-
-        const { data, error } = await getIssuerDocuments(issuer.name);
-
-        if (error) {
-          throw new Error(error);
-        }
-
-        setDocuments(data?.documents || []);
+        
+        // Simulación de carga de documentos, ya que están en el objeto issuer
+        setDocuments(issuer.documents || []);
 
       } catch (e) {
         setError(e instanceof Error ? e.message : 'Ocurrió un error desconocido al cargar los documentos.');
@@ -118,31 +112,20 @@ const VaultModule = () => {
 
   useEffect(() => {
     const fetchIssuers = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        setLoading(true);
-        const { data, error } = await getIssuers();
-
-        if (error) {
-          throw new Error(error);
-        }
-
-        setIssuers(data?.issuers.sort((a: Issuer, b: Issuer) => a.name.localeCompare(b.name)) || []);
-      } catch (e) {
-        setError(e instanceof Error ? e.message : 'Ocurrió un error desconocido.');
-        console.error("Fallo al buscar en la API, usando fallback local...", e);
-        try {
-          const fallbackData = (await import('./issuers.json')).default;
-          const transformedIssuers: Issuer[] = fallbackData.map((issuer: any) => ({
-            ...issuer,
-            id: issuer.name, 
-            acronym: issuer.acronym || '',
-            documents: issuer.documents || [],
-          }));
-          setIssuers(transformedIssuers.sort((a, b) => a.name.localeCompare(b.name)));
-        } catch (fallbackError) {
-          console.error("Fallo al cargar el fallback local", fallbackError);
-          setError('No se pudo conectar a la API ni cargar datos locales.');
-        }
+        const fallbackData = (await import('./issuers.json')).default;
+        const transformedIssuers: Issuer[] = fallbackData.map((issuer: any) => ({
+          ...issuer,
+          id: issuer.name,
+          acronym: issuer.acronym || '',
+          documents: issuer.documents || [],
+        }));
+        setIssuers(transformedIssuers.sort((a, b) => a.name.localeCompare(b.name)));
+      } catch (fallbackError) {
+        console.error("Fallo al cargar el fallback local", fallbackError);
+        setError('No se pudo conectar a la API ni cargar datos locales.');
       } finally {
         setLoading(false);
       }

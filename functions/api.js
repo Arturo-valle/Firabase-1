@@ -3,21 +3,20 @@
 const functions = require("firebase-functions");
 const express = require("express");
 const { getFirestore } = require("firebase-admin/firestore");
+const cors = require('cors');
 
 // --- Initialization ---
 const app = express();
+app.use(cors({ origin: true })); // Enable CORS for all routes
 
 // --- Helper Functions for Data Consolidation ---
 
 const getBaseName = (name) => {
   if (!name) return '';
-  // Normalize to handle case, accents, and common suffixes/delimiters.
   const normalized = name
-    .normalize("NFD") // Decompose accented characters
-    .replace(/[\u0300-\u036f]/g, "") // Remove diacritical marks
-    .toLowerCase(); // Convert to lowercase
-
-  // Take the part before a comma, parenthesis, or hyphen
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
   return normalized.split(',')[0].split('(')[0].split('-')[0].trim();
 };
 
@@ -53,7 +52,7 @@ app.use((req, res, next) => {
 
 // --- API Endpoints ---
 
-// CORRECTED Endpoint: Gets ALL issuers, consolidates them, and then returns.
+// Gets ALL issuers, consolidates them, and then returns.
 app.get("/issuers", async (req, res) => {
   try {
     const db = getFirestore();
@@ -72,7 +71,7 @@ app.get("/issuers", async (req, res) => {
   }
 });
 
-// Endpoint to get documents for ONE issuer (remains as is)
+// CORRECTED Endpoint: Gets documents for ONE issuer by querying its name
 app.get("/issuer-documents", async (req, res) => {
   const { issuerName } = req.query;
   if (!issuerName) {
@@ -81,14 +80,17 @@ app.get("/issuer-documents", async (req, res) => {
 
   try {
     const db = getFirestore();
-    const issuerDocRef = db.collection("issuers").doc(issuerName);
-    const issuerDoc = await issuerDocRef.get();
+    // Correctly query for the issuer by its name field
+    const issuersRef = db.collection("issuers");
+    const snapshot = await issuersRef.where("name", "==", issuerName).get();
 
-    if (!issuerDoc.exists) {
-        functions.logger.warn(`Issuer document not found: ${issuerName}`);
-        return res.status(404).send("Issuer not found.");
+    if (snapshot.empty) {
+      functions.logger.warn(`No issuer found with name: ${issuerName}`);
+      return res.status(404).json({ documents: [] }); // Return empty documents array
     }
 
+    // Even if multiple docs match, take the first one.
+    const issuerDoc = snapshot.docs[0];
     const issuerData = issuerDoc.data();
     const documents = issuerData.documents || [];
 

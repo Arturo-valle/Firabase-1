@@ -1,18 +1,10 @@
 [
   {
-    "id": "BCR Sociedad Administradora de Fondos de Inversión",
-    "name": "BCR Sociedad Administradora de Fondos de Inversión, S.A.",
-    "acronym": "",
-    "sector": "Público",
-    "detailUrl": "https://www.bolsanic.com/emisor-fondosbcr/",
-    "documents": [],
-    "lastScraped": "2025-11-09T20:56:32.764Z"
+    "id": "Vista",
+    "documents": []
   },
   {
-    "name": "Banco De Finanzas, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-bancodefinanzas/",
     "id": "Banco De Finanzas",
-    "sector": "Privado",
     "documents": [
       {
         "title": "BDF REGISTRO DE EMISION RESOLUCION SIB OIF XXI 305 2013 051213 (PDF)",
@@ -680,14 +672,10 @@
         "date": "",
         "type": "Estados Financieros Auditados"
       }
-    ],
-    "lastScraped": "2025-11-09T20:56:25.318Z"
+    ]
   },
   {
-    "name": "Banco De La Producción, S.A. (Banpro)",
-    "detailUrl": "https://www.bolsanic.com/emisor-bancodelaproduccion/",
     "id": "Banco De La Producción",
-    "sector": "Privado",
     "documents": [
       {
         "title": "BANPRO CALIFICACION DE RIESGO SEPTIEMBRE 2022 (PDF)",
@@ -1199,14 +1187,10 @@
         "date": "",
         "type": "Estados Financieros Trimestrales"
       }
-    ],
-    "lastScraped": "2025-11-09T20:56:29.349Z"
+    ]
   },
   {
-    "name": "Corporación Agricola, S.A. (Agri-Corp)",
-    "detailUrl": "https://www.bolsanic.com/emisor-corporacionesagricolas/",
     "id": "Corporación Agricola",
-    "sector": "Público",
     "documents": [
       {
         "title": "AGRICORP CALIFICACION DE RIESGO 032019 (PDF)",
@@ -1916,14 +1900,399 @@
         "date": "",
         "type": "Estados Financieros Trimestrales"
       }
-    ],
-    "lastScraped": "2025-11-09T20:56:26.725Z"
+    ]
   },
   {
-    "name": "FAMA, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-financierafama/",
+    "id": "Financiera FDL",
+    "documents": [
+      {
+        "title": "CERTIFICACION SIBOIF (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_7F-IBpovMPKQs34kWOLrjrTwdSRd-x-CXf3gbUzN--y02Y5ZavrU-w3StUx1w76NDo6pIUUgSwFSDI2-hVEbtkGBocQECGHG_To_yqz9glCp0NxcWjw_v8X9abRf6iB9vNcR2Op2q3OmQ8hnzbNKgJL_yG9JWnwOejmcJniiN2mbOnHdqsdlbKOdfwAI6a5IHIH7cggsH_LnUHE2wAERGSOAmTDUjM",
+        "date": "",
+        "type": "Certificación SIBOIF"
+      },
+      {
+        "title": "FDL CALIFICACION RIESGO 040924 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_-6PxP3fe0WUuIoI2VvJsRpyn612in6u1GGoZYDBQAJYjiPI98kvweFgJ46iKqVDLIro0o75oaNUynbv84KSxsw6Oq0OX_jd7XT3MoYnT823bWta2W0xzJvfS-aiLirJ5Pv9zEtT4XzS8dCNLmR-KmiE-8qbZU7UVBz51rNT744FEV-qdNg-IyZGsh6JtTIKc7XeAHGz0SEuhx3vPiEJaUIP87hCT1Apma8t4n_lyFImsx93WF2a",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "FDL CALIFICACIONRIESGO 052025 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_04Kq_-NsG3I80uAt8qXZfAOOX7IRfqQcxAeAF1QwqkgneAWP0mM-tIFFju9rWJ-paXJp-Ng2cZYsNqncJF-J9E6OjZJ3mjO3emgm9DJe-vkVEDSZK-wNp4a1dL43q9cHRCmHzoCUOTdRNvgF5XmYkr84fXqThvgwzODuTQKAHXRFb6R8X1TJqy-uqPXO6R1NwQVN-sEMzh4NparIr15pgKlAg_WuXI8jiBEVkq_xq3ykUyrTFrY",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "FDL EF 032025 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_19zS9sMwPz-wGvN0J_xFjnacRw15uyjeW3hWSa67R1a-fMQdu1zcbcrJCmYtaichzo6ZxxrRjrP460Wi9h_-d-uuo_Bkd01kJRiCRZHiGAOvHz8ANiXGINmIwqFy6fK6L1xlDu8h_c0iGf78n-kjE9hYCrxOuBFfTkzerLUQocYG33WmWhsYnTpFtigQb8dCD6aKkd7o2qYo_JPkeUTRghN_11dyrjqYoU5JBzfA9t7g_l9v1pu",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FDL EF 032024 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_1asnsKNIbDT4e6oySrUtFdZTfp1_nKY10ooc8DGukmKYHjNxRcVRfUpl9ZImiRU6To6FYzfnZayGfVdg_45i3hrg5DZO05qJtJeR0MhiVQ9pYWJR66-qhcyXhGzVyl5k5aH6z8EgacCKtR1HgZBEHgdZY0YRUfD4evi4XZzU9iLHQ-4GCngHstt2Tq-EJKY2JeeHyMlcLZ_om1Yu2i_IQjPhqguFhePgbgPvU60XySPdznsHlP5",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "EF AUDITADOS FDL 2024 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_1si2eQTJoGG8FPnUG9M1ycQJOsYv71KQfLzndyBy6lQJV4NcoouBCgNAjksR6oW-jo6s2z1iENQMz3W6rXqrD9gJ3iz3UXdyJ1-sn0NFQAmn6BWFBlNO_7Ws6GbzY9YWJFXfYsb1Zb0QspNACTBZ0NVnfS0vH73PODBW8ShXpMHK2_pDQ1_NLX6vo7tY7vk9F7tiw0jS8QKud7bMQ7Y7YNTxEpOS6eA5ZmNtLXZOlKH8P-GXVjT",
+        "date": "",
+        "type": "Estados Financieros Auditados"
+      },
+      {
+        "title": "FDL EF 122024 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_23hzx3uH8dfWb88iJud-GFflktYNQw8Kz0NCknD9E5eVwiwJGgdIGzJBWHpXopsxjo6rmcMCWpDUkwVKc_0YkvdcndT8KhcASflh5mNAvr3gToqzlmiDYbCkPr_jI_Y9Msh0Z-Km6kHs7q-Qbqy31hY6dblMKjeWQ_2t56KswFGJAAThEpwp2LF_dR6LaK0kBAA8sjPlfNc7kt8cYbJa1uDiFjdhr1X7Iv9_cEmDOOiblNdZFlb",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FDL CALIFICACION RIESGO 111224 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_2JMMqOE0IOOdsnydwvc050VrP3EDGtSEUuYQ4TuL57RSz8yrNBp289gWlULGJ7eHRjK8ylZXgKI6-Y1R0kk7MA6OmkW6j8MeQKlNOns6p139OispMJGRwmAaPGo-Uc9vIqJUBF2PvV9R2X-5smqes-OjAnTQBhLSsd66fvpygcSpAJPEdGgET5oibbq5eImGDIoFHKn9DGOxERgpPw2fPSx59uC48KjXGonibGcRjDxgGb4-VoN",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "FDL CALIFICACIONRIESGO082025 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_2rvOJA6H_OcBDmbqaut9kylp2kuZQLYL0GpnEmiIgEGhblyQ8iQHZiiO4y_We8RfbKQ8mDO4gQBkIBgAuoemmc6OlrV5guANNspP4UAUcqkSbJY0WXzcjq5ycl8opy9KADbl1AkNYp0706946UinhjWymXIq-IZLHwzfbLl26Cy7Us4I0iI_vc2fTK4O_Hc-ZQUKNPWPBte-3IZZc12QgSSME90J1fq8EfG8Cmjk602FB_vg1ac",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "FDL EF 062024 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_4UlKYHwcqM40_X9XAyeWNqZZ97Ze0aty_oeDSCYzCapPSJWe7tBxdkz2k2xM2dNzzo6G1Bg7xbIZpw8n4TaRYdnaHlHjqe6bmOH5rH2jINeNGhnXrzMHPH6FO0OQt-4JLZIE9LOeoYeF2BID8hXVviZjn00EX9ik9vf4whtjJ90sFmMT8agHoMCu9xnuW2-RyiMA0VWn58TXUOotGfWvF8IVBYPR2WGLHVmxAFoNt4ZjPzEL1Ui",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FDL EF 122023 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_6gI-WNXe849KmlZiMytXcbVXXqRgyn_9qVsud4wFsJSgMZlGCrgQxFBBedURPtnETo6e1kT29yWUzn9o-GJ2ZvzXyoIXJUTP4-B5vdI7eQehfE23n5-9M77LWHm6-uoVC6PpNw5LpbwtxQX4WHSclXh0Cp5BZvNJwGm5qLo-nTm3ZO6LOSMMwpRWgWcPYOq-RHs-xY2o9ytO9BwjvOUghIQgE2URbvIcJR7odcUoME8SIwdb1yO",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FDL EF 062025 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_6xDy61rdhlQn2iS0MTeSjvho6Uhx_XuQghR5RlMgJYSLFu8r8DXshIBTfp459M95jo6SAzSyoeqgQqWHzIguz2RkdebVMJ7Elkj2eVjGWUz1s7P2w7GjpoFHzNvdXvQIm7-jynNi-8JLffchyaClTMvqL098RU7NbaVpnE2Jou0dnudseWvUu1USp2QTzE2sFgyrlxmd1gSUglLLYhVq84YfgXdwevnNOZK7KrGKq2mbiOcKFaS",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "EF AUDITADOS FDL  2023 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_7vywF7fHoYyWdVGlgu-D-35m46-TUW4xzQTrTN8STAf8rik2f-7vwhGcwBUrYna5jo6oRHYEgrKCiRARa7i-eVYRfPpgqfgkr4IDwTfrUN3rpZ0qioArTT6ksMl-kr4JlbBMhkfR-qWUsADiOXBWKMcBAeV2xWFs_lDYaLoH0U-59S-WYknoKGGZvPpvGcKgJTdMfVr8I6Gx2asKziCVNOYuN9WLENLG5TgL5_J0fiUBelcB1qo",
+        "date": "",
+        "type": "Estados Financieros Auditados"
+      },
+      {
+        "title": "FDL CALIFICACION RIESGO 122023 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_83DL7m9hrJvUOBxGslWsd7cO3lm_EW6ljyWL5l1IRyOg2UKsVAJTZ3r90NggiO0tyJ91p-7sQdDo8Dfgau8cVM6Ot1Z3QRI-I4-r3WhvEoof-F8yuR17Lk6r8rfWFM8RlDa-jc859j7vxJOPxyqgWV8gB2J3G9_u7mDUSVuSnQ2_H8sHsNJMKrmJTje84pRutGCqWgStVV5ami6TsE__a2vxLFUT7kL-lra0G8R-EMGUs8VtFuZ",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "PROSPECTO SIMPLIFICADO FDL, S.A. (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN__-1E8c0-utrUg2inidzN7C_Np1kwidlhvkllkeA3h-_-p3_6Hxt9Qs_eE8UstlO78aXTsnbu7eE5vuvgKLfW0c6Ot5bC5Cj4NQvJk_1yg0UhVPyEvj1Tcf2JrcSI9fryq7aLL-WOLdYMnFZPYkk439yKILQBA1yNtmwOAVmlvIK22Z0lvNVnLdtM2XXbJwzGroetqpPmQCQgtSMtZhYlexmYK-jLNX3I8mjVQZ1iXxTLmP4Elur",
+        "date": "",
+        "type": "Prospectos"
+      },
+      {
+        "title": "FDL EF 092025 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN__SM-5nqSDzdVXlMCy5QRworoyPYU09KXQmu47mgkPRrkHMIgw5N-qVldv88m9hqFzo6_MWwEDbN8ROBfRTNb3tMVpwlJwp5JSHu2Ado55qR549qf0EmWfSFbDk1MhfyLZHBLySRYRCy-vnm095q4kt6aCic9wFyzLvergflRGW6PqlpGfY5bIqjkkOCVK8aM7BHgKrGy9JJJXYq_cA_te9z3DfaFofhQ-_UO25L6lDz1nHLGVhV",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FDL EF 092024 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_y6kvU1-i5eGEuDuf2t1ETybM2mSzLsolw-U49oK5xJ2jBwwgm4juDSzmnD7EYv_Vzo6w9O81-XpZsBe5Yjl-7o2MSKA9OBtxHUO4eveOQgPd9LKv2kEMslQPZDjcZUOAMiy7ipIwIQZiP6xxBYF47nT6BnsT3E1Ko94G2M_bzqvgJ58hle3XrmlnbRHazUtK-PTQpcHjnKE5-6LQzP0Hh7w2e2dx1L0zFkWeZXsUp0wvfSkcFuq",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "EF AUDITADOS FDL 2022 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_yKGPq10D9Wu8oTmmS1lQpUmsbSS1BS2LjGydn4O4ggoajDCvSn6DgloKrx0sU6f0Do6Yxa0aXsqx2El-JLy5ObNkzHsKMoqDA7-3Go6tBa5WsXt4j1_QQ5X3t6_CWIbIcCXEBrPWRsGxzqvgKXvkgdMwUFaxNjtrh9QFllnLpfct6Qkkmo8mIhNG6Emv5GZX-GwOSidqRZsj17P4okG7urLTSW-1w5WekxdzGKSOowRE6CO6lRf",
+        "date": "",
+        "type": "Estados Financieros Auditados"
+      },
+      {
+        "title": "FDL EEFF032025 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_yuV2tO5YrexrL_9z46xgXXMnRSJ8tuXt6uDYGeJLhTOkusjzG9x2L_yXBZVuVWYuDo6bqRUoGDPWsx4LwEE1OkPRBEYyTF2Pn7rDW06NnpCxFHg5vMF8gs6_QAdqOK6wW_465jCzEI5ayllyXL9M_i8q7GNQOLwZADDR9Wfu1uGLBg4DQPE2fOS516uZup5pCzyluDmdbOMgtUMGeAAylfg48tQnYSSssz9-Uuu4beTmAJi1mCg",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "SUPLEMENTO ACTUALIZACIONPROSPECTOSIMPLIFICADO (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBwgA9_0q4n3pzil5HMe6y6SICyQ9rE1PoXqvMF4ABBmBEx7xRkkai_pkQMBHntm7AH9HFTm9gZVNNt0fT_vkqKBi5mI6R_u3_lrjpsjIu8GykTpNnOjrIzqRVfFzPlc1UCDfX3CNElkLSgzmpJolGLygdUG-SKVhoY2Kfsv9t7JeErPe4sgVw6eReb-h8Ohc3ceemvYKGDLIA0kO0OBYcKAMHm0LlxBIBPRg5Mh0G4UqV18RuEnqOtlQNxHWYqlE1l-UlT8I-xKBbgg",
+        "date": "",
+        "type": "Prospectos"
+      },
+      {
+        "title": "Informe de Calificación de Riesgo a Diciembre 2024 – Moody´s",
+        "url": "https://www.bolsanic.com/wp-content/uploads/archivos/hechosrelavantes/MLNIC-HR FDL-11122024.pdf",
+        "date": "12/12/2024 02:00 pm",
+        "issuerName": "Financiera FDL",
+        "type": "Hecho Relevante"
+      }
+    ]
+  },
+  {
+    "id": "FID",
+    "documents": [
+      {
+        "title": "FID CALIFICACION 1224 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_-irUuEpUrLjht_u0J9hvduQjVDRU7KyL7gyOlsZvau6c6Mjv_d7ENDxoCekqhsrtTo681f_ZeqTj1m6yJTaNAOy8pstL2EE6pKs2sfHDg2CuogRZbQlEnVZIgEi9W1UodUBgnYhv3jo3hIVUtufLWaxSe8zwP1UQLzY4JKZjPbkd4D1d5eAWvBwevz7CuyAnIqZw6dXEpjwuzTJx2H0PT0p-q-SVy0",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "FID CALIFICACION 0921 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_-xx9OqXzZ7XeNYbOkg_p5W_PReSlJjGek2IEl7LFCF-m48-sQk3bc_DhWdmvUDz8jo6ym9AwlP52aZy8sZ0s3LaDoxB6QfNgfA6WdK83pKEqGgfoBzkG7Q4SjtlNjnjqX-3Euxa9VbnNQDRWh4D8ptJEu861QQcfDk9GbsbiHvabiypSxSLns-bW2llYoWfGgp_e9SEAv_X1U9vF0N4BMqTVVCRTx0",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "FIDSA SUPLEMENTO 2023 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_0JDrJQhTyMmZtK9mpOa_9CnHvyN5EG8Jdvwv1y25Z_d8nPLpqI_fVKj2m9kOwiHKjo6sx3N2IqvuVjjNQbL4CY971ezcQucgiEFothlwxjnELySo3frxnbr7KJC3DMaN2SmcGq5_63jay7z4R_tsDegsQLHrIs1rbz5kr4oZlOSiK8icrs3U5R3EeaQCI_7zrM7OavRrYL-9aaF-BM1qhE1eZOaVmo",
+        "date": "",
+        "type": "Prospectos"
+      },
+      {
+        "title": "FIDSA SUPLEMENTO 2024 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_1F7BGp2xis1h5ATgILFAm0uNC-LyHvkvgoXrRuxhi7hCiQ2Cahyi66PgIvgdfXoUzo60fmpdO9FOoUhGBXMyePxqz6o1gXTPJfPGLAuB7lp1LTVG63dPL4BZW0_dw1zhKZr-rb0tf1SPyMXVSs-inxsMgrNku62Ri_5Kdpr9BRWA6b-wLjCMsxtRvwzAv4TOZgoP-ztnJRhWtnFSd0hh-N-zChZTxg",
+        "date": "",
+        "type": "Prospectos"
+      },
+      {
+        "title": "FIDSA SUPLEMENTO 2022 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_1F8cwqH2ep_N0mohCxofHgZm3DO1CFDMp9DYwWnmZd0hxZW-wJFuCTTeQrW2OkJkjo6E3NwTn_BGEYOvPlb9c3Vvpnwc_MHGCd5lp3_4NLCF6YuuOHJnu9-nyJQSxsiVrb_Me2uEXn8cmjs0LbxB8ikud2pq-DHx6HP6nH4KxR1W5_PNYvDWjHD5EHyO5OYFeEYWj8U9dviU4qhQuwfJSZudp0WUzo",
+        "date": "",
+        "type": "Prospectos"
+      },
+      {
+        "title": "FIDSA PROSPECTO 2021 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_23phOgnW1MxHsiRY4npFxiQlbncJCn7QqGTiBKP34CpjfN05TX51LD2T_7SUxMrATo6SGt6JTXz9qfxJ7trrrYIzxjwz62-5fDEqIKktyRZLtix2PsOPs0t66qo2p8RRFaL7iuuwWsfXu8cLdI_HuS2WfM24TRIUUVnR_fxbMBEMYy_yk6nbXsFKBDpThc_ZXbtrDVDdNJXw9-q5aAkEBYo7xV3U1A",
+        "date": "",
+        "type": "Prospectos"
+      },
+      {
+        "title": "FID 032025 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_2FJCHqVQjIMWuHFaKhgKVRgQeuu5vBjlxLGS-mOc-fHOjpi9KCMc97SqGXTgzllanOwL7r_Sz2IOXsBRy939HbItQuKOvcpdL-POOo2T3QpCyh6pAgwlD_WyL0ttPsx6HOYW6CARaBEl7YLV4Vr4lFXU47Cb-SVSMhkuTbuamv41cIFGmlYG9pUheUGG54kNzGreuQV0x8t4TJ9H9wmwbcnAg7YTUI",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FID CALIFICACION 0325 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_2QKBXM5euEP5qc3n7Fd1LjHbnncsMTWAB2Emz35fSto5QckNqzLTL-rzzJaOUU7Yzo6PrFempsKXx3BzrI2O5Uvx5b9sgcjbtTG6t831H8SV6dWb8O1ZViPeNMAIUjW7R0t6kUIaLmptg2YTfWfQo0TrVuo80_7Skbp_U8NJfkgl-C4-UMmabWtnxqmpnO4gBu9yI7p2ZfCUHasMQ4k3l134exhUH0",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "FID 092024 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_3xpwSVOvbwAPiEDx5OxnF7bnmXRT_0ugEeHuWbazvxNOjr6uoAOM2tjpZ21XQD4tmx4tDQSEDbmLSWnnd3aljY4bd6Am6gR7mmnQhOFWMWpFbBUK2xt21xqcZvOwfsRJ5UuLWMoDq2NUDe62kKoPPsI0cSTwud0QSTmopk4Qo2Tozw1E-kF3P7gfECOfOyLnZOdHL7nOaTsKNdTRgan-gKeKizsT7Y",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FID CALIFICACION 0924 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_3z29cOjfC8bcgawoZ5bhjqn4z6WwtZTCGlK3pMB0FZ9-RacKYprCJnEFxfexsMw2Do6jI0iTy3RWBWi74s7zkt23isRI2_rSbnsxRlAQBmJQE32IqY_OuwE9LlcU-ZV6MGKVm4JpJPELOBtXK3DhU5SWUNLFF62M_1mVqdjf_2_qnjWMwGOvtG61gmQtO_CfKyVV21FGszezwtXdYnjhEmdPA13T9c",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "FID 062024 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_42uqEiMLGzWF0QUeVbqUxRTlL6slt382D74u1P3vPrUOjpIJeHzn2DOWok5cxgTr4ugwHMJUQLiTkd9PhCI_nFlReGhHUX25DgTyUGtsQ8RPWcu31RBgK6iQLdrBICzGVUcmJqIx__DIaUiSuF8nm-N4EZbJnKNPq3jqzUClz2dnp6pADlw5MXKIPA6v36I2B0ZtwlymN-ELMP_xFBADO2DBETETqQ",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FID CALIFICACION 0322 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_4AbEuRPv2usWFxa5NiOQZvHmfZKhy9f293SeK2Sl_btGFEpzE28hdx6KijZPaMRUTo69ppffHHWRiFherrRi2gheSr4pdr3_GR73EBxScrgujONGIcvS770R8q8K9pCKlbBoheVojkaWibGtHuo9RS9wilQnUPKPy2LPjWypM3xw0lsINn8Nllu5TDbQGSiyL39H3O7pnrm4qSXhl9rO2a6A7jEU-A",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "FID CALIFICACION 1222 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_50w1DTIWKMa-8_pzlnvIxGNxyIrylG9l0v6rWJ1vlYaoU6KLj_gCUAnLdOu7Orr7To6bexuXZn0v5LPRDc0ziUDR54sqD_QIcffB7XfLuVU0EOCM1_OvYKptGToZUZNCYb0Hg4dbv3Vr7M3ZvIn60ZDePCldx0KCsmdC47yb9CF-NJN3MsBX4DXKfb9wOPHQH-litItOYK-PHzipYYoYuUxs3P4VBQ",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "CERTIF SIBOIF 11 10 21 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_54EjCOPA3L92iqziCZVIYCzQXbmk_goNVFkyCNG2diw1fi2okhEdQ_UEwumK_kRZTo6XnvpKn4G6rcnb7RpY2sE-vKJkDL_MvGcXhT-buO3FeA3EfJhGf74aMc0PkJEmhR9bymtVyRLMeZ8pDGfNw5i0IN9IjE9RYEwbnjLS-tUyQHtFsvkzUnvPReywuRyEuq6iW6JTwy4iBl8flFPA-mGlVPKTHA",
+        "date": "",
+        "type": "Certificación SIBOIF"
+      },
+      {
+        "title": "FID 122024 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_5bFMA0ewNNASH7wmKy-PsI4bFQsQc-3ea6oCkuG-yYWOjoLU1xWv7RYIc3IcC8N8qXoCg1CwMUqoIdckGfsxaEGIB6Naegojava9dR8GaAfgZ7Jr6hMxxwg3oBWHy1zyL4yr4wALkNoR0fC5O9uAdEr7FkZRGETPHxgNARgweX8WIAc1EgHlcsjJsXUhpYvjHrZmNKJsY6u-lR73edH-cqRvhBlTpc",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FID CALIFICACION 0922 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_7QUuAB40NhM8KRsessDaeg2ksd7kDLCCOUa9-bfBeE_eifEhtD6oh6l_IlRD-mdYDo6t09V7UrdRFhuhRbAUX2iGWoIbq7heAQX33O26rpih4X8zcjEMQFtMVIzXT3UjwsXbLW9NTO6zFhml_WCbFHcrmCLvczMKc_KWfEOe8gNKksjKAtuE_-xxD-XVHMkwbU94hBJTGbQx7xwOy6AWozT3BTXUII",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "FID CALIFICACION 0923 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_7XAFLQSjz1YV7RriA2XkJzWlEU9eRM7Hlvyrt2BZLTfKKJIYU7HulTJD6nP82RJkjo6O9ZWKfyprwM3FrgRx--FUGlMTrDAIxNIoLhpgLUG2t-Kv5G5pphk6JkvX2Xx6uN-f3E6QaScmwYwKgLi-dzIfZnn7wqUDCYoJuXJxO6YvkIopuoETrypRpARD2nnkiMgzjrG9c60RQc8g3VTwD0Z1zmBT7o",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "FID CALIFICACION 0324 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_7YqwpNJ9I4vpyGIh_-71mLkB56zFiQgMMvshDXorYnvvjOTHK8NTSWA-wd-z75vqDo6dSwKFl8gUi3IApI5E501s4TPz2nTOVMLGM-uDg0uGIAUL9HukAbQ7u2riMQ8Kmb7FRFOi_bXRigaisGoHceDxQRW9UZst6VpogpiFSjV5qFaNHE_G04c1MwIM-k-V-cZpLGCqjHgUpuUxNpNu16wpwaUS-Q",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "FID CALIFICACION 0825 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd__9ufYDOJbwuVluRhdJFDXXKVUX6v1jkDn7dGVwEYWuBR0m4FNMmWHxmK4dnU9d8Yjo6oT9tIVy4WxQO9ZgEAFKN1NY9olCfpAGMfEOvf6zAlTDd8yCPgESMzQhezXsdeOR_gEPVgKH3A7qk3pTGCPBdVNsiFdYHY2Q2Sd3P-DbowiBktWMUPpUnIfJhVmB7VoObnYFTqeQU3jhGvrcDHKRF0-IUS_g",
+        "date": "",
+        "type": "Calificación de Riesgo"
+      },
+      {
+        "title": "FID 032024 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd__tpn4DRmDs6Udc8APWqE-vmXyUJNp4u4ApzyInQXXJLOjpbRWF9bY-W619OzVbX5VzV-z3-6ywOUB0SjKvmGDpUOop0nc3MBDxYAttJcWC2tRA_1wFr4Rp58KY8l3sJCgE2jBbswLR0HBJxDJUP2Pzz2NnNltPnRwOEzNUw34ahIgupLoxka-Dg4RRoSB5e_nOGbVsm2XYP2TlAIXNQyIt-poqvTQQ",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FID 062025 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_yVdVeu5_8-ESj_61kOcI6apMiiyN3KX8_QYKvMQSLgHOjoHS0VSjGEleRs0z2X4jlJdkv3r78-m9NmhQ9H8Q_J7lTPZ-Qr0htAE5LuLOVOZ8S0lNJEOnJPvvwIfYdoBGuHOWGWP7ubwdnekbjtVuxxDKIXYJtKZS82oOyYsi0m_JKrzmMO2TXMjZswL-T_LN5OaRLU9MpX3KaMYfHOMoln4ZSamUbA",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FID EF 122023 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_-BFwq8RH9e7MRcwbsdwAsbvaepxSsITdMOC008r-P0VBLSFMwgshYUvm9K7imvFHjo60duPWd3MIgSqkRyRzUZO9b8xVmh3EZmInW-e4Q3I_g1clyqmzNUQ_qiAornjBE3PNGdoERTylptDENeTRhLRWEI2g94nQa3yq71Kr8KsOwLGi9cpci01EqEyLJynKrzpyWz222ntyRyPlxRbgrMfBf0OfKycRMJQzVdjT1oT9ddLl1bs",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FIDSA AUDITADOS 2021 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_239e6Dd-ocgxLpRkoMGF8AXdNsjjr3y5fR9Ub4lyjoEDu8NYRYETUGvq2IZ-EdgwTo6GkY3SQcq5h07Q0jHX3MNvq4dOCvpPFnYxTdZ5LnoBi9oX3_Z5of4JydhRTeDxj6-EkngQkkTo-Rnqe29sh186zfGHkyZZrZTuBp1gyzJ56gGf6PbwjrteMqsSiA94v7-WRqAtO7yO9-lVPXIzF8XhJ-Uy_6r8QJRw2NomoojUK51v1fl",
+        "date": "",
+        "type": "Estados Financieros Auditados"
+      },
+      {
+        "title": "FIDSAAUDITADOS 2024 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_2QTqHYpYYKu9gio_WHmbKp_BAp7edgefgPCv8MYgGfeEPbCSuBFypEY6iimlqfKQTo6IKUEdfavz72MKUASYMDqp4lgyJNSy9YvFIsOsisWU95eQCKGnyTther3Yd-EdMYT9-5t5F7Cml1oLFRogOVdzQnSTCOMxQOVPiWHLEI8dNuQ3lML4L4riuGkJC5qXpdqEy4A5qZDw5leeCfAfdDP6r5yqxuV0ddX4BBsfWF5PsKTp1e_",
+        "date": "",
+        "type": "Estados Financieros Auditados"
+      },
+      {
+        "title": "FID EF 062023 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_43vzZSje636Rskg0m3RyzWRGfdRpnHRCPiigyjH-O7PR0I_ZeyikFqnkuvkTQhkcjo68TyKyhkEcSTJlc19GqlqkBWhE1TiBBh4koGtP6owIycaupodQAol0kEgS7i7ECCQ_cQYrd9U8kreDEhUmLV4q986MmY73iz5b8o_11t3QeHBLQzJwyc8SNdcKIjfHLQjEYW2NoSg5KWdCRyoJOA_JR9o5A3maTWfLaZcbCVeDJAPP1Qj",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FID EF 032022 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_4ki-1triCrsh-2GZLV1BFBIjkxl8hznOsQfoq-ufB2Sj1hQW0u_fncd_7LOLFC5WDo6sfVTrawueur_mFZbyOBr7DPjS98VHV_4BvEiLXuQkXIFU335iOcxe_tcXmSB9DBn6qYP-ZyNjXoRR0lGM40tDL2YIOTIdc_BF4NcIQGs0dvSioxuzLvn-4TsTl5eM18GDrKhuASPWk0HxHb-tE-hRmJd1PbiiUt8TxHQQY02Sx4Xe1gR",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FID EF 122022 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_4lMWdWn3ZXQXg9X33kW9oiWeLqL8Ei-UCq9MmsaFwuKXrDxPEM7tcjhoMLJkwATaTo6-pHSWm4SXZQ58I5lzoiiw6d8me4rVWjop9Oc4t5CkXQm6QSvUUCZIHGmxW4IrMJe3q3xCXcFWYzzmBIL77uu8WddtTmjg8c5k8pF5ZB7ghh5aQOgx_0Hp-Ov5O_ha0wJToDCuzntzk1tWoBUX0NkC7DEhJUL72VmR009RJVMI5T2YFoU",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FIDSAAUDITADOS 2019 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_4tNP7-F_9FzIAS9_p-joYg-Za88t0KutI-FNRfKgf7nnpf7twSe-onfvIufFJ6u1zo6_1PZczE6QotE1CBJW7QeDkPD7_FybPO1Vjx8dT2_V5eg16dyL00GUxbI6gdRXF0YfVxVt7JIFgh-XtBlq6AqRYrzjVQbWxe_P8BHxjhMOpwlcsMZVUOOrPg-YlnwbV0cXhxz4ZvAgcO5mbGbvBl3ctXW0fcj3p7movZZ6YGOENB6hVoN",
+        "date": "",
+        "type": "Estados Financieros Auditados"
+      },
+      {
+        "title": "SERIES A 2021, B 2021 Y C 2021 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_6Y-bPrPOoYgW9tIsZZmtEP5ZsVpvheN17aiQprq62LsvCZ3NjPZDQ_4ZDUmo_6m3-WRBhYqL5m5zMyQt6_XjWs6Omcv2MK7Pzxh9VsKlYLxsqM_C73WHS4BqME-CEfhJpaAuHwgnDWzhFWDoM6LjMOJbo5KguaJxaDhqmCSIxDVRt5z81kZ6QAoizzBQ8BfVZbqJYThY8T4zLA4Rcn2aTj2n6TUVw09-Fm93WEDtLNlGiEt5FuN",
+        "date": "",
+        "type": "Oferta Pública"
+      },
+      {
+        "title": "FID EF 092022 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_6hYGZ0w-aYao7jQfLMQLBZgEgYxEGtVQg9-BW1JPL4Tx7FA8Lahers50ycA9da1sDo6fDU4HDuB4qMowJY98Z1ppqh7Usm2rgX4EqCQX3wWoO8_WTu_Y9v0Khd1bryqJ7wOwCYeCIsJ6r7fsLgqZiFYWpf9WdkRhsTaMpambB325NPLBUwuSRdEjN5zcXBxRozEYm5zqXQIVCpCGAiZurQ7G4re6SVrpOffDkLxi2ZNJuox41Jo",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "SERIES D 2022 E 2022 Y F 2022 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_83Asubt95zneJIvNwAL2IqMsv781f33MGPc2tSPlYeWL3Dld3xqi7QwCOnl7xHHP_SXEEEX_z8vb3NTi8HJ5D06OhFkFlBIfkwZFYaKPBDTobAZsuxtVStBXiDXBMbA98x1fAS7fBdtehuL1zbaVv2vakVlQdF6soirg8vIzGQAxRrrqRkTQAdi8qFwMEF_vQb3w4hivBbz3dzpzm9SmD6qpYHg3RRlVfxXWfyXKu45zhDZ8lwR",
+        "date": "",
+        "type": "Oferta Pública"
+      },
+      {
+        "title": "FID EF 092021 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_88EIvqAX5a883i-91YD9uIetvYE1a8J8bv2T48AMXlMkctCe41q8eG7enkTvFzUuTo6VOJ5iMO_M36-_PpuTJh_NYk0Y97P2g-6P0_NUYAXc7nxBieFmdiNC4uc2OM0UcWuKXrbowUBXIzxzdx6URz_5zByKwbq1HFsGJMreBpLhBvuujjcHMVa7zHohFxDmNNAlEQ_g0tG5qneIzD6vn9Sp2MT6AzNogeneTcjL0oeeeu_rVn7",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FIDSAAUDITADOS 2018 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_8euhKXIHaeSbpB9yE7YNzLVkHjti0tDHy4xF5Wiw8ymQ-QT7r0IwDQDkDpcYTTHxjo6qGUwDaLF4uXh-KTmiZMV-sc28LOz6tqpMcD-bN2JQTkrDWL86ZRF-roTjtcZCr-Mz8PZie6THEtorti8g1iuEV1Bppw_kqSR4mtQw7jDQozApFD7G8Y6865AC5aZ3gqfVSmzA4EZL1kJQRmKMPXMdsyzVFV5gF6tqdMNsTimhxbGmlus",
+        "date": "",
+        "type": "Estados Financieros Auditados"
+      },
+      {
+        "title": "FID EF 062022 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN__qv1muMgyIuxOz-yqqeCpY0bArnTSXeg-dZSKIQkVKZTGTVlLVH4sFfpm_DCR4q8To6McBpBRkdHVaSYAkuXJHmUx7nQSEO1vfmXfJPr14oje4cA1_ehh_2u1CUzqYj5ygyl8JQmw0Rw5GI5Rjaq-7XaSMt4b56wE2Yow_ox1M5L4PANp-jANHfOjJwu5hZAGQvpaJLrhnMdvunDUEZhMikuhZlMGV1lkZKoYWPjStqvZ46QFVt",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FID EF 092023 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_w58UkNdJ1nrbbkOvIL-NH5blAKb9G5sJiUX_FCO_vVDQqUUYqys-6PvEpXU8qB-Rzo6mIeO__n22kO475c2uyTHrDkKIo4C12Bo5LaNQkToYaxKqJpfE2-qPkSTA8MzfQDr7teG9iy6Y3wKg7z2DHMJtT-ruJItFA2WYXJAyFaUZVItEowLmVMYjutnEiyAf0MV4GcMT48ZVyHWNuGc7-wzwz3oJMb-FRIZHVeB4dVWREpP4FP8",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FID EF 032023 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_wF3XQQ3HvqFcLCApA5ALzSvvFhOo6X6tgc0YGpM4A62allVy1ItLGHT7ZbqIPd1Cjo6KvGSAaFQsv8txcrZgMHTxG_eyWexnLhZOwXA7WNSRc8AnKJlfD8pbpbElxbKaxEZKY4ez2UI9BK9TVL7rsYaI6rXDYwBgwDZwzc2fIE6WkX0lNQEVdRclJVSU0sqmtTwRENlqZGIEyMc_mPY0qpgzA9toZaa4DbvPWduqqWGmiQSgVR9",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "FIDSAAUDITADOS 2022 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_wp8HgiJK3TVwXYiHGlofbNQXGxcUKeaQX5V28F3AEV8QvkXJvwrCSgVHJoIX7o24Do6uD8MlW-Canm8X9M5ZGR75GE57zPdQ5bHla-vfsowjgbxLfupQX9NxGTFImHVcVZQI1eRM7S3rkwKDxEpRdqT6kH8EfaJrD9qag4zZ1TNWuhhXXeX9vOD-p0-sxGqK1OPcfBgUrEMURcCIu87g_Jx3EP98jiQM6ANtUZq09CtlxdIcVGm",
+        "date": "",
+        "type": "Estados Financieros Auditados"
+      },
+      {
+        "title": "FIDSAAUDITADOS 2023 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_x_dmyrseS8IRqWSiDzjQQu5_Np_jxKfptVQRWKogmDJg-9TsDQAgL4CE9nhbe5XEzo6j5S8H6vIf7j926Xgag6bhoAgubHyiIb3QU0g8XKC4zPYXeJok5lv8eZmolAm1X0vZnPcATyfl5t-quh0rs6ZzaUUlrqu4MfZpWF2sjvEdscUKi7nR9Ni0GVvAwNupCgpNVremvGWe9CcGd3T6YFhsK7w8iV9xo3tiA7u3HlbdiJl4l6l",
+        "date": "",
+        "type": "Estados Financieros Auditados"
+      },
+      {
+        "title": "FIDSAAUDITADOS 2020 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_xhFI3M8TV4oyYZfBIcPsY_OuIjiDq2F_TQKNAgEoLUy0k8Dw4XDlUCSOPDLBPYk-zo6VP7OLdDOWxR12x7hA9QaccJOm5wzLw79O1X46XRmcdA4-7rk2PNd0hRDtsyPy1faeO7gKUJ3xAnDzgWC-d4RaFEyDlEc7lwd8SfJRItjSjN23XJneB-QJobmGbnnK-VP5QZ0wQVS75upjT9WR8GRBHIMnGEXFtcYx64NdeOEgvSBG1Vw",
+        "date": "",
+        "type": "Estados Financieros Auditados"
+      },
+      {
+        "title": "AVISO DE OFERTA PúBLICA SERIE L 2024 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_y8gvqRo8STKsdKVK5X4UkcdXacYVs84_V8z80voKt85rbHOi05IYdUUuP4dA4eKm0XQjwbaPVyan9_aWLur_m86OrqFNGKUQWV8_mJxSK1F9AsaCoLxdmW4GFCO56FZgvi0YoOY_T5uNNpdG4rahUvOWlaEvmRsjTzWZgHJrra-_pJcq9qL9G7YTJMK-gnh1ZKcqJ0vE1gTrvc41TQ22OH4kJXvFz-5C4lnlJcQd9R9nqa4HlwF",
+        "date": "",
+        "type": "Oferta Pública"
+      },
+      {
+        "title": "FID EF 122021 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_yQ7ZYT7rEh9lARTl0De3eadd1uzfHwCBRm0NMPWkGCY6ShAAS4tuatJi7mX6asXNjo6unGA0oPKZYUxQmI1ulmCn9aLEERA6baKoLOUnt3IQ-LPrMgfEq_2WOm6oZQa3mUFHezlPq1K6hQmtKxWXmN3iARJgK9V6uk7WgKlpynIMKTMlO6aVW2jOmD1PnCMc_kxYnhQLLRZd4EVkyM1gLPMqZV1tlCKWt9GF785yPVeBUeAElc9",
+        "date": "",
+        "type": "Estados Financieros Trimestrales"
+      },
+      {
+        "title": "AVISO DE OFERTA PùBLICA SERIES D 2022 E 2022 Y F 2022 (PDF)",
+        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBwgA9_9EMAsShSzyQ1y130HWdjuZKU0kzireQV1BBmaAFs0sBnuhhSSibyi3_cJgJvzrvX3etxicZy17zRf7hMzzVkurzhUHikGIIlqnwUal2iZqTOjpCR6UwGtClCNA8VSYNVCV0OMlyxynOxtSVUUOsSmG5sOGW2fS0ZMPq7385RvL6tsTR_Gm5t0S7ZXT5Bnodpwtz_SVt7msoGTui9cguiDfITnQEHe2kIldIlTkAQEjQle3GTa1Ixw8lA36WyLo5ccMPyP5gMQ",
+        "date": "",
+        "type": "Oferta Pública"
+      }
+    ]
+  },
+  {
     "id": "FAMA",
-    "sector": "Público",
     "documents": [
       {
         "title": "Aviso de Oferta Pública- Abril 2014",
@@ -2653,438 +3022,22 @@
         "issuerName": "FAMA",
         "type": "Hecho Relevante"
       }
-    ],
-    "lastScraped": "2025-11-09T20:56:28.110Z"
-  },
-  {
-    "id": "FID",
-    "name": "FID, Sociedad Anónima (FID, S.A)",
-    "acronym": "",
-    "sector": "Privado",
-    "detailUrl": "https://www.bolsanic.com/emisor-fid/",
-    "documents": [
-      {
-        "title": "FID CALIFICACION 1224 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_-irUuEpUrLjht_u0J9hvduQjVDRU7KyL7gyOlsZvau6c6Mjv_d7ENDxoCekqhsrtTo681f_ZeqTj1m6yJTaNAOy8pstL2EE6pKs2sfHDg2CuogRZbQlEnVZIgEi9W1UodUBgnYhv3jo3hIVUtufLWaxSe8zwP1UQLzY4JKZjPbkd4D1d5eAWvBwevz7CuyAnIqZw6dXEpjwuzTJx2H0PT0p-q-SVy0",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "FID CALIFICACION 0921 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_-xx9OqXzZ7XeNYbOkg_p5W_PReSlJjGek2IEl7LFCF-m48-sQk3bc_DhWdmvUDz8jo6ym9AwlP52aZy8sZ0s3LaDoxB6QfNgfA6WdK83pKEqGgfoBzkG7Q4SjtlNjnjqX-3Euxa9VbnNQDRWh4D8ptJEu861QQcfDk9GbsbiHvabiypSxSLns-bW2llYoWfGgp_e9SEAv_X1U9vF0N4BMqTVVCRTx0",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "FIDSA SUPLEMENTO 2023 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_0JDrJQhTyMmZtK9mpOa_9CnHvyN5EG8Jdvwv1y25Z_d8nPLpqI_fVKj2m9kOwiHKjo6sx3N2IqvuVjjNQbL4CY971ezcQucgiEFothlwxjnELySo3frxnbr7KJC3DMaN2SmcGq5_63jay7z4R_tsDegsQLHrIs1rbz5kr4oZlOSiK8icrs3U5R3EeaQCI_7zrM7OavRrYL-9aaF-BM1qhE1eZOaVmo",
-        "date": "",
-        "type": "Prospectos"
-      },
-      {
-        "title": "FIDSA SUPLEMENTO 2024 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_1F7BGp2xis1h5ATgILFAm0uNC-LyHvkvgoXrRuxhi7hCiQ2Cahyi66PgIvgdfXoUzo60fmpdO9FOoUhGBXMyePxqz6o1gXTPJfPGLAuB7lp1LTVG63dPL4BZW0_dw1zhKZr-rb0tf1SPyMXVSs-inxsMgrNku62Ri_5Kdpr9BRWA6b-wLjCMsxtRvwzAv4TOZgoP-ztnJRhWtnFSd0hh-N-zChZTxg",
-        "date": "",
-        "type": "Prospectos"
-      },
-      {
-        "title": "FIDSA SUPLEMENTO 2022 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_1F8cwqH2ep_N0mohCxofHgZm3DO1CFDMp9DYwWnmZd0hxZW-wJFuCTTeQrW2OkJkjo6E3NwTn_BGEYOvPlb9c3Vvpnwc_MHGCd5lp3_4NLCF6YuuOHJnu9-nyJQSxsiVrb_Me2uEXn8cmjs0LbxB8ikud2pq-DHx6HP6nH4KxR1W5_PNYvDWjHD5EHyO5OYFeEYWj8U9dviU4qhQuwfJSZudp0WUzo",
-        "date": "",
-        "type": "Prospectos"
-      },
-      {
-        "title": "FIDSA PROSPECTO 2021 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_23phOgnW1MxHsiRY4npFxiQlbncJCn7QqGTiBKP34CpjfN05TX51LD2T_7SUxMrATo6SGt6JTXz9qfxJ7trrrYIzxjwz62-5fDEqIKktyRZLtix2PsOPs0t66qo2p8RRFaL7iuuwWsfXu8cLdI_HuS2WfM24TRIUUVnR_fxbMBEMYy_yk6nbXsFKBDpThc_ZXbtrDVDdNJXw9-q5aAkEBYo7xV3U1A",
-        "date": "",
-        "type": "Prospectos"
-      },
-      {
-        "title": "FID 032025 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_2FJCHqVQjIMWuHFaKhgKVRgQeuu5vBjlxLGS-mOc-fHOjpi9KCMc97SqGXTgzllanOwL7r_Sz2IOXsBRy939HbItQuKOvcpdL-POOo2T3QpCyh6pAgwlD_WyL0ttPsx6HOYW6CARaBEl7YLV4Vr4lFXU47Cb-SVSMhkuTbuamv41cIFGmlYG9pUheUGG54kNzGreuQV0x8t4TJ9H9wmwbcnAg7YTUI",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FID CALIFICACION 0325 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_2QKBXM5euEP5qc3n7Fd1LjHbnncsMTWAB2Emz35fSto5QckNqzLTL-rzzJaOUU7Yzo6PrFempsKXx3BzrI2O5Uvx5b9sgcjbtTG6t831H8SV6dWb8O1ZViPeNMAIUjW7R0t6kUIaLmptg2YTfWfQo0TrVuo80_7Skbp_U8NJfkgl-C4-UMmabWtnxqmpnO4gBu9yI7p2ZfCUHasMQ4k3l134exhUH0",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "FID 092024 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_3xpwSVOvbwAPiEDx5OxnF7bnmXRT_0ugEeHuWbazvxNOjr6uoAOM2tjpZ21XQD4tmx4tDQSEDbmLSWnnd3aljY4bd6Am6gR7mmnQhOFWMWpFbBUK2xt21xqcZvOwfsRJ5UuLWMoDq2NUDe62kKoPPsI0cSTwud0QSTmopk4Qo2Tozw1E-kF3P7gfECOfOyLnZOdHL7nOaTsKNdTRgan-gKeKizsT7Y",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FID CALIFICACION 0924 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_3z29cOjfC8bcgawoZ5bhjqn4z6WwtZTCGlK3pMB0FZ9-RacKYprCJnEFxfexsMw2Do6jI0iTy3RWBWi74s7zkt23isRI2_rSbnsxRlAQBmJQE32IqY_OuwE9LlcU-ZV6MGKVm4JpJPELOBtXK3DhU5SWUNLFF62M_1mVqdjf_2_qnjWMwGOvtG61gmQtO_CfKyVV21FGszezwtXdYnjhEmdPA13T9c",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "FID 062024 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_42uqEiMLGzWF0QUeVbqUxRTlL6slt382D74u1P3vPrUOjpIJeHzn2DOWok5cxgTr4ugwHMJUQLiTkd9PhCI_nFlReGhHUX25DgTyUGtsQ8RPWcu31RBgK6iQLdrBICzGVUcmJqIx__DIaUiSuF8nm-N4EZbJnKNPq3jqzUClz2dnp6pADlw5MXKIPA6v36I2B0ZtwlymN-ELMP_xFBADO2DBETETqQ",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FID CALIFICACION 0322 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_4AbEuRPv2usWFxa5NiOQZvHmfZKhy9f293SeK2Sl_btGFEpzE28hdx6KijZPaMRUTo69ppffHHWRiFherrRi2gheSr4pdr3_GR73EBxScrgujONGIcvS770R8q8K9pCKlbBoheVojkaWibGtHuo9RS9wilQnUPKPy2LPjWypM3xw0lsINn8Nllu5TDbQGSiyL39H3O7pnrm4qSXhl9rO2a6A7jEU-A",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "FID CALIFICACION 1222 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_50w1DTIWKMa-8_pzlnvIxGNxyIrylG9l0v6rWJ1vlYaoU6KLj_gCUAnLdOu7Orr7To6bexuXZn0v5LPRDc0ziUDR54sqD_QIcffB7XfLuVU0EOCM1_OvYKptGToZUZNCYb0Hg4dbv3Vr7M3ZvIn60ZDePCldx0KCsmdC47yb9CF-NJN3MsBX4DXKfb9wOPHQH-litItOYK-PHzipYYoYuUxs3P4VBQ",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "CERTIF SIBOIF 11 10 21 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_54EjCOPA3L92iqziCZVIYCzQXbmk_goNVFkyCNG2diw1fi2okhEdQ_UEwumK_kRZTo6XnvpKn4G6rcnb7RpY2sE-vKJkDL_MvGcXhT-buO3FeA3EfJhGf74aMc0PkJEmhR9bymtVyRLMeZ8pDGfNw5i0IN9IjE9RYEwbnjLS-tUyQHtFsvkzUnvPReywuRyEuq6iW6JTwy4iBl8flFPA-mGlVPKTHA",
-        "date": "",
-        "type": "Certificación SIBOIF"
-      },
-      {
-        "title": "FID 122024 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_5bFMA0ewNNASH7wmKy-PsI4bFQsQc-3ea6oCkuG-yYWOjoLU1xWv7RYIc3IcC8N8qXoCg1CwMUqoIdckGfsxaEGIB6Naegojava9dR8GaAfgZ7Jr6hMxxwg3oBWHy1zyL4yr4wALkNoR0fC5O9uAdEr7FkZRGETPHxgNARgweX8WIAc1EgHlcsjJsXUhpYvjHrZmNKJsY6u-lR73edH-cqRvhBlTpc",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FID CALIFICACION 0922 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_7QUuAB40NhM8KRsessDaeg2ksd7kDLCCOUa9-bfBeE_eifEhtD6oh6l_IlRD-mdYDo6t09V7UrdRFhuhRbAUX2iGWoIbq7heAQX33O26rpih4X8zcjEMQFtMVIzXT3UjwsXbLW9NTO6zFhml_WCbFHcrmCLvczMKc_KWfEOe8gNKksjKAtuE_-xxD-XVHMkwbU94hBJTGbQx7xwOy6AWozT3BTXUII",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "FID CALIFICACION 0923 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_7XAFLQSjz1YV7RriA2XkJzWlEU9eRM7Hlvyrt2BZLTfKKJIYU7HulTJD6nP82RJkjo6O9ZWKfyprwM3FrgRx--FUGlMTrDAIxNIoLhpgLUG2t-Kv5G5pphk6JkvX2Xx6uN-f3E6QaScmwYwKgLi-dzIfZnn7wqUDCYoJuXJxO6YvkIopuoETrypRpARD2nnkiMgzjrG9c60RQc8g3VTwD0Z1zmBT7o",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "FID CALIFICACION 0324 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_7YqwpNJ9I4vpyGIh_-71mLkB56zFiQgMMvshDXorYnvvjOTHK8NTSWA-wd-z75vqDo6dSwKFl8gUi3IApI5E501s4TPz2nTOVMLGM-uDg0uGIAUL9HukAbQ7u2riMQ8Kmb7FRFOi_bXRigaisGoHceDxQRW9UZst6VpogpiFSjV5qFaNHE_G04c1MwIM-k-V-cZpLGCqjHgUpuUxNpNu16wpwaUS-Q",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "FID CALIFICACION 0825 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd__9ufYDOJbwuVluRhdJFDXXKVUX6v1jkDn7dGVwEYWuBR0m4FNMmWHxmK4dnU9d8Yjo6oT9tIVy4WxQO9ZgEAFKN1NY9olCfpAGMfEOvf6zAlTDd8yCPgESMzQhezXsdeOR_gEPVgKH3A7qk3pTGCPBdVNsiFdYHY2Q2Sd3P-DbowiBktWMUPpUnIfJhVmB7VoObnYFTqeQU3jhGvrcDHKRF0-IUS_g",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "FID 032024 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd__tpn4DRmDs6Udc8APWqE-vmXyUJNp4u4ApzyInQXXJLOjpbRWF9bY-W619OzVbX5VzV-z3-6ywOUB0SjKvmGDpUOop0nc3MBDxYAttJcWC2tRA_1wFr4Rp58KY8l3sJCgE2jBbswLR0HBJxDJUP2Pzz2NnNltPnRwOEzNUw34ahIgupLoxka-Dg4RRoSB5e_nOGbVsm2XYP2TlAIXNQyIt-poqvTQQ",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FID 062025 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_yVdVeu5_8-ESj_61kOcI6apMiiyN3KX8_QYKvMQSLgHOjoHS0VSjGEleRs0z2X4jlJdkv3r78-m9NmhQ9H8Q_J7lTPZ-Qr0htAE5LuLOVOZ8S0lNJEOnJPvvwIfYdoBGuHOWGWP7ubwdnekbjtVuxxDKIXYJtKZS82oOyYsi0m_JKrzmMO2TXMjZswL-T_LN5OaRLU9MpX3KaMYfHOMoln4ZSamUbA",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FID EF 122023 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_-BFwq8RH9e7MRcwbsdwAsbvaepxSsITdMOC008r-P0VBLSFMwgshYUvm9K7imvFHjo60duPWd3MIgSqkRyRzUZO9b8xVmh3EZmInW-e4Q3I_g1clyqmzNUQ_qiAornjBE3PNGdoERTylptDENeTRhLRWEI2g94nQa3yq71Kr8KsOwLGi9cpci01EqEyLJynKrzpyWz222ntyRyPlxRbgrMfBf0OfKycRMJQzVdjT1oT9ddLl1bs",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FIDSA AUDITADOS 2021 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_239e6Dd-ocgxLpRkoMGF8AXdNsjjr3y5fR9Ub4lyjoEDu8NYRYETUGvq2IZ-EdgwTo6GkY3SQcq5h07Q0jHX3MNvq4dOCvpPFnYxTdZ5LnoBi9oX3_Z5of4JydhRTeDxj6-EkngQkkTo-Rnqe29sh186zfGHkyZZrZTuBp1gyzJ56gGf6PbwjrteMqsSiA94v7-WRqAtO7yO9-lVPXIzF8XhJ-Uy_6r8QJRw2NomoojUK51v1fl",
-        "date": "",
-        "type": "Estados Financieros Auditados"
-      },
-      {
-        "title": "FIDSAAUDITADOS 2024 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_2QTqHYpYYKu9gio_WHmbKp_BAp7edgefgPCv8MYgGfeEPbCSuBFypEY6iimlqfKQTo6IKUEdfavz72MKUASYMDqp4lgyJNSy9YvFIsOsisWU95eQCKGnyTther3Yd-EdMYT9-5t5F7Cml1oLFRogOVdzQnSTCOMxQOVPiWHLEI8dNuQ3lML4L4riuGkJC5qXpdqEy4A5qZDw5leeCfAfdDP6r5yqxuV0ddX4BBsfWF5PsKTp1e_",
-        "date": "",
-        "type": "Estados Financieros Auditados"
-      },
-      {
-        "title": "FID EF 062023 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_43vzZSje636Rskg0m3RyzWRGfdRpnHRCPiigyjH-O7PR0I_ZeyikFqnkuvkTQhkcjo68TyKyhkEcSTJlc19GqlqkBWhE1TiBBh4koGtP6owIycaupodQAol0kEgS7i7ECCQ_cQYrd9U8kreDEhUmLV4q986MmY73iz5b8o_11t3QeHBLQzJwyc8SNdcKIjfHLQjEYW2NoSg5KWdCRyoJOA_JR9o5A3maTWfLaZcbCVeDJAPP1Qj",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FID EF 032022 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_4ki-1triCrsh-2GZLV1BFBIjkxl8hznOsQfoq-ufB2Sj1hQW0u_fncd_7LOLFC5WDo6sfVTrawueur_mFZbyOBr7DPjS98VHV_4BvEiLXuQkXIFU335iOcxe_tcXmSB9DBn6qYP-ZyNjXoRR0lGM40tDL2YIOTIdc_BF4NcIQGs0dvSioxuzLvn-4TsTl5eM18GDrKhuASPWk0HxHb-tE-hRmJd1PbiiUt8TxHQQY02Sx4Xe1gR",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FID EF 122022 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_4lMWdWn3ZXQXg9X33kW9oiWeLqL8Ei-UCq9MmsaFwuKXrDxPEM7tcjhoMLJkwATaTo6-pHSWm4SXZQ58I5lzoiiw6d8me4rVWjop9Oc4t5CkXQm6QSvUUCZIHGmxW4IrMJe3q3xCXcFWYzzmBIL77uu8WddtTmjg8c5k8pF5ZB7ghh5aQOgx_0Hp-Ov5O_ha0wJToDCuzntzk1tWoBUX0NkC7DEhJUL72VmR009RJVMI5T2YFoU",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FIDSAAUDITADOS 2019 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_4tNP7-F_9FzIAS9_p-joYg-Za88t0KutI-FNRfKgf7nnpf7twSe-onfvIufFJ6u1zo6_1PZczE6QotE1CBJW7QeDkPD7_FybPO1Vjx8dT2_V5eg16dyL00GUxbI6gdRXF0YfVxVt7JIFgh-XtBlq6AqRYrzjVQbWxe_P8BHxjhMOpwlcsMZVUOOrPg-YlnwbV0cXhxz4ZvAgcO5mbGbvBl3ctXW0fcj3p7movZZ6YGOENB6hVoN",
-        "date": "",
-        "type": "Estados Financieros Auditados"
-      },
-      {
-        "title": "SERIES A 2021, B 2021 Y C 2021 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_6Y-bPrPOoYgW9tIsZZmtEP5ZsVpvheN17aiQprq62LsvCZ3NjPZDQ_4ZDUmo_6m3-WRBhYqL5m5zMyQt6_XjWs6Omcv2MK7Pzxh9VsKlYLxsqM_C73WHS4BqME-CEfhJpaAuHwgnDWzhFWDoM6LjMOJbo5KguaJxaDhqmCSIxDVRt5z81kZ6QAoizzBQ8BfVZbqJYThY8T4zLA4Rcn2aTj2n6TUVw09-Fm93WEDtLNlGiEt5FuN",
-        "date": "",
-        "type": "Oferta Pública"
-      },
-      {
-        "title": "FID EF 092022 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_6hYGZ0w-aYao7jQfLMQLBZgEgYxEGtVQg9-BW1JPL4Tx7FA8Lahers50ycA9da1sDo6fDU4HDuB4qMowJY98Z1ppqh7Usm2rgX4EqCQX3wWoO8_WTu_Y9v0Khd1bryqJ7wOwCYeCIsJ6r7fsLgqZiFYWpf9WdkRhsTaMpambB325NPLBUwuSRdEjN5zcXBxRozEYm5zqXQIVCpCGAiZurQ7G4re6SVrpOffDkLxi2ZNJuox41Jo",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "SERIES D 2022 E 2022 Y F 2022 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_83Asubt95zneJIvNwAL2IqMsv781f33MGPc2tSPlYeWL3Dld3xqi7QwCOnl7xHHP_SXEEEX_z8vb3NTi8HJ5D06OhFkFlBIfkwZFYaKPBDTobAZsuxtVStBXiDXBMbA98x1fAS7fBdtehuL1zbaVv2vakVlQdF6soirg8vIzGQAxRrrqRkTQAdi8qFwMEF_vQb3w4hivBbz3dzpzm9SmD6qpYHg3RRlVfxXWfyXKu45zhDZ8lwR",
-        "date": "",
-        "type": "Oferta Pública"
-      },
-      {
-        "title": "FID EF 092021 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_88EIvqAX5a883i-91YD9uIetvYE1a8J8bv2T48AMXlMkctCe41q8eG7enkTvFzUuTo6VOJ5iMO_M36-_PpuTJh_NYk0Y97P2g-6P0_NUYAXc7nxBieFmdiNC4uc2OM0UcWuKXrbowUBXIzxzdx6URz_5zByKwbq1HFsGJMreBpLhBvuujjcHMVa7zHohFxDmNNAlEQ_g0tG5qneIzD6vn9Sp2MT6AzNogeneTcjL0oeeeu_rVn7",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FIDSAAUDITADOS 2018 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_8euhKXIHaeSbpB9yE7YNzLVkHjti0tDHy4xF5Wiw8ymQ-QT7r0IwDQDkDpcYTTHxjo6qGUwDaLF4uXh-KTmiZMV-sc28LOz6tqpMcD-bN2JQTkrDWL86ZRF-roTjtcZCr-Mz8PZie6THEtorti8g1iuEV1Bppw_kqSR4mtQw7jDQozApFD7G8Y6865AC5aZ3gqfVSmzA4EZL1kJQRmKMPXMdsyzVFV5gF6tqdMNsTimhxbGmlus",
-        "date": "",
-        "type": "Estados Financieros Auditados"
-      },
-      {
-        "title": "FID EF 062022 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN__qv1muMgyIuxOz-yqqeCpY0bArnTSXeg-dZSKIQkVKZTGTVlLVH4sFfpm_DCR4q8To6McBpBRkdHVaSYAkuXJHmUx7nQSEO1vfmXfJPr14oje4cA1_ehh_2u1CUzqYj5ygyl8JQmw0Rw5GI5Rjaq-7XaSMt4b56wE2Yow_ox1M5L4PANp-jANHfOjJwu5hZAGQvpaJLrhnMdvunDUEZhMikuhZlMGV1lkZKoYWPjStqvZ46QFVt",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FID EF 092023 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_w58UkNdJ1nrbbkOvIL-NH5blAKb9G5sJiUX_FCO_vVDQqUUYqys-6PvEpXU8qB-Rzo6mIeO__n22kO475c2uyTHrDkKIo4C12Bo5LaNQkToYaxKqJpfE2-qPkSTA8MzfQDr7teG9iy6Y3wKg7z2DHMJtT-ruJItFA2WYXJAyFaUZVItEowLmVMYjutnEiyAf0MV4GcMT48ZVyHWNuGc7-wzwz3oJMb-FRIZHVeB4dVWREpP4FP8",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FID EF 032023 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_wF3XQQ3HvqFcLCApA5ALzSvvFhOo6X6tgc0YGpM4A62allVy1ItLGHT7ZbqIPd1Cjo6KvGSAaFQsv8txcrZgMHTxG_eyWexnLhZOwXA7WNSRc8AnKJlfD8pbpbElxbKaxEZKY4ez2UI9BK9TVL7rsYaI6rXDYwBgwDZwzc2fIE6WkX0lNQEVdRclJVSU0sqmtTwRENlqZGIEyMc_mPY0qpgzA9toZaa4DbvPWduqqWGmiQSgVR9",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FIDSAAUDITADOS 2022 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_wp8HgiJK3TVwXYiHGlofbNQXGxcUKeaQX5V28F3AEV8QvkXJvwrCSgVHJoIX7o24Do6uD8MlW-Canm8X9M5ZGR75GE57zPdQ5bHla-vfsowjgbxLfupQX9NxGTFImHVcVZQI1eRM7S3rkwKDxEpRdqT6kH8EfaJrD9qag4zZ1TNWuhhXXeX9vOD-p0-sxGqK1OPcfBgUrEMURcCIu87g_Jx3EP98jiQM6ANtUZq09CtlxdIcVGm",
-        "date": "",
-        "type": "Estados Financieros Auditados"
-      },
-      {
-        "title": "FIDSAAUDITADOS 2023 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_x_dmyrseS8IRqWSiDzjQQu5_Np_jxKfptVQRWKogmDJg-9TsDQAgL4CE9nhbe5XEzo6j5S8H6vIf7j926Xgag6bhoAgubHyiIb3QU0g8XKC4zPYXeJok5lv8eZmolAm1X0vZnPcATyfl5t-quh0rs6ZzaUUlrqu4MfZpWF2sjvEdscUKi7nR9Ni0GVvAwNupCgpNVremvGWe9CcGd3T6YFhsK7w8iV9xo3tiA7u3HlbdiJl4l6l",
-        "date": "",
-        "type": "Estados Financieros Auditados"
-      },
-      {
-        "title": "FIDSAAUDITADOS 2020 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_xhFI3M8TV4oyYZfBIcPsY_OuIjiDq2F_TQKNAgEoLUy0k8Dw4XDlUCSOPDLBPYk-zo6VP7OLdDOWxR12x7hA9QaccJOm5wzLw79O1X46XRmcdA4-7rk2PNd0hRDtsyPy1faeO7gKUJ3xAnDzgWC-d4RaFEyDlEc7lwd8SfJRItjSjN23XJneB-QJobmGbnnK-VP5QZ0wQVS75upjT9WR8GRBHIMnGEXFtcYx64NdeOEgvSBG1Vw",
-        "date": "",
-        "type": "Estados Financieros Auditados"
-      },
-      {
-        "title": "AVISO DE OFERTA PúBLICA SERIE L 2024 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_y8gvqRo8STKsdKVK5X4UkcdXacYVs84_V8z80voKt85rbHOi05IYdUUuP4dA4eKm0XQjwbaPVyan9_aWLur_m86OrqFNGKUQWV8_mJxSK1F9AsaCoLxdmW4GFCO56FZgvi0YoOY_T5uNNpdG4rahUvOWlaEvmRsjTzWZgHJrra-_pJcq9qL9G7YTJMK-gnh1ZKcqJ0vE1gTrvc41TQ22OH4kJXvFz-5C4lnlJcQd9R9nqa4HlwF",
-        "date": "",
-        "type": "Oferta Pública"
-      },
-      {
-        "title": "FID EF 122021 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_yQ7ZYT7rEh9lARTl0De3eadd1uzfHwCBRm0NMPWkGCY6ShAAS4tuatJi7mX6asXNjo6unGA0oPKZYUxQmI1ulmCn9aLEERA6baKoLOUnt3IQ-LPrMgfEq_2WOm6oZQa3mUFHezlPq1K6hQmtKxWXmN3iARJgK9V6uk7WgKlpynIMKTMlO6aVW2jOmD1PnCMc_kxYnhQLLRZd4EVkyM1gLPMqZV1tlCKWt9GF785yPVeBUeAElc9",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "AVISO DE OFERTA PùBLICA SERIES D 2022 E 2022 Y F 2022 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBwgA9_9EMAsShSzyQ1y130HWdjuZKU0kzireQV1BBmaAFs0sBnuhhSSibyi3_cJgJvzrvX3etxicZy17zRf7hMzzVkurzhUHikGIIlqnwUal2iZqTOjpCR6UwGtClCNA8VSYNVCV0OMlyxynOxtSVUUOsSmG5sOGW2fS0ZMPq7385RvL6tsTR_Gm5t0S7ZXT5Bnodpwtz_SVt7msoGTui9cguiDfITnQEHe2kIldIlTkAQEjQle3GTa1Ixw8lA36WyLo5ccMPyP5gMQ",
-        "date": "",
-        "type": "Oferta Pública"
-      }
     ]
   },
   {
-    "name": "Financiera FDL, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-fdl/",
-    "id": "Financiera FDL",
-    "sector": "Privado",
-    "documents": [
-      {
-        "title": "CERTIFICACION SIBOIF (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBogBd_7F-IBpovMPKQs34kWOLrjrTwdSRd-x-CXf3gbUzN--y02Y5ZavrU-w3StUx1w76NDo6pIUUgSwFSDI2-hVEbtkGBocQECGHG_To_yqz9glCp0NxcWjw_v8X9abRf6iB9vNcR2Op2q3OmQ8hnzbNKgJL_yG9JWnwOejmcJniiN2mbOnHdqsdlbKOdfwAI6a5IHIH7cggsH_LnUHE2wAERGSOAmTDUjM",
-        "date": "",
-        "type": "Certificación SIBOIF"
-      },
-      {
-        "title": "FDL CALIFICACION RIESGO 040924 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_-6PxP3fe0WUuIoI2VvJsRpyn612in6u1GGoZYDBQAJYjiPI98kvweFgJ46iKqVDLIro0o75oaNUynbv84KSxsw6Oq0OX_jd7XT3MoYnT823bWta2W0xzJvfS-aiLirJ5Pv9zEtT4XzS8dCNLmR-KmiE-8qbZU7UVBz51rNT744FEV-qdNg-IyZGsh6JtTIKc7XeAHGz0SEuhx3vPiEJaUIP87hCT1Apma8t4n_lyFImsx93WF2a",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "FDL CALIFICACIONRIESGO 052025 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_04Kq_-NsG3I80uAt8qXZfAOOX7IRfqQcxAeAF1QwqkgneAWP0mM-tIFFju9rWJ-paXJp-Ng2cZYsNqncJF-J9E6OjZJ3mjO3emgm9DJe-vkVEDSZK-wNp4a1dL43q9cHRCmHzoCUOTdRNvgF5XmYkr84fXqThvgwzODuTQKAHXRFb6R8X1TJqy-uqPXO6R1NwQVN-sEMzh4NparIr15pgKlAg_WuXI8jiBEVkq_xq3ykUyrTFrY",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "FDL EF 032025 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_19zS9sMwPz-wGvN0J_xFjnacRw15uyjeW3hWSa67R1a-fMQdu1zcbcrJCmYtaichzo6ZxxrRjrP460Wi9h_-d-uuo_Bkd01kJRiCRZHiGAOvHz8ANiXGINmIwqFy6fK6L1xlDu8h_c0iGf78n-kjE9hYCrxOuBFfTkzerLUQocYG33WmWhsYnTpFtigQb8dCD6aKkd7o2qYo_JPkeUTRghN_11dyrjqYoU5JBzfA9t7g_l9v1pu",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FDL EF 032024 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_1asnsKNIbDT4e6oySrUtFdZTfp1_nKY10ooc8DGukmKYHjNxRcVRfUpl9ZImiRU6To6FYzfnZayGfVdg_45i3hrg5DZO05qJtJeR0MhiVQ9pYWJR66-qhcyXhGzVyl5k5aH6z8EgacCKtR1HgZBEHgdZY0YRUfD4evi4XZzU9iLHQ-4GCngHstt2Tq-EJKY2JeeHyMlcLZ_om1Yu2i_IQjPhqguFhePgbgPvU60XySPdznsHlP5",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "EF AUDITADOS FDL 2024 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_1si2eQTJoGG8FPnUG9M1ycQJOsYv71KQfLzndyBy6lQJV4NcoouBCgNAjksR6oW-jo6s2z1iENQMz3W6rXqrD9gJ3iz3UXdyJ1-sn0NFQAmn6BWFBlNO_7Ws6GbzY9YWJFXfYsb1Zb0QspNACTBZ0NVnfS0vH73PODBW8ShXpMHK2_pDQ1_NLX6vo7tY7vk9F7tiw0jS8QKud7bMQ7Y7YNTxEpOS6eA5ZmNtLXZOlKH8P-GXVjT",
-        "date": "",
-        "type": "Estados Financieros Auditados"
-      },
-      {
-        "title": "FDL EF 122024 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_23hzx3uH8dfWb88iJud-GFflktYNQw8Kz0NCknD9E5eVwiwJGgdIGzJBWHpXopsxjo6rmcMCWpDUkwVKc_0YkvdcndT8KhcASflh5mNAvr3gToqzlmiDYbCkPr_jI_Y9Msh0Z-Km6kHs7q-Qbqy31hY6dblMKjeWQ_2t56KswFGJAAThEpwp2LF_dR6LaK0kBAA8sjPlfNc7kt8cYbJa1uDiFjdhr1X7Iv9_cEmDOOiblNdZFlb",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FDL CALIFICACION RIESGO 111224 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_2JMMqOE0IOOdsnydwvc050VrP3EDGtSEUuYQ4TuL57RSz8yrNBp289gWlULGJ7eHRjK8ylZXgKI6-Y1R0kk7MA6OmkW6j8MeQKlNOns6p139OispMJGRwmAaPGo-Uc9vIqJUBF2PvV9R2X-5smqes-OjAnTQBhLSsd66fvpygcSpAJPEdGgET5oibbq5eImGDIoFHKn9DGOxERgpPw2fPSx59uC48KjXGonibGcRjDxgGb4-VoN",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "FDL CALIFICACIONRIESGO082025 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_2rvOJA6H_OcBDmbqaut9kylp2kuZQLYL0GpnEmiIgEGhblyQ8iQHZiiO4y_We8RfbKQ8mDO4gQBkIBgAuoemmc6OlrV5guANNspP4UAUcqkSbJY0WXzcjq5ycl8opy9KADbl1AkNYp0706946UinhjWymXIq-IZLHwzfbLl26Cy7Us4I0iI_vc2fTK4O_Hc-ZQUKNPWPBte-3IZZc12QgSSME90J1fq8EfG8Cmjk602FB_vg1ac",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "FDL EF 062024 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_4UlKYHwcqM40_X9XAyeWNqZZ97Ze0aty_oeDSCYzCapPSJWe7tBxdkz2k2xM2dNzzo6G1Bg7xbIZpw8n4TaRYdnaHlHjqe6bmOH5rH2jINeNGhnXrzMHPH6FO0OQt-4JLZIE9LOeoYeF2BID8hXVviZjn00EX9ik9vf4whtjJ90sFmMT8agHoMCu9xnuW2-RyiMA0VWn58TXUOotGfWvF8IVBYPR2WGLHVmxAFoNt4ZjPzEL1Ui",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FDL EF 122023 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_6gI-WNXe849KmlZiMytXcbVXXqRgyn_9qVsud4wFsJSgMZlGCrgQxFBBedURPtnETo6e1kT29yWUzn9o-GJ2ZvzXyoIXJUTP4-B5vdI7eQehfE23n5-9M77LWHm6-uoVC6PpNw5LpbwtxQX4WHSclXh0Cp5BZvNJwGm5qLo-nTm3ZO6LOSMMwpRWgWcPYOq-RHs-xY2o9ytO9BwjvOUghIQgE2URbvIcJR7odcUoME8SIwdb1yO",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FDL EF 062025 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_6xDy61rdhlQn2iS0MTeSjvho6Uhx_XuQghR5RlMgJYSLFu8r8DXshIBTfp459M95jo6SAzSyoeqgQqWHzIguz2RkdebVMJ7Elkj2eVjGWUz1s7P2w7GjpoFHzNvdXvQIm7-jynNi-8JLffchyaClTMvqL098RU7NbaVpnE2Jou0dnudseWvUu1USp2QTzE2sFgyrlxmd1gSUglLLYhVq84YfgXdwevnNOZK7KrGKq2mbiOcKFaS",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "EF AUDITADOS FDL  2023 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_7vywF7fHoYyWdVGlgu-D-35m46-TUW4xzQTrTN8STAf8rik2f-7vwhGcwBUrYna5jo6oRHYEgrKCiRARa7i-eVYRfPpgqfgkr4IDwTfrUN3rpZ0qioArTT6ksMl-kr4JlbBMhkfR-qWUsADiOXBWKMcBAeV2xWFs_lDYaLoH0U-59S-WYknoKGGZvPpvGcKgJTdMfVr8I6Gx2asKziCVNOYuN9WLENLG5TgL5_J0fiUBelcB1qo",
-        "date": "",
-        "type": "Estados Financieros Auditados"
-      },
-      {
-        "title": "FDL CALIFICACION RIESGO 122023 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_83DL7m9hrJvUOBxGslWsd7cO3lm_EW6ljyWL5l1IRyOg2UKsVAJTZ3r90NggiO0tyJ91p-7sQdDo8Dfgau8cVM6Ot1Z3QRI-I4-r3WhvEoof-F8yuR17Lk6r8rfWFM8RlDa-jc859j7vxJOPxyqgWV8gB2J3G9_u7mDUSVuSnQ2_H8sHsNJMKrmJTje84pRutGCqWgStVV5ami6TsE__a2vxLFUT7kL-lra0G8R-EMGUs8VtFuZ",
-        "date": "",
-        "type": "Calificación de Riesgo"
-      },
-      {
-        "title": "PROSPECTO SIMPLIFICADO FDL, S.A. (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN__-1E8c0-utrUg2inidzN7C_Np1kwidlhvkllkeA3h-_-p3_6Hxt9Qs_eE8UstlO78aXTsnbu7eE5vuvgKLfW0c6Ot5bC5Cj4NQvJk_1yg0UhVPyEvj1Tcf2JrcSI9fryq7aLL-WOLdYMnFZPYkk439yKILQBA1yNtmwOAVmlvIK22Z0lvNVnLdtM2XXbJwzGroetqpPmQCQgtSMtZhYlexmYK-jLNX3I8mjVQZ1iXxTLmP4Elur",
-        "date": "",
-        "type": "Prospectos"
-      },
-      {
-        "title": "FDL EF 092025 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN__SM-5nqSDzdVXlMCy5QRworoyPYU09KXQmu47mgkPRrkHMIgw5N-qVldv88m9hqFzo6_MWwEDbN8ROBfRTNb3tMVpwlJwp5JSHu2Ado55qR549qf0EmWfSFbDk1MhfyLZHBLySRYRCy-vnm095q4kt6aCic9wFyzLvergflRGW6PqlpGfY5bIqjkkOCVK8aM7BHgKrGy9JJJXYq_cA_te9z3DfaFofhQ-_UO25L6lDz1nHLGVhV",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "FDL EF 092024 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_y6kvU1-i5eGEuDuf2t1ETybM2mSzLsolw-U49oK5xJ2jBwwgm4juDSzmnD7EYv_Vzo6w9O81-XpZsBe5Yjl-7o2MSKA9OBtxHUO4eveOQgPd9LKv2kEMslQPZDjcZUOAMiy7ipIwIQZiP6xxBYF47nT6BnsT3E1Ko94G2M_bzqvgJ58hle3XrmlnbRHazUtK-PTQpcHjnKE5-6LQzP0Hh7w2e2dx1L0zFkWeZXsUp0wvfSkcFuq",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "EF AUDITADOS FDL 2022 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_yKGPq10D9Wu8oTmmS1lQpUmsbSS1BS2LjGydn4O4ggoajDCvSn6DgloKrx0sU6f0Do6Yxa0aXsqx2El-JLy5ObNkzHsKMoqDA7-3Go6tBa5WsXt4j1_QQ5X3t6_CWIbIcCXEBrPWRsGxzqvgKXvkgdMwUFaxNjtrh9QFllnLpfct6Qkkmo8mIhNG6Emv5GZX-GwOSidqRZsj17P4okG7urLTSW-1w5WekxdzGKSOowRE6CO6lRf",
-        "date": "",
-        "type": "Estados Financieros Auditados"
-      },
-      {
-        "title": "FDL EEFF032025 (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBsgBN_yuV2tO5YrexrL_9z46xgXXMnRSJ8tuXt6uDYGeJLhTOkusjzG9x2L_yXBZVuVWYuDo6bqRUoGDPWsx4LwEE1OkPRBEYyTF2Pn7rDW06NnpCxFHg5vMF8gs6_QAdqOK6wW_465jCzEI5ayllyXL9M_i8q7GNQOLwZADDR9Wfu1uGLBg4DQPE2fOS516uZup5pCzyluDmdbOMgtUMGeAAylfg48tQnYSSssz9-Uuu4beTmAJi1mCg",
-        "date": "",
-        "type": "Estados Financieros Trimestrales"
-      },
-      {
-        "title": "SUPLEMENTO ACTUALIZACIONPROSPECTOSIMPLIFICADO (PDF)",
-        "url": "https://www.bolsanic.com/?lsa_pdf_id=eNoBwgA9_0q4n3pzil5HMe6y6SICyQ9rE1PoXqvMF4ABBmBEx7xRkkai_pkQMBHntm7AH9HFTm9gZVNNt0fT_vkqKBi5mI6R_u3_lrjpsjIu8GykTpNnOjrIzqRVfFzPlc1UCDfX3CNElkLSgzmpJolGLygdUG-SKVhoY2Kfsv9t7JeErPe4sgVw6eReb-h8Ohc3ceemvYKGDLIA0kO0OBYcKAMHm0LlxBIBPRg5Mh0G4UqV18RuEnqOtlQNxHWYqlE1l-UlT8I-xKBbgg",
-        "date": "",
-        "type": "Prospectos"
-      },
-      {
-        "title": "Informe de Calificación de Riesgo a Diciembre 2024 – Moody´s",
-        "url": "https://www.bolsanic.com/wp-content/uploads/archivos/hechosrelavantes/MLNIC-HR FDL-11122024.pdf",
-        "date": "12/12/2024 02:00 pm",
-        "issuerName": "Financiera FDL",
-        "type": "Hecho Relevante"
-      }
-    ],
-    "lastScraped": "2025-11-09T20:56:22.705Z"
+    "id": "BCR Sociedad Administradora de Fondos de Inversión",
+    "documents": []
   },
   {
     "id": "HORIZONTE FONDO DE INVERSIÓN FINANCIERO DE CRECIMIENTO DÓLARES",
-    "name": "HORIZONTE FONDO DE INVERSIÓN FINANCIERO DE CRECIMIENTO DÓLARES, NO DIVERSIFICADO",
-    "acronym": "",
-    "sector": "Privado",
-    "detailUrl": "https://www.bolsanic.com/emisor-horizontefondodeinversion/",
     "documents": []
   },
   {
     "id": "Improsa Sociedad Administradora de Fondos de Inversión",
-    "name": "Improsa Sociedad Administradora de Fondos de Inversión, S.A.",
-    "acronym": "",
-    "sector": "Público",
-    "detailUrl": "https://www.bolsanic.com/emisor-improsasafi/",
-    "documents": [],
-    "lastScraped": "2025-11-09T20:56:33.885Z"
+    "documents": []
   },
   {
     "id": "Popular Sociedad Administradora de Fondos de Inversión",
-    "name": "Popular Sociedad Administradora de Fondos de Inversión",
-    "acronym": "",
-    "sector": "Público",
-    "detailUrl": "https://www.bolsanic.com/emisor-popularfondosdeinversion/",
-    "documents": [],
-    "lastScraped": "2025-11-09T20:56:35.033Z"
-  },
-  {
-    "name": "Vista, Sociedad Administradora de Fondos de Inversión, S.A.",
-    "detailUrl": "https://www.bolsanic.com/emisor-acobovistasociedad/",
-    "id": "Vista",
-    "sector": "Público",
-    "documents": [],
-    "lastScraped": "2025-11-09T20:56:31.608Z"
+    "documents": []
   }
 ]
