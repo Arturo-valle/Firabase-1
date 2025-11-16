@@ -90,7 +90,7 @@ const scrapeAndStore = async () => {
                 documentsByIssuer.set(baseName, []);
             }
             documentsByIssuer.get(baseName).push({
-                title: fact.fullText, url: fact.url, date: fact.date, type: 'Hecho Relevante',
+                title: fact.title, url: fact.url, date: fact.date, type: 'Hecho Relevante',
             });
         }
     });

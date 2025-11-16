@@ -63,6 +63,7 @@ async function scrapeBolsanicFacts() {
           url,
           date,
           issuerName,
+          fullText,
           type: "Hecho Relevante",
         });
       }
