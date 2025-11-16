@@ -5,69 +5,87 @@ const functions = require("firebase-functions");
 
 const BOLSANC_ISSUERS_URL = "https://www.bolsanic.com/empresas-en-bolsa/";
 
-/**
- * Scrapes the list of all issuers (private and international) from the main Bolsa de Valores page.
- * @returns {Promise<Array<{name: string, acronym: string, sector: string, detailUrl: string}>>}
- */
-async function scrapeIssuers() {
-  functions.logger.info("Scraping issuer list from BOLSANC with updated selectors...");
-  try {
-    const { data } = await axios.get(BOLSANC_ISSUERS_URL, {
-      headers: { 'User-Agent': 'Mozilla/5.0' },
-    });
-    const $ = cheerio.load(data);
-    const issuers = [];
-    const processedUrls = new Set(); // Use a Set to prevent duplicate issuers
-
-    // 1. Scrape Private Issuers from the 'blurb' sections
-    $("div.et_pb_blurb").each((_, element) => {
-      const linkElement = $(element).find("h4.et_pb_module_header a");
-      const detailUrl = linkElement.attr("href");
-      const name = linkElement.text().trim();
-
-      if (name && detailUrl && !processedUrls.has(detailUrl)) {
-        issuers.push({
-          name: name.replace(/, S\.A\./i, "").replace(/\(EMISOR\)/i, "").trim(),
-          acronym: "", // Acronym will be scraped from the detail page
-          sector: "Privado",
-          detailUrl: detailUrl,
-        });
-        processedUrls.add(detailUrl);
-      }
-    });
-
-    // 2. Scrape International Issuers from the table
-    $("div.et_pb_code_0 table tbody tr").each((_, element) => {
-      const linkElement = $(element).find('td[data-label="Sociedad Administradora"] a');
-      const detailUrlRelative = linkElement.attr("href");
-      const name = linkElement.text().trim();
-
-      if (name && detailUrlRelative) {
-        const absoluteUrl = new URL(detailUrlRelative, BOLSANC_ISSUERS_URL).href;
-        if (!processedUrls.has(absoluteUrl)) {
-          issuers.push({
-            name: name.replace(/, S\.A\./i, "").replace(/sociedad administradora de fondos de inversi(o|ó)n/i, "").trim(),
-            acronym: "", // Acronym will be scraped later
-            sector: "Internacional",
-            detailUrl: absoluteUrl,
-          });
-          processedUrls.add(absoluteUrl);
+async function scrapeAcronymFromDetailPage(detailUrl) {
+    try {
+        const { data } = await axios.get(detailUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+        const $ = cheerio.load(data);
+        const selectors = ["div.et_pb_text_inner h2", "h1.entry-title", "strong"];
+        for (const selector of selectors) {
+            const elements = $(selector);
+            for (let i = 0; i < elements.length; i++) {
+                const text = elements.eq(i).text().trim();
+                const textWithoutSpaces = text.replace(/\s+/g, '');
+                if (textWithoutSpaces && textWithoutSpaces.length > 2 && textWithoutSpaces.length < 20 && textWithoutSpaces.toUpperCase() === textWithoutSpaces) {
+                    return textWithoutSpaces;
+                }
+            }
         }
-      }
-    });
-
-    if (issuers.length === 0) {
-      functions.logger.warn("Scraping issuers from BOLSANC finished, but no issuers were found. The site layout may have changed again.");
-    } else {
-      functions.logger.info(`Successfully scraped ${issuers.length} issuers from BOLSANC.`);
+        return "";
+    } catch (error) {
+        return "";
     }
+}
 
-    return issuers;
+async function scrapeIssuers() {
+    functions.logger.info("Scraping issuer list dynamically...");
+    try {
+        const { data } = await axios.get(BOLSANC_ISSUERS_URL, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+        const $ = cheerio.load(data);
+        const issuers = [];
+        const processedUrls = new Set();
+        const issuersNeedingDetailScrape = [];
 
-  } catch (error) {
-    functions.logger.error("Fatal error during scrapeIssuers from BOLSANC:", error);
-    return [];
-  }
+        $("div.et_pb_blurb").each((_, element) => {
+            const linkElement = $(element).find("h4.et_pb_module_header a");
+            const detailUrl = linkElement.attr("href");
+            const nameText = linkElement.text().trim();
+            if (nameText && detailUrl && !processedUrls.has(detailUrl)) {
+                let name = nameText, acronym = "";
+                const acronymMatch = nameText.match(/\(([^)]+)\)/);
+                if (acronymMatch && acronymMatch[1]) {
+                    acronym = acronymMatch[1];
+                    name = nameText.replace(/\(([^)]+)\)/, '').trim();
+                }
+                name = name.replace(/, S\.A\./i, "").replace(/\(EMISOR\)/i, "").trim();
+                const issuer = { name, acronym, sector: "Privado", detailUrl };
+                if (!acronym) issuersNeedingDetailScrape.push(issuer);
+                else issuers.push(issuer);
+                processedUrls.add(detailUrl);
+            }
+        });
+
+        $("div.et_pb_code_0 table tbody tr").each((_, element) => {
+            const linkElement = $(element).find('td[data-label="Sociedad Administradora"] a');
+            const detailUrlRelative = linkElement.attr("href");
+            const nameText = linkElement.text().trim();
+            if (nameText && detailUrlRelative) {
+                const absoluteUrl = new URL(detailUrlRelative, BOLSANC_ISSUERS_URL).href;
+                if (!processedUrls.has(absoluteUrl)) {
+                    const name = nameText.replace(/, S\.A\./i, "").replace(/sociedad administradora de fondos de inversi(o|ó)n/i, "").trim();
+                    issuersNeedingDetailScrape.push({ name, acronym: "", sector: "Internacional", detailUrl: absoluteUrl });
+                    processedUrls.add(absoluteUrl);
+                }
+            }
+        });
+
+        $("div.et_pb_text_11 div.et_pb_text_inner ul li").each((_, element) => {
+            const name = $(element).text().trim().replace(/, S\.A\./i, "").trim();
+            if (name) issuers.push({ name, acronym: "", sector: "Inactivo", detailUrl: null });
+        });
+
+        if (issuersNeedingDetailScrape.length > 0) {
+            const detailedIssuerPromises = issuersNeedingDetailScrape.map(issuer =>
+                scrapeAcronymFromDetailPage(issuer.detailUrl).then(acronym => ({ ...issuer, acronym: acronym || "" }))
+            );
+            issuers.push(...await Promise.all(detailedIssuerPromises));
+        }
+
+        functions.logger.info(`Successfully scraped ${issuers.length} total issuers.`);
+        return issuers;
+    } catch (error) {
+        functions.logger.error("Fatal error during scrapeIssuers:", error);
+        return [];
+    }
 }
 
 module.exports = { scrapeIssuers };
