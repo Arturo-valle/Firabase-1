@@ -26,8 +26,11 @@ const db = getFirestore();
 function normalizeIssuerName(name) {
   if (!name) return "";
   return name
-    .replace(/, S\.A\./gi, '')
-    .replace(/, S\.A/gi, '')
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase()
+    .replace(/, s\.a\./gi, '')
+    .replace(/, s\.a/gi, '')
     .replace(/\s*\(.*?\)/g, '')
     .replace(/,$/g, '')
     .trim();
@@ -117,7 +120,8 @@ exports.scrapeAndStoreTask = functions
         consolidatedIssuers[normalizedName] = {
           ...issuer,
           id: normalizedName,
-          name: normalizedName,
+          name: issuer.name,
+          displayName: issuer.name,
           documents: [],
         };
       }
@@ -154,7 +158,8 @@ exports.scrapeAndStoreTask = functions
         functions.logger.warn(`Fact found for an unlisted issuer: '${fact.issuerName}'. Creating new entry.`);
         consolidatedIssuers[normalizedIssuerName] = {
           id: normalizedIssuerName,
-          name: normalizedIssuerName,
+          name: fact.issuerName,
+          displayName: fact.issuerName,
           acronym: "",
           sector: "Desconocido",
           detailUrl: "",
@@ -175,7 +180,8 @@ exports.scrapeAndStoreTask = functions
     // 6. Write new, consolidated data
     const writeBatch = db.batch();
     for (const issuer of Object.values(consolidatedIssuers)) {
-        const isFinancial = ["banco", "financiera", "fondo de inversion", "puesto de bolsa", "sociedad de inversion"].some(term => issuer.name.toLowerCase().includes(term));
+        const baseName = issuer.displayName || issuer.name;
+        const isFinancial = ["banco", "financiera", "fondo de inversion", "puesto de bolsa", "sociedad de inversion"].some(term => baseName.toLowerCase().includes(term));
         issuer.sector = isFinancial ? "Privado" : "Público";
         issuer.lastScraped = new Date().toISOString();
         

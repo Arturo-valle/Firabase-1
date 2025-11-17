@@ -7,7 +7,8 @@
   ],
   "scripts": {
     "build": "npm install --workspaces && npm run build -w webapp",
-    "start": "node functions/src/index.js"
+    "start": "node functions/src/index.js",
+    "analyze:facts": "node scripts/analyzeFacts.js"
   },
   "engines": {
     "node": "20"
