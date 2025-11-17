@@ -17,28 +17,30 @@ const getBaseName = (name) => {
 
 const findBestIssuerMatch = (fact, issuers) => {
     const normalizedText = fact.fullText.toLowerCase();
-    let bestMatch = null;
-    let highestScore = 0;
+    let potentialMatches = [];
 
     for (const issuer of issuers) {
         const terms = [issuer.name.toLowerCase(), ...(issuer.variations || [])];
         if (issuer.acronym) terms.push(issuer.acronym.toLowerCase());
 
         for (const term of terms) {
-            if (normalizedText.includes(term)) {
+            const index = normalizedText.indexOf(term);
+            if (index !== -1) {
                 const score = term === issuer.acronym?.toLowerCase() ? 100 : 90;
-                if (score > highestScore) {
-                    highestScore = score;
-                    bestMatch = issuer;
-                }
+                potentialMatches.push({ issuer, score, index });
             }
         }
     }
 
-    if (!bestMatch || highestScore < 90) {
+    if (potentialMatches.length === 0) {
         return null;
     }
-    return bestMatch;
+
+    // Ordenar por la posición en el texto (más bajo es mejor)
+    potentialMatches.sort((a, b) => a.index - b.index);
+
+    // Devolver el emisor que aparece primero en el texto
+    return potentialMatches[0].issuer;
 };
 
 async function downloadAndStore(url, destinationPath) {
