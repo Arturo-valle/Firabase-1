@@ -1,244 +1,50 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Sidebar from './components/layout/Sidebar';
+import TopBar from './components/layout/TopBar';
+import RightPanel from './components/layout/RightPanel';
 
-import React, { useState, useEffect } from 'react';
-import type { Issuer, Document } from './types';
+// Pages
+import Home from './pages/Home';
+import Discover from './pages/Discover';
+import Finance from './pages/Finance';
+import AIAssistant from './pages/AIAssistant';
+import Research from './pages/Research';
+import IssuerDetail from './pages/IssuerDetail';
+import Library from './pages/Library';
 
-// --- Funciones de Ayuda ---
-const groupDocumentsByCategory = (documents: Document[]) => {
-  return documents.reduce((acc, doc) => {
-    const category = doc.type || 'Otros';
-    (acc[category] = acc[category] || []).push(doc);
-    return acc;
-  }, {} as Record<string, Document[]>);
-};
+import Standardizer from './pages/Standardizer';
+import Comparator from './pages/Comparator';
 
-// --- Componentes ---
-
-interface IssuerDetailViewProps {
-  issuer: Issuer;
-  onBack: () => void;
-}
-
-const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) => {
-  const [documents, setDocuments] = useState<Document[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchDocuments = async () => {
-      if (!issuer || !issuer.name) {
-        setError('Información del emisor inválida.');
-        setLoading(false);
-        return;
-      }
-
-      try {
-        setLoading(true);
-        setError(null);
-        
-        // Simulación de carga de documentos, ya que están en el objeto issuer
-        setDocuments(issuer.documents || []);
-
-      } catch (e) {
-        setError(e instanceof Error ? e.message : 'Ocurrió un error desconocido al cargar los documentos.');
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDocuments();
-  }, [issuer]);
-
-  const groupedDocuments = groupDocumentsByCategory(documents);
-  const FALLBACK_LOGO_URL = 'https://www.bolsanic.com/wp-content/uploads/2016/12/logo.png';
-
-  return (
-    <div className="p-4 bg-white rounded-lg shadow-md animate-fade-in">
-      <button onClick={onBack} className="mb-4 text-sm font-medium text-blue-600 hover:text-blue-800">{'‹ Volver a la Lista'}</button>
-      <div className="flex items-center mb-4">
-         <img 
-           src={issuer.logoUrl || FALLBACK_LOGO_URL} 
-           alt={`${issuer.name} Logo`} 
-           className="h-12 w-12 mr-4"
-           onError={(e) => { e.currentTarget.src = FALLBACK_LOGO_URL; }}
-         />
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">{issuer.name}</h2>
-          {issuer.acronym && <p className="text-sm text-gray-600">{issuer.acronym}</p>}
-        </div>
-      </div>
-      <span className={`inline-block px-2 py-1 mt-2 text-xs font-semibold rounded-full ${issuer.sector === 'Público' ? 'bg-blue-200 text-blue-800' : 'bg-green-200 text-green-800'}`}>
-        {issuer.sector || 'N/A'}
-      </span>
-      
-      <div className="mt-6">
-        <h3 className="text-xl font-semibold border-b pb-2">Documentos y Hechos Relevantes</h3>
-        {loading ? (
-          <p className="text-sm text-gray-500 mt-4">Cargando documentos...</p>
-        ) : error ? (
-          <p className="text-sm text-red-500 mt-4">{error}</p>
-        ) : documents.length > 0 ? (
-          <div className="mt-4 space-y-4">
-            {Object.entries(groupedDocuments).map(([category, docs]) => (
-              <div key={category}>
-                <h4 className="font-bold text-gray-700">{category}</h4>
-                <ul className="list-disc list-inside mt-2 space-y-2 pl-4">
-                  {docs.map((doc, index) => (
-                    <li key={index}>
-                      <a href={doc.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                        {doc.title}
-                      </a>
-                      {doc.date && <span className="text-xs text-gray-500 ml-2">({doc.date})</span>}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-gray-500 mt-4">No se encontraron documentos para este emisor.</p>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const VaultModule = () => {
-  const [issuers, setIssuers] = useState<Issuer[]>([]);
-  const [selectedIssuer, setSelectedIssuer] = useState<Issuer | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  useEffect(() => {
-    const fetchIssuers = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const fallbackData = (await import('./issuers.json')).default;
-        const transformedIssuers: Issuer[] = fallbackData.map((issuer: any) => ({
-          ...issuer,
-          id: issuer.name,
-          acronym: issuer.acronym || '',
-          documents: issuer.documents || [],
-        }));
-        setIssuers(transformedIssuers.sort((a, b) => a.name.localeCompare(b.name)));
-      } catch (fallbackError) {
-        console.error("Fallo al cargar el fallback local", fallbackError);
-        setError('No se pudo conectar a la API ni cargar datos locales.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchIssuers();
-  }, []);
-
-  const filteredIssuers = issuers.filter((issuer) =>
-    issuer.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  if (selectedIssuer) {
-    return <IssuerDetailView issuer={selectedIssuer} onBack={() => setSelectedIssuer(null)} />;
-  }
-
-  return (
-    <div className="p-4">
-      <h2 className="text-2xl font-semibold mb-4">Módulo 1: La Bóveda Inteligente</h2>
-      <input
-        type="text"
-        placeholder="Buscar emisor..."
-        className="w-full p-2 mb-4 border rounded-lg"
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="bg-white p-4 rounded-lg shadow-md animate-pulse">
-              <div className="h-6 bg-gray-200 rounded w-3/4"></div>
-              <div className="h-4 bg-gray-200 rounded w-1/2 mt-2"></div>
-            </div>
-          ))}
-        </div>
-      ) : error && issuers.length === 0 ? (
-        <div className="p-4 text-center text-red-500">Error al cargar datos: {error}.</div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredIssuers.map((issuer) => (
-            <div 
-              key={issuer.id}
-              onClick={() => setSelectedIssuer(issuer)}
-              className="bg-white p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-200 ease-in-out"
-            >
-              <h3 className="text-lg font-bold text-gray-800">{issuer.name}</h3>
-              <p className="text-sm text-gray-500">Clic para ver documentos</p>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
-const StandardizerModule = () => (
-  <div className="p-4 bg-white rounded-lg shadow-md">
-    <h2 className="text-2xl font-semibold">Módulo 2: El Estandarizador</h2>
-    <p className="mt-2 text-gray-600">Esta sección contendrá herramientas para extraer, limpiar y estandarizar datos de los documentos financieros. Próximamente.</p>
-    <div className="mt-4 p-4 border-l-4 border-blue-500 bg-blue-50">
-      <h4 className="font-bold text-blue-800">En Desarrollo</h4>
-      <p className="text-sm text-blue-700">Esta funcionalidad está actualmente en construcción. ¡Vuelve pronto para ver las actualizaciones!</p>
-    </div>
-  </div>
-);
-
-const ComparatorModule = () => (
-  <div className="p-4 bg-white rounded-lg shadow-md">
-    <h2 className="text-2xl font-semibold">Módulo 3: El Comparador</h2>
-    <p className="mt-2 text-gray-600">Esta sección ofrecerá herramientas para analizar y comparar métricas financieras estandarizadas entre diferentes emisores. Próximamente.</p>
-    <div className="mt-4 p-4 border-l-4 border-green-500 bg-green-50">
-      <h4 className="font-bold text-green-800">En Desarrollo</h4>
-      <p className="text-sm text-green-700">Esta funcionalidad está actualmente en construcción. ¡Vuelve pronto para ver las actualizaciones!</p>
-    </div>
-  </div>
-);
-
-
-// --- Componente Principal de la Aplicación ---
 function App() {
-  const [activeModule, setActiveModule] = useState('vault');
-
-  const renderModule = () => {
-    switch (activeModule) {
-      case 'vault': return <VaultModule />;
-      case 'standardizer': return <StandardizerModule />;
-      case 'comparator': return <ComparatorModule />;
-      default: return <VaultModule />;
-    }
-  };
-
+  // Layout wrapper
   return (
-    <div className="min-h-screen bg-gray-100 font-sans">
-      <header className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold leading-tight text-gray-900">El Estandarizador (v2)</h1>
-          <p className="text-sm text-gray-500">Plataforma de Datos para el Mercado de Capitales de Nicaragua</p>
-        </div>
-      </header>
-      <nav className="bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center h-12">
-            <div className="flex items-baseline space-x-4">
-              <button onClick={() => setActiveModule('vault')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeModule === 'vault' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>Bóveda Inteligente</button>
-              <button onClick={() => setActiveModule('standardizer')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeModule === 'standardizer' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>Estandarizador</button>
-              <button onClick={() => setActiveModule('comparator')} className={`px-3 py-2 rounded-md text-sm font-medium ${activeModule === 'comparator' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>Comparador</button>
-            </div>
-          </div>
-        </div>
-      </nav>
-      <main>
-        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">{renderModule()}</div>
-      </main>
-    </div>
+    <Router>
+      <div className="min-h-screen bg-bg-primary">
+        {/* Sidebar - Fixed Left */}
+        <Sidebar />
+
+        {/* TopBar - Fixed Top */}
+        <TopBar />
+
+        {/* Main Content - Center */}
+        <main className="ml-16 mr-80 mt-16 p-6 min-h-screen">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/discover" element={<Discover />} />
+            <Route path="/library" element={<Library />} />
+            <Route path="/finance" element={<Finance />} />
+            <Route path="/research" element={<Research />} />
+            <Route path="/issuer/:issuerId" element={<IssuerDetail />} />
+            <Route path="/ai" element={<AIAssistant />} />
+            <Route path="/standardizer" element={<Standardizer />} />
+            <Route path="/comparator" element={<Comparator />} />
+          </Routes>
+        </main>
+
+        {/* RightPanel - Fixed Right */}
+        <RightPanel />
+      </div>
+    </Router>
   );
 }
 

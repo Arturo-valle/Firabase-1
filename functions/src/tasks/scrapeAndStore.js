@@ -10,9 +10,18 @@ const { scrapeBolsanicFacts } = require("../scrapers/getBolsanicFacts");
 const { scrapeBcnExchangeRate } = require("../scrapers/getBcnRates");
 const { issuers: staticIssuers } = require("../data/issuers");
 
-const getBaseName = (name) => {
+const getBaseName = (issuerOrName) => {
+    if (typeof issuerOrName === 'object' && issuerOrName.acronym) {
+        return issuerOrName.acronym.toLowerCase();
+    }
+    const name = typeof issuerOrName === 'string' ? issuerOrName : issuerOrName.name;
     if (!name) return "unknown_issuer";
-    return name.split(',')[0].split('(')[0].trim().toLowerCase().replace(/\s+/g, '_');
+
+    // Normalize: remove accents, lowercase, remove common suffixes
+    return name.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .split(',')[0].split('(')[0].trim()
+        .replace(/\s+/g, '_');
 };
 
 const findBestIssuerMatch = (fact, issuers) => {
@@ -67,16 +76,25 @@ const scrapeAndStore = async () => {
         await batch.commit();
     }
 
-    const [dynamicIssuers, rawFacts, exchangeRate] = await Promise.all([
+    const results = await Promise.allSettled([
         scrapeIssuers(),
         scrapeBolsanicFacts(),
         scrapeBcnExchangeRate(),
     ]);
 
+    const dynamicIssuers = results[0].status === 'fulfilled' ? results[0].value : [];
+    if (results[0].status === 'rejected') functions.logger.error("Error scraping issuers:", results[0].reason);
+
+    const rawFacts = results[1].status === 'fulfilled' ? results[1].value : [];
+    if (results[1].status === 'rejected') functions.logger.error("Error scraping facts:", results[1].reason);
+
+    const exchangeRate = results[2].status === 'fulfilled' ? results[2].value : null;
+    if (results[2].status === 'rejected') functions.logger.error("Error scraping exchange rate:", results[2].reason);
+
     // Merge dynamic and static issuers
     const issuerMap = new Map();
     [...staticIssuers, ...dynamicIssuers].forEach(issuer => {
-        const baseName = getBaseName(issuer.name);
+        const baseName = getBaseName(issuer);
         if (!issuerMap.has(baseName)) {
             issuerMap.set(baseName, issuer);
         }
@@ -87,7 +105,7 @@ const scrapeAndStore = async () => {
     rawFacts.forEach(fact => {
         const matchedIssuer = findBestIssuerMatch(fact, issuers);
         if (matchedIssuer) {
-            const baseName = getBaseName(matchedIssuer.name);
+            const baseName = getBaseName(matchedIssuer);
             if (!documentsByIssuer.has(baseName)) {
                 documentsByIssuer.set(baseName, []);
             }
@@ -98,7 +116,7 @@ const scrapeAndStore = async () => {
     });
 
     for (const issuer of issuers) {
-        const baseName = getBaseName(issuer.name);
+        const baseName = getBaseName(issuer);
         let documentsToStore = documentsByIssuer.get(baseName) || [];
 
         if (issuer.detailUrl) {
@@ -126,7 +144,19 @@ const scrapeAndStore = async () => {
                     id: baseName, name: issuer.name, acronym: issuer.acronym,
                     sector: issuer.sector, documents: uniqueDocs,
                 });
+            } else {
+                // Save issuer even if document download failed, but with empty docs
+                await db.collection("issuers").doc(baseName).set({
+                    id: baseName, name: issuer.name, acronym: issuer.acronym,
+                    sector: issuer.sector, documents: [],
+                });
             }
+        } else {
+            // Save issuer even if no documents found
+            await db.collection("issuers").doc(baseName).set({
+                id: baseName, name: issuer.name, acronym: issuer.acronym,
+                sector: issuer.sector, documents: [],
+            });
         }
     }
 
@@ -135,4 +165,4 @@ const scrapeAndStore = async () => {
     }
 };
 
-module.exports = { scrapeAndStore };
+module.exports = { scrapeAndStore, downloadAndStore };

@@ -47,7 +47,7 @@ async function scrapeIssuers() {
                     name = nameText.replace(/\(([^)]+)\)/, '').trim();
                 }
                 name = name.replace(/, S\.A\./i, "").replace(/\(EMISOR\)/i, "").trim();
-                const issuer = { name, acronym, sector: "Privado", detailUrl };
+                const issuer = { name, acronym, sector: "Privado", detailUrl, active: true };
                 if (!acronym) issuersNeedingDetailScrape.push(issuer);
                 else issuers.push(issuer);
                 processedUrls.add(detailUrl);
@@ -62,7 +62,7 @@ async function scrapeIssuers() {
                 const absoluteUrl = new URL(detailUrlRelative, BOLSANC_ISSUERS_URL).href;
                 if (!processedUrls.has(absoluteUrl)) {
                     const name = nameText.replace(/, S\.A\./i, "").replace(/sociedad administradora de fondos de inversi(o|ó)n/i, "").trim();
-                    issuersNeedingDetailScrape.push({ name, acronym: "", sector: "Internacional", detailUrl: absoluteUrl });
+                    issuersNeedingDetailScrape.push({ name, acronym: "", sector: "Internacional", detailUrl: absoluteUrl, active: true });
                     processedUrls.add(absoluteUrl);
                 }
             }
@@ -70,7 +70,7 @@ async function scrapeIssuers() {
 
         $("div.et_pb_text_11 div.et_pb_text_inner ul li").each((_, element) => {
             const name = $(element).text().trim().replace(/, S\.A\./i, "").trim();
-            if (name) issuers.push({ name, acronym: "", sector: "Inactivo", detailUrl: null });
+            if (name) issuers.push({ name, acronym: "", sector: "Inactivo", detailUrl: null, active: false });
         });
 
         if (issuersNeedingDetailScrape.length > 0) {
@@ -81,6 +81,42 @@ async function scrapeIssuers() {
         }
 
         functions.logger.info(`Successfully scraped ${issuers.length} total issuers.`);
+
+        // --- NEW: Save to Firestore ---
+        const admin = require('firebase-admin');
+        if (admin.apps.length === 0) {
+            admin.initializeApp();
+        }
+        const db = admin.firestore();
+        const batch = db.batch();
+        const timestamp = admin.firestore.FieldValue.serverTimestamp();
+
+        // 1. Save individual issuer documents
+        for (const issuer of issuers) {
+            // Create a safe ID from the name
+            const issuerId = issuer.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            const docRef = db.collection('issuers').doc(issuerId);
+            batch.set(docRef, { ...issuer, lastUpdated: timestamp }, { merge: true });
+        }
+
+        // 2. Update a metadata document with the full list of active issuers
+        const activeIssuers = issuers.filter(i => i.active).map(i => ({
+            name: i.name,
+            id: i.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+            acronym: i.acronym
+        }));
+
+        const metadataRef = db.collection('system').doc('market_metadata');
+        batch.set(metadataRef, {
+            activeIssuers: activeIssuers,
+            lastScraped: timestamp,
+            totalActive: activeIssuers.length
+        }, { merge: true });
+
+        await batch.commit();
+        functions.logger.info("Synced issuers to Firestore.");
+        // ------------------------------
+
         return issuers;
     } catch (error) {
         functions.logger.error("Fatal error during scrapeIssuers:", error);

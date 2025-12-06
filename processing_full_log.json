@@ -1,0 +1,39 @@
+{
+  "processed": [],
+  "failed": [
+    {
+      "success": false,
+      "issuerId": "banco de finanzas",
+      "issuerName": "Banco De Finanzas",
+      "error": "Request timeout",
+      "duration": 554.561,
+      "timestamp": "2025-11-24T01:14:24.784Z"
+    },
+    {
+      "success": false,
+      "issuerId": "corporacion agricola",
+      "issuerName": "Corporación Agricola",
+      "error": "Request timeout",
+      "duration": 540.781,
+      "timestamp": "2025-11-24T01:23:55.572Z"
+    },
+    {
+      "success": false,
+      "issuerId": "fama",
+      "issuerName": "FAMA",
+      "error": "Request timeout",
+      "duration": 540.174,
+      "timestamp": "2025-11-24T01:33:25.756Z"
+    },
+    {
+      "success": false,
+      "issuerId": "banco de la produccion",
+      "issuerName": "Banco De La Producción",
+      "error": "Request timeout",
+      "duration": 1892.809,
+      "timestamp": "2025-11-24T02:05:28.593Z"
+    }
+  ],
+  "startTime": "2025-11-24T01:05:05.192Z",
+  "estimatedCost": 0
+}

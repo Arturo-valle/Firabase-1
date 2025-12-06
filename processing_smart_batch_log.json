@@ -1,0 +1,466 @@
+{
+  "batches": [
+    {
+      "success": true,
+      "issuerId": "banco de finanzas",
+      "issuerName": "Banco De Finanzas",
+      "batchNumber": 1,
+      "duration": 225.071,
+      "response": {
+        "success": true,
+        "issuer": "Banco De Finanzas",
+        "processedCount": 9,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:09:56.550Z"
+    },
+    {
+      "success": true,
+      "issuerId": "banco de finanzas",
+      "issuerName": "Banco De Finanzas",
+      "batchNumber": 2,
+      "duration": 219.956,
+      "response": {
+        "success": true,
+        "issuer": "Banco De Finanzas",
+        "processedCount": 9,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:13:51.522Z"
+    },
+    {
+      "success": true,
+      "issuerId": "banco de finanzas",
+      "issuerName": "Banco De Finanzas",
+      "batchNumber": 3,
+      "duration": 220.097,
+      "response": {
+        "success": true,
+        "issuer": "Banco De Finanzas",
+        "processedCount": 9,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:17:46.625Z"
+    },
+    {
+      "success": true,
+      "issuerId": "banco de finanzas",
+      "issuerName": "Banco De Finanzas",
+      "batchNumber": 4,
+      "duration": 216.93,
+      "response": {
+        "success": true,
+        "issuer": "Banco De Finanzas",
+        "processedCount": 9,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:21:38.563Z"
+    },
+    {
+      "success": true,
+      "issuerId": "banco de finanzas",
+      "issuerName": "Banco De Finanzas",
+      "batchNumber": 5,
+      "duration": 220.255,
+      "response": {
+        "success": true,
+        "issuer": "Banco De Finanzas",
+        "processedCount": 9,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:25:33.825Z"
+    },
+    {
+      "success": true,
+      "issuerId": "banco de finanzas",
+      "issuerName": "Banco De Finanzas",
+      "batchNumber": 6,
+      "duration": 213.86,
+      "response": {
+        "success": true,
+        "issuer": "Banco De Finanzas",
+        "processedCount": 9,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:29:22.692Z"
+    },
+    {
+      "success": true,
+      "issuerId": "banco de finanzas",
+      "issuerName": "Banco De Finanzas",
+      "batchNumber": 7,
+      "duration": 224.672,
+      "response": {
+        "success": true,
+        "issuer": "Banco De Finanzas",
+        "processedCount": 9,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:33:22.370Z"
+    },
+    {
+      "success": true,
+      "issuerId": "corporacion agricola",
+      "issuerName": "Corporación Agricola",
+      "batchNumber": 1,
+      "duration": 80.604,
+      "response": {
+        "success": true,
+        "issuer": "Corporación Agricola",
+        "processedCount": 4,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:44:13.454Z"
+    },
+    {
+      "success": true,
+      "issuerId": "corporacion agricola",
+      "issuerName": "Corporación Agricola",
+      "batchNumber": 2,
+      "duration": 81.436,
+      "response": {
+        "success": true,
+        "issuer": "Corporación Agricola",
+        "processedCount": 4,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:45:49.916Z"
+    },
+    {
+      "success": true,
+      "issuerId": "corporacion agricola",
+      "issuerName": "Corporación Agricola",
+      "batchNumber": 3,
+      "duration": 84.254,
+      "response": {
+        "success": true,
+        "issuer": "Corporación Agricola",
+        "processedCount": 4,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:47:29.174Z"
+    },
+    {
+      "success": true,
+      "issuerId": "corporacion agricola",
+      "issuerName": "Corporación Agricola",
+      "batchNumber": 4,
+      "duration": 79.824,
+      "response": {
+        "success": true,
+        "issuer": "Corporación Agricola",
+        "processedCount": 4,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:49:04.001Z"
+    },
+    {
+      "success": true,
+      "issuerId": "corporacion agricola",
+      "issuerName": "Corporación Agricola",
+      "batchNumber": 5,
+      "duration": 78.348,
+      "response": {
+        "success": true,
+        "issuer": "Corporación Agricola",
+        "processedCount": 4,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:50:37.356Z"
+    },
+    {
+      "success": true,
+      "issuerId": "corporacion agricola",
+      "issuerName": "Corporación Agricola",
+      "batchNumber": 6,
+      "duration": 80.455,
+      "response": {
+        "success": true,
+        "issuer": "Corporación Agricola",
+        "processedCount": 4,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:52:12.823Z"
+    },
+    {
+      "success": true,
+      "issuerId": "corporacion agricola",
+      "issuerName": "Corporación Agricola",
+      "batchNumber": 7,
+      "duration": 84.532,
+      "response": {
+        "success": true,
+        "issuer": "Corporación Agricola",
+        "processedCount": 4,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:53:52.365Z"
+    },
+    {
+      "success": true,
+      "issuerId": "fama",
+      "issuerName": "FAMA",
+      "batchNumber": 1,
+      "duration": 177.578,
+      "response": {
+        "success": true,
+        "issuer": "FAMA",
+        "processedCount": 7,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T02:57:04.945Z"
+    },
+    {
+      "success": true,
+      "issuerId": "fama",
+      "issuerName": "FAMA",
+      "batchNumber": 2,
+      "duration": 181.903,
+      "response": {
+        "success": true,
+        "issuer": "FAMA",
+        "processedCount": 7,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:00:21.856Z"
+    },
+    {
+      "success": true,
+      "issuerId": "fama",
+      "issuerName": "FAMA",
+      "batchNumber": 3,
+      "duration": 178.024,
+      "response": {
+        "success": true,
+        "issuer": "FAMA",
+        "processedCount": 7,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:03:34.962Z"
+    },
+    {
+      "success": true,
+      "issuerId": "fama",
+      "issuerName": "FAMA",
+      "batchNumber": 4,
+      "duration": 175.955,
+      "response": {
+        "success": true,
+        "issuer": "FAMA",
+        "processedCount": 7,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:06:45.922Z"
+    },
+    {
+      "success": true,
+      "issuerId": "fama",
+      "issuerName": "FAMA",
+      "batchNumber": 5,
+      "duration": 174.016,
+      "response": {
+        "success": true,
+        "issuer": "FAMA",
+        "processedCount": 7,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:09:54.945Z"
+    },
+    {
+      "success": true,
+      "issuerId": "fama",
+      "issuerName": "FAMA",
+      "batchNumber": 6,
+      "duration": 178.726,
+      "response": {
+        "success": true,
+        "issuer": "FAMA",
+        "processedCount": 7,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:13:08.683Z"
+    },
+    {
+      "success": true,
+      "issuerId": "banco de la produccion",
+      "issuerName": "Banco De La Producción",
+      "batchNumber": 1,
+      "duration": 201.626,
+      "response": {
+        "success": true,
+        "issuer": "Banco De La Producción",
+        "processedCount": 8,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:16:45.327Z"
+    },
+    {
+      "success": true,
+      "issuerId": "banco de la produccion",
+      "issuerName": "Banco De La Producción",
+      "batchNumber": 2,
+      "duration": 202.948,
+      "response": {
+        "success": true,
+        "issuer": "Banco De La Producción",
+        "processedCount": 8,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:20:23.281Z"
+    },
+    {
+      "success": true,
+      "issuerId": "banco de la produccion",
+      "issuerName": "Banco De La Producción",
+      "batchNumber": 3,
+      "duration": 197.023,
+      "response": {
+        "success": true,
+        "issuer": "Banco De La Producción",
+        "processedCount": 8,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:23:55.316Z"
+    },
+    {
+      "success": true,
+      "issuerId": "banco de la produccion",
+      "issuerName": "Banco De La Producción",
+      "batchNumber": 4,
+      "duration": 208.45,
+      "response": {
+        "success": true,
+        "issuer": "Banco De La Producción",
+        "processedCount": 8,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:27:38.776Z"
+    },
+    {
+      "success": true,
+      "issuerId": "banco de la produccion",
+      "issuerName": "Banco De La Producción",
+      "batchNumber": 5,
+      "duration": 196.461,
+      "response": {
+        "success": true,
+        "issuer": "Banco De La Producción",
+        "processedCount": 8,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:31:10.252Z"
+    },
+    {
+      "success": true,
+      "issuerId": "banco de la produccion",
+      "issuerName": "Banco De La Producción",
+      "batchNumber": 6,
+      "duration": 204.39,
+      "response": {
+        "success": true,
+        "issuer": "Banco De La Producción",
+        "processedCount": 8,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:34:49.651Z"
+    },
+    {
+      "success": true,
+      "issuerId": "fid, sociedad anonima",
+      "issuerName": "FID, Sociedad Anónima",
+      "batchNumber": 1,
+      "duration": 12.626,
+      "response": {
+        "success": true,
+        "issuer": "FID, Sociedad Anónima",
+        "processedCount": 2,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:35:17.291Z"
+    },
+    {
+      "success": true,
+      "issuerId": "fid, sociedad anonima",
+      "issuerName": "FID, Sociedad Anónima",
+      "batchNumber": 2,
+      "duration": 12.493,
+      "response": {
+        "success": true,
+        "issuer": "FID, Sociedad Anónima",
+        "processedCount": 2,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:35:44.788Z"
+    },
+    {
+      "success": true,
+      "issuerId": "fid, sociedad anonima",
+      "issuerName": "FID, Sociedad Anónima",
+      "batchNumber": 3,
+      "duration": 11.341,
+      "response": {
+        "success": true,
+        "issuer": "FID, Sociedad Anónima",
+        "processedCount": 2,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:36:11.130Z"
+    },
+    {
+      "success": true,
+      "issuerId": "financiera fdl",
+      "issuerName": "Financiera FDL",
+      "batchNumber": 1,
+      "duration": 91.515,
+      "response": {
+        "success": true,
+        "issuer": "Financiera FDL",
+        "processedCount": 3,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:37:57.653Z"
+    },
+    {
+      "success": true,
+      "issuerId": "financiera fdl",
+      "issuerName": "Financiera FDL",
+      "batchNumber": 2,
+      "duration": 86.743,
+      "response": {
+        "success": true,
+        "issuer": "Financiera FDL",
+        "processedCount": 3,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:39:39.407Z"
+    },
+    {
+      "success": true,
+      "issuerId": "invercasa safi",
+      "issuerName": "INVERCASA SAFI",
+      "batchNumber": 1,
+      "duration": 35.507,
+      "response": {
+        "success": true,
+        "issuer": "INVERCASA SAFI",
+        "processedCount": 4,
+        "errorCount": 0
+      },
+      "timestamp": "2025-11-24T03:40:29.926Z"
+    }
+  ],
+  "failed": [
+    {
+      "success": false,
+      "issuerId": "banco de finanzas",
+      "issuerName": "Banco De Finanzas",
+      "batchNumber": 8,
+      "error": "Request timeout",
+      "duration": 540.461,
+      "timestamp": "2025-11-24T02:42:37.837Z"
+    }
+  ],
+  "startTime": "2025-11-24T02:06:06.415Z",
+  "totalDocsProcessed": 640,
+  "estimatedCost": 1.8871872000000003
+}

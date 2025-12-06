@@ -21,3 +21,61 @@ export interface Issuer {
   error?: string;       // An optional error message if data scraping failed for this issuer
   detailUrl?: string;   // Original URL, kept for reference but no longer used for fetching
 }
+
+// Financial Metrics Types
+export interface MetricsData {
+  liquidez: {
+    ratioCirculante: number | null;
+    pruebaAcida: number | null;
+    capitalTrabajo: number | null;
+  };
+  solvencia: {
+    deudaActivos: number | null;
+    deudaPatrimonio: number | null;
+    coberturIntereses: number | null;
+  };
+  rentabilidad: {
+    roe: number | null;
+    roa: number | null;
+    margenNeto: number | null;
+    utilidadNeta: number | null;
+  };
+  eficiencia: {
+    rotacionActivos: number | null;
+    rotacionCartera: number | null;
+    morosidad: number | null;
+  };
+  capital: {
+    activosTotales: number | null;
+    patrimonio: number | null;
+    pasivos: number | null;
+  };
+  calificacion: {
+    rating: string | null;
+    perspectiva: string | null;
+    fecha: string | null;
+  };
+  metadata: {
+    periodo: string;
+    moneda: string;
+    fuente: string;
+  };
+  extractedAt?: Date | string;
+  issuerId: string;
+  issuerName: string;
+  chunksAnalyzed?: number;
+}
+
+export interface IssuerMetrics extends MetricsData {
+  // Para uso en comparador
+}
+
+export interface ComparisonData {
+  issuers: IssuerMetrics[];
+  rankings?: {
+    liquidez: string[];
+    solvencia: string[];
+    rentabilidad: string[];
+    overall: string[];
+  };
+}
