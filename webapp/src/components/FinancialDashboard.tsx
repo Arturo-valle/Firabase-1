@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import type { Issuer } from '../types';
 import { ArrowTrendingUpIcon } from '@heroicons/react/24/outline';
 import { fetchIssuerHistory } from '../utils/marketDataApi';
+import { formatCurrency } from '../utils/formatters';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface FinancialDashboardProps {
@@ -87,7 +88,7 @@ const FinancialDashboard: React.FC<FinancialDashboardProps> = ({ issuers }) => {
                                     <Tooltip
                                         contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px', color: '#f3f4f6' }}
                                         itemStyle={{ color: '#c4b5fd' }}
-                                        formatter={(value: number) => [`C$ ${value.toLocaleString()}`, 'Activos Totales']}
+                                        formatter={(value: number) => [formatCurrency(value, 'NIO'), 'Activos Totales']}
                                     />
                                     <Area type="monotone" dataKey="value" stroke="#8b5cf6" strokeWidth={3} fillOpacity={1} fill="url(#colorValue)" />
                                 </AreaChart>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatPercentage, formatNumber, formatRatio } from '../utils/formatters';
 
 export interface MetricCardProps {
     icon: string;
@@ -39,18 +40,13 @@ const MetricCard: React.FC<MetricCardProps> = ({
 
     const formatValue = (val: number | string | null): string => {
         if (val === null || val === undefined) return 'N/D';
-
         if (typeof val === 'string') return val;
 
-        if (unit === '%') {
-            return `${val.toFixed(2)}%`;
-        } else if (unit === 'M') {
-            return `${val.toLocaleString('es-NI', { maximumFractionDigits: 1 })}M`;
-        } else if (unit === 'x') {
-            return `${val.toFixed(2)}x`;
-        }
+        if (unit === '%') return formatPercentage(val);
+        if (unit === 'M') return formatNumber(val, 'M');
+        if (unit === 'x') return formatRatio(val);
 
-        return val.toLocaleString('es-NI', { maximumFractionDigits: 2 });
+        return formatNumber(val);
     };
 
     const getTrendIcon = () => {

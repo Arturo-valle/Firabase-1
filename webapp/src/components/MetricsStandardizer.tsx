@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import type { Issuer, MetricsData } from '../types';
 import MetricCard from './MetricCard';
 import { fetchIssuerMetrics, extractIssuerMetrics } from '../utils/metricsApi';
+import { formatDate } from '../utils/formatters';
 
 interface MetricsStandardizerProps {
     issuers: Issuer[];
@@ -176,9 +177,7 @@ const MetricsStandardizer: React.FC<MetricsStandardizerProps> = ({ issuers }) =>
                             <div>
                                 <span className="text-text-secondary font-medium">Última Actualización:</span>
                                 <p className="text-text-primary font-semibold">
-                                    {metrics.extractedAt
-                                        ? new Date(metrics.extractedAt).toLocaleDateString('es-NI')
-                                        : 'N/D'}
+                                    {formatDate(metrics.extractedAt)}
                                 </p>
                             </div>
                         </div>

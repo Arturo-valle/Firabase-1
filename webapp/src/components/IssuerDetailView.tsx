@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { Issuer, Document } from '../types';
+import { formatDate } from '../utils/formatters';
 
 // --- Funciones de Ayuda ---
 const groupDocumentsByCategory = (documents: Document[]) => {
@@ -84,7 +85,7 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
                                         <li key={index} className="bg-bg-tertiary hover:bg-bg-elevated border border-border-subtle rounded-lg p-3 transition-all duration-200">
                                             <a href={doc.url} target="_blank" rel="noopener noreferrer" className="flex flex-col h-full">
                                                 <span className="text-text-primary font-medium hover:text-accent-primary transition-colors line-clamp-2">{doc.title}</span>
-                                                {doc.date && <span className="text-xs text-text-tertiary mt-2 block">{doc.date}</span>}
+                                                {doc.date && <span className="text-xs text-text-tertiary mt-2 block">{formatDate(doc.date)}</span>}
                                             </a>
                                         </li>
                                     ))}

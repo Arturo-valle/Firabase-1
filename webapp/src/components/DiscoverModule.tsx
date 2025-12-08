@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { Issuer } from '../types';
+import { formatDate } from '../utils/formatters';
 
 interface DiscoverModuleProps {
     issuers: Issuer[];
@@ -77,7 +78,7 @@ const DiscoverModule: React.FC<DiscoverModuleProps> = ({ issuers }) => {
                                 {item.issuerName}
                             </p>
                             <div className="mt-auto flex items-center gap-2 text-xs text-text-tertiary border-t border-border-subtle pt-3">
-                                <span>{item.date || 'Fecha desconocida'}</span>
+                                <span>{formatDate(item.date)}</span>
                                 {item.url && (
                                     <>
                                         <span>•</span>

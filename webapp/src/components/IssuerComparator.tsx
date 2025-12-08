@@ -3,6 +3,7 @@ import type { Issuer, IssuerMetrics } from '../types';
 import ComparisonTable from './ComparisonTable';
 import ComparisonCharts from './ComparisonCharts';
 import { fetchIssuerMetrics } from '../utils/metricsApi';
+import { formatDate } from '../utils/formatters';
 
 interface IssuerComparatorProps {
     issuers: Issuer[];
@@ -234,9 +235,7 @@ const IssuerComparator: React.FC<IssuerComparatorProps> = ({ issuers }) => {
                                         Período: {issuer.metadata?.periodo || 'N/D'}
                                     </p>
                                     <p className="text-text-tertiary text-xs">
-                                        Actualizado: {issuer.extractedAt
-                                            ? new Date(issuer.extractedAt).toLocaleDateString('es-NI')
-                                            : 'N/D'}
+                                        Actualizado: {formatDate(issuer.extractedAt)}
                                     </p>
                                 </div>
                             ))}
