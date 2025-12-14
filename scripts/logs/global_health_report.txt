@@ -1,0 +1,12 @@
+Starting Global Vectorization Health Check...
+------------------------------------------------
+| Issuer      | Total Chunks | Financial Docs | Recent (2024/25) | Last Processed      |
+------------------------------------------------
+| agricorp    | 0            | 0              | 0                | N/A                 |
+| banpro      | 300          | 0              | 191              | 2025-11-23          |
+| bdf         | 134          | 0              | 105              | 2025-11-23          |
+| fama        | 500          | 257            | 189              | 2025-12-05          |
+| fdl         | 0            | 0              | 0                | N/A                 |
+| fid         | 0            | 0              | 0                | N/A                 |
+| horizonte   | 0            | 0              | 0                | N/A                 |
+------------------------------------------------

@@ -1,5 +1,6 @@
 import React from 'react';
 import type { IssuerMetrics } from '../types';
+import { formatCurrency, formatPercentage, formatRatio, formatNumber } from '../utils/formatters';
 
 interface ComparisonTableProps {
     issuers: IssuerMetrics[];
@@ -29,11 +30,11 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ issuers, highlightBes
     const formatValue = (value: number | null, unit: string = ''): string => {
         if (value === null) return 'N/D';
 
-        if (unit === '%') return `${value.toFixed(2)}%`;
-        if (unit === 'M') return `${value.toLocaleString('es-NI', { maximumFractionDigits: 1 })}M`;
-        if (unit === 'x') return `${value.toFixed(2)}x`;
+        if (unit === '%') return formatPercentage(value);
+        if (unit === 'M') return formatCurrency(value); // Assumes USD millions by default
+        if (unit === 'x') return formatRatio(value);
 
-        return value.toLocaleString('es-NI', { maximumFractionDigits: 2 });
+        return formatNumber(value);
     };
 
     const getCellClass = (value: number | null, bestValue: number | null, worstValue: number | null): string => {
@@ -89,18 +90,41 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ issuers, highlightBes
     ];
 
     // Get nested value from object
-    const getValue = (obj: any, path: string): number | null => {
+    // Get nested value from object
+    const getValue = (obj: Record<string, unknown>, path: string): number | null => {
         const keys = path.split('.');
-        let value: any = obj;
+        let value: unknown = obj;
         for (const key of keys) {
-            value = value?.[key];
-            if (value === undefined) return null;
+            if (value && typeof value === 'object' && key in value) {
+                value = (value as Record<string, unknown>)[key];
+            } else {
+                return null;
+            }
         }
-        return value;
+        return typeof value === 'number' ? value : null;
     };
+
+    // Check for period mismatch
+    const periods = issuers.map(i => i.metadata?.periodo || 'N/D');
+    const uniquePeriods = Array.from(new Set(periods));
+    const hasMismatch = uniquePeriods.length > 1;
 
     return (
         <div className="card overflow-hidden border border-border-subtle">
+            {hasMismatch && (
+                <div className="bg-yellow-900/20 border-b border-yellow-700/30 px-6 py-3 flex items-start gap-3">
+                    <span className="text-xl">⚠️</span>
+                    <div>
+                        <p className="text-yellow-200 font-bold text-sm">
+                            Atención: Diferencia de Periodos Detectada
+                        </p>
+                        <p className="text-yellow-200/80 text-xs mt-1">
+                            Estás comparando métricas de diferentes fechas de corte ({uniquePeriods.join(' vs ')}).
+                            Esto puede afectar la precisión de la comparación (ej: anual vs semestral).
+                        </p>
+                    </div>
+                </div>
+            )}
             <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-border-subtle">
                     <thead className="bg-bg-tertiary sticky top-0">
@@ -111,10 +135,13 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ issuers, highlightBes
                             {issuers.map((issuer, idx) => (
                                 <th key={idx} className="px-6 py-4 text-center text-xs font-bold text-text-secondary uppercase tracking-wider">
                                     <div className="flex flex-col">
-                                        <span className="text-text-primary">{issuer.issuerName}</span>
-                                        <span className="text-text-tertiary font-normal normal-case text-xs mt-1">
-                                            {issuer.metadata?.periodo || ''}
-                                        </span>
+                                        <span className="text-text-primary text-sm">{issuer.issuerName}</span>
+                                        <div className="flex items-center justify-center gap-1 mt-1 bg-bg-primary/50 py-1 px-2 rounded-md border border-border-subtle">
+                                            <span className="text-xs text-text-secondary font-medium uppercase">Corte:</span>
+                                            <span className="text-accent-primary font-bold text-sm">
+                                                {issuer.metadata?.periodo || 'N/D'}
+                                            </span>
+                                        </div>
                                     </div>
                                 </th>
                             ))}
@@ -131,7 +158,7 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ issuers, highlightBes
                                 </tr>
                                 {/* Metric Rows */}
                                 {category.items.map((metric, metricIdx) => {
-                                    const values = issuers.map(issuer => getValue(issuer, metric.key));
+                                    const values = issuers.map(issuer => getValue(issuer as unknown as Record<string, unknown>, metric.key));
                                     const { best, worst } = findBestWorst(values, metric.higherIsBetter);
 
                                     return (
@@ -140,7 +167,7 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ issuers, highlightBes
                                                 {metric.label}
                                             </td>
                                             {issuers.map((issuer, issuerIdx) => {
-                                                const value = getValue(issuer, metric.key);
+                                                const value = getValue(issuer as unknown as Record<string, unknown>, metric.key);
                                                 const cellClass = getCellClass(value, best, worst);
 
                                                 return (

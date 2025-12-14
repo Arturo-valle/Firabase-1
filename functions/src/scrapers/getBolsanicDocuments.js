@@ -21,24 +21,72 @@ const scrapeBolsanicDocuments = async (detailUrl) => {
         const $ = cheerio.load(data);
         const documents = [];
 
-        $("a.btn.btn-primary.btn-sm.w-100.mb-2").each((i, element) => {
+        // Method 1: Look for .lsa-open links (New structure)
+        $(".lsa-open").each((i, element) => {
             const title = $(element).text().trim();
-            const url = $(element).attr('href');
+            let url = $(element).attr('data-url') || $(element).attr('href');
 
-            // Extract date and type from the table row
-            const tableRow = $(element).closest("tr");
-            const date = tableRow.find("td").eq(0).text().trim();
-            const type = tableRow.find("td").eq(1).text().trim();
+            // Clean up URL if needed (sometimes it might be relative or obfuscated?)
+            // data-url usually has full URL: https://www.bolsanic.com/?lsa_pdf_id=...
 
-            if (url) {
+            if (url && url !== '#' && title) {
+                // Infer type and date from title since table structure might be missing
+                let type = "Documento";
+                if (/prospecto/i.test(title)) type = "Prospecto";
+                else if (/financiero|auditados|ef |eeff/i.test(title)) type = "Estados Financieros";
+                else if (/hecho relevante/i.test(title)) type = "Hecho Relevante";
+                else if (/calificaci/i.test(title)) type = "Calificación de Riesgo";
+
+                // Attempt to find date in title (e.g., "DIC 2024", "20/10/2023")
+                // If not found, default to null or current date? 
+                // Better to leave empty if unknown, but indexFinancials needs a date for recent check.
+                // We'll try to find a year at least.
+                let date = new Date().toISOString();
+                const yearMatch = title.match(/20\d{2}/);
+                if (yearMatch) {
+                    // Default to Jan 1st of that year if no month found
+                    date = new Date(`${yearMatch[0]}-01-01`).toISOString();
+
+                    // Try to find month
+                    const monthMatch = title.match(/ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic/i);
+                    if (monthMatch) {
+                        const months = {
+                            ene: '01', feb: '02', mar: '03', abr: '04', may: '05', jun: '06',
+                            jul: '07', ago: '08', sep: '09', oct: '10', nov: '11', dic: '12'
+                        };
+                        const m = months[monthMatch[0].toLowerCase().substring(0, 3)];
+                        date = new Date(`${yearMatch[0]}-${m}-01`).toISOString(); // "2024-12-01"
+                    }
+                }
+
                 documents.push({ title, url, date, type });
             }
         });
 
+        // Method 2: Fallback to old selector if no docs found (Backwards compatibility)
+        if (documents.length === 0) {
+            $("a.btn.btn-primary.btn-sm.w-100.mb-2").each((i, element) => {
+                const title = $(element).text().trim();
+                const url = $(element).attr('href');
+                const tableRow = $(element).closest("tr");
+                const dateText = tableRow.find("td").eq(0).text().trim();
+                const typeText = tableRow.find("td").eq(1).text().trim();
+
+                if (url) {
+                    documents.push({
+                        title,
+                        url,
+                        date: dateText || new Date().toISOString(),
+                        type: typeText || "Documento"
+                    });
+                }
+            });
+        }
+
         return documents;
     } catch (error) {
         functions.logger.error(`Error scraping document URLs from ${detailUrl}:`, error);
-        return []; // Return an empty array on error, no file downloads here.
+        return [];
     }
 };
 

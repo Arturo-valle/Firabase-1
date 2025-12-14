@@ -1,7 +1,7 @@
 const functions = require("firebase-functions");
 const { getFirestore } = require("firebase-admin/firestore");
 const { processIssuerDocuments } = require('../services/documentProcessor');
-const { scrapeAndStore } = require('../tasks/scrapeAndStore');
+const { syncIssuers } = require('../tasks/syncIssuers');
 
 const db = getFirestore();
 const WHITELIST = ["agricorp", "banpro", "bdf", "fama", "fdl", "fid", "horizonte"];
@@ -55,10 +55,10 @@ exports.triggerProcessing = async (req, res) => {
 
 exports.triggerScrape = async (req, res) => {
     try {
-        await scrapeAndStore();
-        res.json({ success: true, message: "Scraping completed successfully" });
+        await syncIssuers();
+        res.json({ success: true, message: "Sync and Scraping triggered successfully" });
     } catch (error) {
-        functions.logger.error("Error executing scraper:", error);
+        functions.logger.error("Error executing sync/scraper:", error);
         res.status(500).json({ error: error.message });
     }
 };

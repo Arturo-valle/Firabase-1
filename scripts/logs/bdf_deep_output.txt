@@ -1,0 +1,59 @@
+Checking document chunks for issuer: bdf...
+Fetching up to 2000 chunks to scan for 2024/2025...
+
+Found 106 chunks potentially related to 2024/2025.
+
+--- RECENT DATA PREVIEW (First 3 Matching) ---
+
+Match 1: {
+  "issuerName": "BDF",
+  "documentTitle": "Calificación de Riesgo / Diciembre 2021 – Fitch Ratings",
+  "documentUrl": "https://www.bolsanic.com/wp-content/uploads/archivos/hechosrelavantes/FRRBDF.pdf",
+  "documentDate": "21/12/2021 09:00:00 am",
+  "documentType": "Hecho Relevante",
+  "processedAt": "2025-11-23T16:15:18.365Z"
+}
+
+Match 2: {
+  "issuerName": "BDF",
+  "documentTitle": "Informe de Calificación de Riesgo a Diciembre 2024 – Moody´s",
+  "documentUrl": "https://www.bolsanic.com/wp-content/uploads/archivos/hechosrelavantes/MLNIC-HR BDF-11122024.pdf",
+  "documentDate": "12/12/2024 02:00 p.m",
+  "documentType": "Hecho Relevante",
+  "processedAt": "2025-11-23T16:15:10.922Z"
+}
+
+Match 3: {
+  "issuerName": "BDF",
+  "documentTitle": "Informe de Calificación de Riesgo a Diciembre 2024 – Moody´s",
+  "documentUrl": "https://www.bolsanic.com/wp-content/uploads/archivos/hechosrelavantes/MLNIC-HR BDF-11122024.pdf",
+  "documentDate": "12/12/2024 02:00 p.m",
+  "documentType": "Hecho Relevante",
+  "processedAt": "2025-11-23T16:15:10.840Z"
+}
+
+--- Unique Documents Found ---
+
+Document: Calificación de Riesgo / Diciembre 2021 – Fitch Ratings
+  - Chunks: 1
+  - Detected Dates: 
+  - Flags: Audited=false, Financial=false
+  - Preview: Se espera que el PIB real de Nicaragua crezca 5.2% en 2021, luego de tres años de contracción  econó
+
+Document: Informe de Calificación de Riesgo a Diciembre 2024 – Moody´s
+  - Chunks: 48
+  - Detected Dates: 
+  - Flags: Audited=false, Financial=false
+  - Preview: ón regulatoria de la RPC; y (3) no puede utilizarse en la RPC para  ningún propósito regulatorio ni 
+
+Document: Informe de Calificación de Riesgo a Marzo 2025-Moody´s
+  - Chunks: 30
+  - Detected Dates: 
+  - Flags: Audited=false, Financial=false
+  - Preview: cia", y no están sujetos a las regulaciones aplicables  a los "Negocios de Calificación Crediticia" 
+
+Document: Informe de Calificación de Riesgo a Julio 2025-Moody´s
+  - Chunks: 27
+  - Detected Dates: 
+  - Flags: Audited=false, Financial=false
+  - Preview: cia", y no están sujetos a las regulaciones aplicables  a los "Negocios de Calificación Crediticia" 

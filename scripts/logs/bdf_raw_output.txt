@@ -1,0 +1,42 @@
+Checking document chunks for issuer: bdf...
+Found 100 recent chunks. Analyzing unique documents...
+
+--- RAW DATA PREVIEW (First 3 Chunks) ---
+
+Chunk 1: {
+  "issuerName": "BDF",
+  "documentTitle": "Calificación de Riesgo / Diciembre 2021 – Fitch Ratings",
+  "documentUrl": "https://www.bolsanic.com/wp-content/uploads/archivos/hechosrelavantes/FRRBDF.pdf",
+  "documentDate": "21/12/2021 09:00:00 am",
+  "documentType": "Hecho Relevante",
+  "processedAt": "2025-11-23T16:15:20.349Z"
+}
+Text Preview: distribución  total  o  parcial  está  prohibida, ...
+
+Chunk 2: {
+  "issuerName": "BDF",
+  "documentTitle": "Calificación de Riesgo / Diciembre 2021 – Fitch Ratings",
+  "documentUrl": "https://www.bolsanic.com/wp-content/uploads/archivos/hechosrelavantes/FRRBDF.pdf",
+  "documentDate": "21/12/2021 09:00:00 am",
+  "documentType": "Hecho Relevante",
+  "processedAt": "2025-11-23T16:15:20.290Z"
+}
+Text Preview: icia de la NRSRO están enlistadas en el Ítem 3 del...
+
+Chunk 3: {
+  "issuerName": "BDF",
+  "documentTitle": "Calificación de Riesgo / Diciembre 2021 – Fitch Ratings",
+  "documentUrl": "https://www.bolsanic.com/wp-content/uploads/archivos/hechosrelavantes/FRRBDF.pdf",
+  "documentDate": "21/12/2021 09:00:00 am",
+  "documentType": "Hecho Relevante",
+  "processedAt": "2025-11-23T16:15:20.212Z"
+}
+Text Preview: emisiones aseguradas o garantizadas por un asegura...
+
+--- Unique Documents Found ---
+
+Document: Unknown Document
+  - Chunks: 100
+  - Detected Dates: 
+  - Flags: Audited=false, Financial=false
+  - Preview: distribución  total  o  parcial  está  prohibida,  salvo  con  permiso.  Todos los derechos reservad

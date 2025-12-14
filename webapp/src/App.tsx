@@ -15,36 +15,41 @@ import Library from './pages/Library';
 import Standardizer from './pages/Standardizer';
 import Comparator from './pages/Comparator';
 
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './lib/queryClient';
+
 function App() {
   // Layout wrapper
   return (
-    <Router>
-      <div className="min-h-screen bg-bg-primary">
-        {/* Sidebar - Fixed Left */}
-        <Sidebar />
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <div className="min-h-screen bg-bg-primary">
+          {/* Sidebar - Fixed Left */}
+          <Sidebar />
 
-        {/* TopBar - Fixed Top */}
-        <TopBar />
+          {/* TopBar - Fixed Top */}
+          <TopBar />
 
-        {/* Main Content - Center */}
-        <main className="ml-16 mr-80 mt-16 p-6 min-h-screen">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/discover" element={<Discover />} />
-            <Route path="/library" element={<Library />} />
-            <Route path="/finance" element={<Finance />} />
-            <Route path="/research" element={<Research />} />
-            <Route path="/issuer/:issuerId" element={<IssuerDetail />} />
-            <Route path="/ai" element={<AIAssistant />} />
-            <Route path="/standardizer" element={<Standardizer />} />
-            <Route path="/comparator" element={<Comparator />} />
-          </Routes>
-        </main>
+          {/* Main Content - Center */}
+          <main className="ml-16 mr-80 mt-16 p-6 min-h-screen">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/discover" element={<Discover />} />
+              <Route path="/library" element={<Library />} />
+              <Route path="/finance" element={<Finance />} />
+              <Route path="/research" element={<Research />} />
+              <Route path="/issuer/:issuerId" element={<IssuerDetail />} />
+              <Route path="/ai" element={<AIAssistant />} />
+              <Route path="/standardizer" element={<Standardizer />} />
+              <Route path="/comparator" element={<Comparator />} />
+            </Routes>
+          </main>
 
-        {/* RightPanel - Fixed Right */}
-        <RightPanel />
-      </div>
-    </Router>
+          {/* RightPanel - Fixed Right */}
+          <RightPanel />
+        </div>
+      </Router>
+    </QueryClientProvider>
   );
 }
 

@@ -20,7 +20,7 @@ async function backfillHistory(req, res) {
 
         for (const doc of issuersSnapshot.docs) {
             const issuer = doc.data();
-            functions.logger.info(`Processing history for ${issuer.name}...`);
+            functions.logger.info(`Processing history for ${issuer.name} (ID: ${doc.id})...`);
 
             try {
                 // Only process if they have documents

@@ -98,7 +98,7 @@ const ComparisonCharts: React.FC<ComparisonChartsProps> = ({ issuers }) => {
         tooltipText: '#f1f5f9', // slate-100
     };
 
-    const CustomTooltip = ({ active, payload, label }: any) => {
+    const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: any[]; label?: string }) => {
         if (active && payload && payload.length) {
             return (
                 <div className="bg-bg-tertiary border border-border-subtle p-3 rounded-lg shadow-xl">

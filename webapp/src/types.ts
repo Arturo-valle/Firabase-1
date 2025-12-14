@@ -59,6 +59,7 @@ export interface MetricsData {
     periodo: string;
     moneda: string;
     fuente: string;
+    nota?: string;
   };
   extractedAt?: Date | string;
   issuerId: string;

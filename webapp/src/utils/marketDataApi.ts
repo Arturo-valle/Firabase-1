@@ -1,4 +1,4 @@
-// API utility functions for fetching market data
+import type { Issuer, Document } from '../types';
 
 const API_BASE_URL = 'https://us-central1-mvp-nic-market.cloudfunctions.net/api';
 
@@ -24,7 +24,7 @@ export interface SystemStatus {
 export interface IssuerDetail {
     id: string;
     name: string;
-    documents: any[];
+    documents: Document[];
     isActive: boolean;
     sector?: string;
     rating?: string;
@@ -142,7 +142,7 @@ export const ISSUER_METADATA: { [key: string]: { acronym: string, sector: string
 /**
  * Fetch all issuers (active and inactive)
  */
-export async function fetchIssuers(): Promise<{ issuers: any[] }> {
+export async function fetchIssuers(): Promise<{ issuers: Issuer[] }> {
     // Add cache busting to force fresh data
     const response = await fetch(`${API_BASE_URL}/issuers?t=${Date.now()}`);
     if (!response.ok) {
@@ -262,7 +262,14 @@ export async function fetchIssuers(): Promise<{ issuers: any[] }> {
                     name: DISPLAY_NAMES[baseId] || issuer.name, // Enforce clean display name
                     acronym: metadata.acronym || issuer.acronym,
                     sector: metadata.sector || issuer.sector,
-                    isActive: true // Explicitly mark whitelisted issuers as active
+                    isActive: true, // Explicitly mark whitelisted issuers as active
+                    documents: (issuer.documents || []).map((d: any) => ({
+                        ...d,
+                        date: d.date || '', // Ensure date string
+                        title: d.title || 'Documento sin título',
+                        url: d.url || '#',
+                        type: d.type || 'UNKNOWN'
+                    }))
                 });
             } else {
                 // Merge

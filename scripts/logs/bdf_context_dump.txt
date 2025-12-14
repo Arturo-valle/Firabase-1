@@ -1,0 +1,3456 @@
+🐛 DEBUGGING BDF EXTRACTION CONTEXT 🐛
+{"severity":"INFO","message":"Top 5 Chunks for BDF:"}
+{"severity":"INFO","message":"[0] Date: 04/08/2025 12:00:00 p.m, IsAudited: false, IsFinancial: true, TextStart: 1   30 DE JULIO DE 2025 \nBANCO DE FINANZAS, S.A.\n ..."}
+{"severity":"INFO","message":"[1] Date: 21/12/2021 09:00:00 am, IsAudited: false, IsFinancial: true, TextStart: erspectivas  de  desempeño  del  banco  en  un  en..."}
+{"severity":"INFO","message":"[2] Date: 27/03/2025 03:00:00 pm, IsAudited: false, IsFinancial: true, TextStart: de Finanzas, S.A.  \nRESUMEN  \nMoody’s Local CR Cal..."}
+{"severity":"INFO","message":"[3] Date: 27/03/2025 03:00:00 pm, IsAudited: false, IsFinancial: true, TextStart: se encuentra sujeto. Por su parte, la cartera de c..."}
+{"severity":"INFO","message":"[4] Date: 04/08/2025 12:00:00 p.m, IsAudited: false, IsFinancial: true, TextStart: ados y \nuna mayor carga tributaria, en opinión de ..."}
+{"severity":"INFO","message":"DEBUG: Audited Chunk NOT FOUND in memory list. Total chunks: 134"}
+{"severity":"INFO","message":"DEBUG RATING 2025 CHUNK: {\"date\":\"04/08/2025 12:00:00 p.m\",\"isAudited\":false,\"isFinancial\":true}"}
+{"severity":"INFO","message":"CONTEXT PREVIEW (BDF): [04/08/2025 12:00:00 p.m] TIPO: FINANCIERO\n1   30 DE JULIO DE 2025 \nBANCO DE FINANZAS, S.A.\n \nNicaragua \nBanco de Finanzas, S.A. \nRESUMEN  \nMoody’s Local Nicaragua afirma la calificación de Banco de Finanzas, S.A. (BDF, \nla entidad o el banco) en AA.ni como Entidad a Largo Plazo, en moneda local y \nextranjera; y el nivel ML A-1.ni como Entidad a Corto Plazo en moneda local y \nextranjera. De igual forma, afirma las calificaciones AA.ni a Largo Plazo en \nmoneda extranjera y ML A-1.ni a Corto Plazo"}
+---------------- START FULL CONTEXT ----------------
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+1   30 DE JULIO DE 2025 
+BANCO DE FINANZAS, S.A.
+ 
+Nicaragua 
+Banco de Finanzas, S.A. 
+RESUMEN  
+Moody’s Local Nicaragua afirma la calificación de Banco de Finanzas, S.A. (BDF, 
+la entidad o el banco) en AA.ni como Entidad a Largo Plazo, en moneda local y 
+extranjera; y el nivel ML A-1.ni como Entidad a Corto Plazo en moneda local y 
+extranjera. De igual forma, afirma las calificaciones AA.ni a Largo Plazo en 
+moneda extranjera y ML A-1.ni a Corto Plazo en moneda extranjera para el 
+Programa de Emisión de Valores Estandarizados de Renta Fija. La perspectiva 
+de las calificaciones de Largo Plazo es Estable. 
+Las Calificaciones de riesgo de BDF se fundamentan en la evaluación del perfil 
+financiero intrínseco de la entidad. Aunque la agencia también considera de 
+forma positiva su pertenencia a Promerica Financial Group (Grupo Promerica) 
+desde el año 2024 a través de la sociedad Nueva Tenedora BanPro.  Grupo 
+Promerica es un grupo de entidades financieras con presencia en 
+Centroamérica, República Dominicana, Ecuador y las Islas Caimán, y que en 
+Nicaragua es el grupo financiero de mayor tamaño con una participación de 
+mercado conjunta de casi el 35% en términos de activos, préstamos y depósitos. 
+Aunque BDF mantiene una franquicia moderada dentro de la plaza, con 
+participaciones de mercado entre el 6.4% y 7.2% en activos, créditos y depósitos 
+a marzo 2025.   
+Su modelo de negocio se concentra en banca de personas (marzo 2025: 65.
+
+[21/12/2021 09:00:00 am] TIPO: FINANCIERO
+erspectivas  de  desempeño  del  banco  en  un  entorno  operativo 
+retador por factores estructurales y coyunturales del país. Fitch opina que las oportunidades 
+de negocio de BDF seguirán limitadas. Sin embargo, estas permitirán mantener la calidad de 
+activos  crediticios  mostradas  a  septiembre  de  2021  y  en  rentabilidad  operativa  favorecida 
+principalmente por provisiones menores. La capitalización de BDF es suficiente ante los riesgos 
+asumidos y la estructura razonable de fondeo y liquidez. 
+Perfil Financiero Mejorado: El indicador de cartera vencida fue manejable (3.7%), pero con una 
+proporción de créditos reestructurados alta de 10%, levemente mejor que la industria bancaria. 
+Fitch estima que la rentabilidad operativa sobre activos ponderados por riesgo (APR) de 2.3% 
+seguiría  en  niveles  similares.  Los  perfiles  de  fondeo  y  liquidez  presentan  estabilidad  y 
+consideran el aumento de la liquidez; el indicador base de préstamos a depósitos fue de 99%. 
+La  capacidad  de  absorción  de  pérdidas  es  razonable;  tiene  un Capital Base  según  Fitch  de 
+16.3% a la misma fecha. 
+Calificaciones  de  Deuda: Las  calificaciones  nacionales  de  largo  y  corto  plazo  de  los  títulos 
+estandarizados  de  renta  fija  están  alineadas  con  riesgo  emisor  de  BDF.  La probabilidad  de 
+incumplimiento es la misma para las emisiones y la entidad.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+de Finanzas, S.A.  
+RESUMEN  
+Moody’s Local CR Calificadora de Riesgo, S.A. (en adelante, Moody’s Local 
+Nicaragua) afirma a Banco de Finanzas, S.A. (en adelante, BDF o el Banco) la 
+calificación AA.ni como Entidad a Largo Plazo, en moneda local y extranjera; y el 
+nivel ML A-1.ni para Corto Plazo en moneda local y extranjera. De igual forma, 
+afirma las calificaciones AA.ni a Largo Plazo en moneda extranjera y ML A-1.ni a 
+Corto Plazo en moneda extranjera para el Programa de Emisión de Valores 
+Estandarizados de Renta Fija. La perspectiva de las calificaciones de Largo Plazo 
+es Estable. 
+La calificación asignada toma en consideración el respaldo del Grupo al que 
+pertenece el Banco: Nueva Tenedora Banpro, conformado por Grupo Promerica y 
+Grupo ASSA, los cuales también son dueños de Banco de la Producción S.A. 
+(Banpro), así como a la experiencia y sinergias que puede obtener BDF del actual 
+banco más grande del sistema financiero de Nicaragua. 
+De igual forma, se pondera de manera positiva el Gobierno Corporativo del Banco 
+y su administración prudente de los riesgos, en cumplimiento de las leyes y 
+normativas a las cuales se encuentra sujeto. Por su parte, la cartera de créditos 
+mantiene  una  tendencia  creciente,  acompañada  de  buenos  indicadores 
+crediticios y una cobertura holgada de sus créditos improductivos.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+se encuentra sujeto. Por su parte, la cartera de créditos 
+mantiene  una  tendencia  creciente,  acompañada  de  buenos  indicadores 
+crediticios y una cobertura holgada de sus créditos improductivos.  
+Asimismo, dispone de niveles de liquidez alineados con los parámetros internos 
+y  en  cumplimiento  de  los  límites  normativos,  lo  que  permite  asegurar  una 
+cobertura adecuada para aquellas obligaciones de mayor exigibilidad financiera. 
+No obstante, algunas métricas se ubican por debajo del promedio del sector 
+bancario. 
+Respecto al fondeo, presenta una estructura concentrada en captaciones del 
+público, esencialmente cuentas de ahorro y depósitos a plazo, los cuales se 
+asocian a un menor costo financiero; en adición, poseen financiamiento a través 
+de entidades financieras y de su Programa de Emisión de Valores Estandarizados 
+de Renta Fija en menor proporción.  
+Por su parte, en cuanto al patrimonio, su índice de adecuación de capital muestra 
+una tendencia a la baja, dado el crecimiento que viene mostrando su cartera y el 
+Banco en general; sin embargo, se considera suficiente para absorber pérdidas 
+potenciales y mantener una posición financiera estable. Es importante controlar 
+dicho comportamiento de manera que no ponga en riesgo la solvencia de la 
+Entidad.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+ados y 
+una mayor carga tributaria, en opinión de Moodys podría mostrar una moderada 
+mejora dado el mayor apetito de colocación en segmentos más rentables, 
+aunque por debajo de lo reportado en 2024. La rentabilidad es medida 
+principalmente a través de la razón de rendimiento sobre el patrimonio (ROE) 
+anualizado (rentabilidad acumulada en los últimos doce meses), el cual se había 
+reducido a marzo a 5.7% desde 6.8% en 2024.  El margen financiero interanual, 
+se mantiene estable respecto a 2024, en 5.7%, soportado en un buen ritmo de 
+crecimiento de sus ingresos provenientes del crédito que ha podido compensar 
+la disminución de ingresos por inversiones y un mayor costo de fondeo.  
+La capitalización es moderada, medida principalmente a través de la razón de 
+solvencia (patrimonio a activos totales), que a marzo 2025 era de 10.3%. 
+INFORME DE CALIFICACIÓN 
+ 
+Sesión: n.° 4202025 
+Fecha: 30 de julio de 2025 
+CALIFICACIÓN PÚBLICA 
+ 
+Informe de revisión completo 
+ 
+CALIFICACIONES ACTUALES (*) 
+ 
+Calificación Perspectiva 
+Entidad   Largo   Plazo 
+Moneda Local 
+AA.ni    Estable 
+Entidad Corto Plazo 
+Moneda Local 
+ML A.-1ni - 
+Entidad Largo Plazo 
+Moneda Extranjera 
+AA.ni    Estable 
+Entidad Corto Plazo 
+Moneda Extranjera 
+ML A.-1ni - 
+Programa de Emisión de 
+Valores Estandarizados de 
+Renta Fija 
+ 
+AA.ni 
+ 
+Estable 
+Programa de Emisión de 
+Valores Estandarizados de 
+Renta Fija 
+ 
+ML A-1.ni 
+ 
+- 
+ 
+(*) La nomenclatura 'ni' refleja riesgos solo comparables en 
+Nicaragua.
+
+[21/12/2021 09:00:00 am] TIPO: FINANCIERO
+Calificaciones en Escala 
+Nacional (Diciembre 2020) 
+ 
+Publicaciones Relacionadas 
+Grupo ASSA, S.A. (Marzo de 2021) 
+ 
+ 
+ 
+ 
+ 
+ 
+Analistas 
+Álvaro Castro  
++503 2516 6615 
+alvaro.castro@fitchratings.com 
+ 
+Mario Hernández  
++503 2516 6614 
+mario.hernandez@fitchratings.com 
+ 
+ 
+ 
+ 
+ 
+
+ 
+Banco de Finanzas, S.A. 
+Informe de Calificación │  21 diciembre 2021 fitchratings.com 2 
+ 
+  
+ 
+Bancos 
+Banca Comercial 
+Nicaragua 
+ 
+ Soporte Institucional 
+La opinión de soporte de Fitch considera con importancia alta la fortaleza relativa de soporte 
+de la matriz al banco, muy superior en comparación con el entorno operativo de Nicaragua. Lo 
+anterior le permite mantener las calificaciones en escala nacional en los niveles actuales y con 
+Perspectiva  Estable, a  pesar del entorno financiero desafiante  y la  Perspectiva  Negativa  del 
+proveedor de soporte.  
+Cambios Relevantes 
+La  evaluación  de  Fitch  del  entorno  operativo  bancario  nicaragüense  (EO)  mantiene  una 
+tendencia   negativa,  influenciada  por  la   pequeña   economía   del  país,  su  diversificación 
+relativamente  limitada  y  su  débil  gobernabilidad.  Pero,  la  agencia  cree  que  la  actividad 
+económica seguirá siendo levemente positiva. 
+Se espera que el PIB real de Nicaragua crezca 5.2% en 2021, luego de tres años de contracción 
+económica,  mostrando  un  rápido  repunte  de  lo  peor  de  la  pandemia por  coronavirus en  el 
+2T20.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+a suficiente para absorber pérdidas 
+potenciales y mantener una posición financiera estable. Es importante controlar 
+dicho comportamiento de manera que no ponga en riesgo la solvencia de la 
+Entidad. 
+Finalmente, a nivel de rentabilidad, sus indicadores presentan una mejora dado 
+el crecimiento de los resultados netos, sin embargo, se ubican por debajo del 
+promedio del sector, por lo que, BDF tiene como reto crear estrategias que 
+generen un mayor rendimiento financiero, contención del costo del pasivo, y una 
+adecuada  eficiencia  operativa,  de  manera  que  se  refleje  en  el  crecimiento 
+sostenible  de  la  Entidad.  Moody’s  Local  Nicaragua  dará  seguimiento  a  la 
+estrategia del nuevo grupo accionista y su implicación en la dirección del Banco. 
+ 
+INFORME DE CALIFICACIÓN 
+ 
+Sesión: n.° 4072025 
+Fecha: 25 de marzo de 2025 
+CALIFICACIÓN PÚBLICA
+ 
+Informe de revisión completo 
+ 
+CALIFICACIONES ACTUALES (*) 
+ 
+Calificación Perspectiva 
+Entidad Largo Plazo 
+Moneda Local 
+AA.ni Estable 
+Entidad Corto Plazo 
+Moneda Local 
+ML A-1.ni - 
+Entidad Largo Plazo 
+Moneda Extranjera 
+AA.ni Estable 
+Entidad Corto Plazo 
+Moneda Extranjera 
+ML A-1.ni - 
+Programa de Emisión de 
+Valores Estandarizados de 
+Renta Fija 
+AA.ni 
+ 
+Estable 
+Programa de Emisión de 
+Valores Estandarizados de 
+Renta Fija 
+ML A-1.ni 
+ 
+- 
+ 
+(*) La nomenclatura 'ni' refleja riesgos solo comparables 
+en Nicaragua.
+
+[21/12/2021 09:00:00 am] TIPO: FINANCIERO
+Se espera que el PIB real de Nicaragua crezca 5.2% en 2021, luego de tres años de contracción 
+económica,  mostrando  un  rápido  repunte  de  lo  peor  de  la  pandemia por  coronavirus en  el 
+2T20.  Fitch  espera   que  los  indicadores  macroeconómicos   sigan  señalando  el  repunte 
+económico y la subsecuente tasa de crecimiento del PIB real que, aunque baja, seguirá siendo 
+positiva durante 2023 y 2024 (2.45% en promedio). 
+A octubre de 2021, el sistema bancario mantiene ratios de liquidez y capitalización adecuados, 
+mientras que el volumen de negocio general y la rentabilidad siguen siendo bajos, aunque con 
+mejores perspectivas de crecimiento que en 2020, lo que arrojó una contracción bruta de la 
+cartera  crediticia  de  3%.  A  octubre  de  2021,  los  bancos  calificados  han  mostrado  un 
+crecimiento o decrecimiento crediticio en el rango de entre -2% y 4.3% hasta dicha fecha, lo 
+que refleja las perspectivas económicas y los perfiles de riesgo, que siguen siendo prudentes. 
+Fitch espera cifras de crecimiento positivas para todos en 2022. 
+Resumen de la Compañía y Factores de Evaluación Cualitativa 
+Perfil de Negocios 
+Fitch  opina  que  el  perfil  de  negocios  de  BDF  se  mantiene  adecuado  ante  las  presiones  del 
+ambiente operativo y con una capacidad suficiente de mantener su posición competitiva en el 
+mercado financiero nicaragüense con la base de clientes existente.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+tandarizados de 
+Renta Fija 
+AA.ni 
+ 
+Estable 
+Programa de Emisión de 
+Valores Estandarizados de 
+Renta Fija 
+ML A-1.ni 
+ 
+- 
+ 
+(*) La nomenclatura 'ni' refleja riesgos solo comparables 
+en Nicaragua.
+Para mayor detalle sobre las calificaciones asignadas ver 
+la sección de información complementaria, al final de 
+este reporte.
+ 
+CONTACTOS 
+Yoanna Garita Araya                            
+Associate Credit Analyst 
+yoanna.garita@moodys.com 
+ 
+José Pablo López Barquero                         
+Credit Analyst 
+jose.lopez1@moodys.com 
+ 
+Jaime Tarazona                          
+Rating Manager 
+jaime.tarazona@moodys.com 
+ 
+ 
+SERVICIO AL CLIENTE 
+Costa Rica 
++506.4102.9400 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+2 25 DE MARZO DE 2025 
+ 
+BANCO DE FINANZAS, S.A. 
+ 
+Nicaragua 
+Fortalezas crediticias 
+→ Forma parte del Grupo Nueva Tenedora Banpro, el cual le ofrece experiencia y sinergias cruzadas con el Banco de la 
+Producción, S.A. (BANPRO), quien también pertenece al Grupo. 
+→ Sólida estructura de Gobierno Corporativo y políticas de gestión de riesgo. 
+→ Cartera crediticia atomizada según deudores, acompañada de buenos indicadores crediticios. 
+→ Diversificación en sus fuentes de fondeo, enfocados principalmente en captaciones del público. 
+→ Adecuado índice de suficiencia patrimonial. 
+Debilidades crediticias 
+→ Actualmente presenta un costo financiero por encima del promedio del sector, dada su concentración en créditos de 
+vivienda.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+e factor, la agencia además pondera su estructura de fondeo 
+fundamentada en depósitos del público en 84.7%, y que ha mostrado una tendencia favorable respecto a su promedio 
+histórico (2022-2024: 79.8%); este crecimiento proviene principalmente de depósitos a plazo, que han aumentado su 
+mix dentro de los depósitos totales a 41.1% a marzo 2025, lo que teóricamente provee de mayor estabilidad al fondeo. 
+Adicional, el banco mantiene facilidades de crédito con entidades internacionales y nacionales y un programa para 
+emisión de bonos en el mercado local.  
+Fortalezas crediticias 
+→ Forma parte del Grupo Nueva Tenedora Banpro, el cual le ofrece experiencia y sinergias cruzadas con otras 
+entidades dentro del grupo. 
+→ Diversificación en sus fuentes de fondeo, enfocados principalmente en captaciones del público. 
+→ Posición Relevante dentro de la plaza en hipotecas residenciales.  
+Debilidades crediticias 
+→ Indicadores de Rentabilidad por debajo del promedio del sistema financiero nacional, por un costo mayor de sus 
+pasivos y una alta proporción de sus gastos administrativos.  
+Factores que pueden generar una mejora de la calificación 
+→ Aumento relevante en el tamaño de su franquicia que derive en mejoras sostenidas en su rentabilidad y un 
+fortalecimiento de su posición patrimonial.
+
+[21/12/2021 09:00:00 am] TIPO: FINANCIERO
+ne  adecuado  ante  las  presiones  del 
+ambiente operativo y con una capacidad suficiente de mantener su posición competitiva en el 
+mercado financiero nicaragüense con la base de clientes existente. 
+El  banco,  con  un  modelo  de  banca  universal  enfocado  en  carteras  comercial  y  minorista, 
+destaca por su poder de mercado en el segmento hipotecario residencial donde es el líder. La 
+entidad  es  parte  del  Grupo  ASSA  en  cerca  de  80%, mientras  que  el  resto  es  de cuatro 
+inversionistas más, todos con participaciones individuales menores de 11%. 
+También, la agencia opina que el cuerpo gerencial y gobierno corporativo de BDF se mantendrá 
+adecuado a su tamaño y complejidad de operaciones. La gerencia tiene un nivel de credibilidad 
+bueno y con estabilidad larga dentro de la compañía, mientras que el gobierno corporativo se 
+considera bueno en términos de protección de los intereses de los acreedores. La estrategia 
+del  banco  se  considera  bien  delimitada,  con  objetivos  cuantitativos  y  cualitativos  claros, 
+aunque  la  ejecución  podría  afectarse  ante  eventos  políticos  y  sociales  que  incidan  en  la 
+actividad económica. 
+Perfil de Riesgo 
+Fitch opina que el perfil de riesgo del banco se mantiene moderado.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+BOLOS Y LAS 
+DEFINICIONES  DE  CALIFICACIÓN  DE MOODY’S PARA OBTENER INFORMACIÓN SOBRE LOS TIPOS DE OBLIGACIONES FINANCIERAS CONTRACTUALES ENUNCIADAS POR LAS 
+CALIFICACIONES  CREDITICIAS  DE  MOODY'S.    LAS  CALIFICACIONES  CREDITICIAS  NO  HACEN  REFERENCIA  A  NINGÚN  OTRO  RIESGO,  INCLUIDOS  A MODO  ENUNCIATIVO  Y  NO 
+LIMITATIVO: RIESGO DE LIQUIDEZ, RIESGO RELATIVO AL VALOR DE MERCADO O VOLATILIDAD DE PRECIOS.  LAS CALIFICACIONES CREDITICIAS, EVALUACIONES NO CREDITICIAS 
+(“EVALUACIONES”) Y OTRAS OPINIONES INCLUIDAS EN LOS MATERIALES DE MOODY'S NO SON DECLARACIONES DE HECHOS  ACTUALES  O  HISTÓRICOS.    LOS  MATERIALES  DE 
+MOODY'S PODRÁN INCLUIR ASIMISMO PREVISIONES BASADAS EN UN MODELO CUANTITATIVO DE RIESGO CREDITICIO Y OPINIONES O COMENTARIOS RELACIONADOS PUBLICADOS 
+POR  MOODY'S  ANALYTICS,  INC.  Y/O  SUS  FILIALES.  LAS  CALIFICACIONES  CREDITICIAS,  EVALUACIONES,  OTRAS  OPINIONES  Y  MATERIALES  DE  MOODY'S  NO  CONSTITUYEN  NI 
+PROPORCIONAN ASESORAMIENTO FINANCIERO O DE INVERSIÓN, Y LAS CALIFICACIONES CREDITICIAS, EVALUACIONES Y OTRAS OPINIONES DE MOODY’S NO SON NI SUPONEN 
+RECOMENDACIÓN  ALGUNA  PARA  LA  COMPRA,  VENTA  O  MANTENIMIENTO  DE  TÍTULOS  DE  VALOR  CONCRETOS.  LAS  CALIFICACIONES  CREDITICIAS,  EVALUACIONES,  OTRAS 
+OPINIONES Y MATERIALES DE MOODY'S NO EMITEN OPINIÓN SOBRE LA IDONEIDAD DE UNA INVERSIÓN PARA UN INVERSOR CONCRETO.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+→ Adecuado índice de suficiencia patrimonial. 
+Debilidades crediticias 
+→ Actualmente presenta un costo financiero por encima del promedio del sector, dada su concentración en créditos de 
+vivienda. 
+→ Alta proporción de gastos administrativos en relación a la utilidad operacional, lo cual reduce el crecimiento de su 
+rentabilidad. 
+→ Espacios de mejora en cuanto al fortalecimiento digital y la implementación exitosa de herramientas que logren una 
+mayor eficiencia en los procesos del Banco. 
+Oportunidades 
+→ Innovación de nuevos productos tanto financieros como no financieros al servicio del cliente. 
+→ Digitalización en todos los procesos del Banco. 
+Amenazas 
+→ Exposición a volatilidades económicas internas e internacionales que generen potenciales efectos adversos en la 
+estructura financiera y operativa de la Entidad.  
+Crecimiento de la oferta de productos financieros por parte de nuevos participantes en la plaza nicaragüense 
+Factores que pueden generar una mejora de la calificación 
+→ Crecimiento importante de la cartera de crédito, acompañada de un mejor rendimiento financiero. 
+→ Mejora sostenida de los indicadores de rentabilidad y eficiencia operativa del Banco. 
+Factores que pueden generar un deterioro de la calificación 
+→ Deterioro sostenido en los indicadores de calidad de cartera que afecten la cobertura de las estimaciones y la 
+rentabilidad del Banco.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+ue pueden generar una mejora de la calificación 
+→ Aumento relevante en el tamaño de su franquicia que derive en mejoras sostenidas en su rentabilidad y un 
+fortalecimiento de su posición patrimonial. 
+→ Sinergias operativas con Grupo Promerica que deriven en un fortalecimiento de su perfil financiero, medido como 
+mejoras sostenidas en su rentabilidad, calidad de cartera y posición patrimonial. 
+Factores que pueden generar un deterioro de la calificación 
+→ Deterioro sostenido en los indicadores de calidad de cartera que afecten la rentabilidad y posición patrimonial.  
+→ Contracción en los niveles de liquidez que coloquen a la Entidad en situaciones de estrés de liquidez o descalces 
+contractuales entre pasivos y activos. 
+Perfil de la Entidad 
+BDF es un banco universal de tamaño moderado dentro del sistema financiero nicaragüense. Su modelo de negocio se 
+concentra en banca de personas, donde el banco es un jugador relevante en el segmento de hipotecas, aunque en los 
+últimos períodos ha mostrado un mayor crecimiento en los segmentos de consumo (incluido vehículo) y tarjeta de 
+crédito, que a marzo 2025 ponderaban el 28.3% de su cartera total, respecto a un 26.2% a diciembre 2024.   
+Respecto a su estructura organizativa, desde el 2024, el banco cambió de accionista mayoritario de Grupo ASSA a la 
+nueva sociedad denominada Nueva Tenedora Banpro, perteneciente a Promerica Financial Group (Grupo Promerica) en 
+un 90.3% y a Grupo ASSA en 8.6%.
+
+[21/12/2021 09:00:00 am] TIPO: FINANCIERO
+ejecución  podría  afectarse  ante  eventos  políticos  y  sociales  que  incidan  en  la 
+actividad económica. 
+Perfil de Riesgo 
+Fitch opina que el perfil de riesgo del banco se mantiene moderado. Las políticas de suscripción 
+de créditos y colocación de inversiones se enfocan en exposiciones de riesgo bajo, mientras 
+que  los  controles  de  riesgo  se  consideran  adecuados,  manteniendo  su  estructura  de  cobro 
+fuerte  y una  infraestructura  tecnológica  y  operativa  que  permite  la  continuidad del negocio 
+ante  el  ambiente  operativo  actual.  Favorablemente,  el  banco  mantiene  procedimientos  y 
+procesos de riesgo operativo en revisión y aplicación constante que permean la organización. 
+Calificación de Deuda 
+Tipo de Calificación Calificación 
+ 
+Nacional de Largo Plazo  AA+(nic)  
+Nacional de Corto Plazo  F1+(nic)  
+Fuente: Fitch Ratings 
+
+ 
+Banco de Finanzas, S.A. 
+Informe de Calificación │  21 diciembre 2021 fitchratings.com 3 
+ 
+  
+ 
+Bancos 
+Banca Comercial 
+Nicaragua 
+Al 3T21, la cartera bruta de BDF se redujo 3.4% con respecto al cierre de 2020, que a su vez 
+se redujo 13.7% en relación con 2019 y alineado con los objetivos del banco. Paralelamente, 
+el  crecimiento  total  del  balance  fue  un  leve  3.2%,  dicho  crecimiento  explicado  por  activos 
+líquidos, colocados en disponibilidades y el portafolio de inversiones disponible para la venta.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+ULOS  DE  VALOR  CONCRETOS.  LAS  CALIFICACIONES  CREDITICIAS,  EVALUACIONES,  OTRAS 
+OPINIONES Y MATERIALES DE MOODY'S NO EMITEN OPINIÓN SOBRE LA IDONEIDAD DE UNA INVERSIÓN PARA UN INVERSOR CONCRETO.  MOODY'S EMITE SUS CALIFICACIONES 
+CREDITICIAS, EVALUACIONES Y OTRAS OPINIONES Y PUBLICA O DE CUALQUIER OTRA MANERA PONE A DISPOSICIÓN SUS MATERIALES EN LA CONFIANZA Y EN EL ENTENDIMIENTO 
+DE  QUE  CADA  INVERSOR  LLEVARÁ  A  CABO,  CON  LA  DEBIDA  DILIGENCIA,  SU  PROPIO  ESTUDIO  Y  EVALUACIÓN  DEL  TÍTULO  DE  VALOR  QUE  ESTÉ  CONSIDERANDO  COMPRAR, 
+CONSERVAR O VENDER. 
+LAS  CALIFICACIONES  CREDITICIAS,  EVALUACIONES,  OTRAS  OPINIONES  Y  MATERIALES  NO  ESTÁN  DESTINADAS  PARA  EL  USO  DE  INVERSORES  MINORISTAS  Y  SERÍA  TEMERARIO  E 
+INAPROPIADO POR PARTE DE LOS INVERSORES MINORISTAS TENER EN CUENTA LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES O LOS MATERIALES DE MOODY'S 
+AL TOMAR CUALQUIER DECISIÓN EN MATERIA DE INVERSIÓN. EN CASO DE DUDA, DEBERÍA PONERSE EN CONTACTO CON SU ASESOR FINANCIERO U OTRO ASESOR PROFESIONAL.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+o cambió de accionista mayoritario de Grupo ASSA a la 
+nueva sociedad denominada Nueva Tenedora Banpro, perteneciente a Promerica Financial Group (Grupo Promerica) en 
+un 90.3% y a Grupo ASSA en 8.6%. En Nicaragua, la sociedad Nueva Tenedora BanPro posee cerca del 35% del total de 
+los activos del sistema financiero.  
+Principales aspectos crediticios  
+Niveles de Morosidad Controlados 
+Los castigos y reestructurados se mantiene bajos, con castigos anuales promedios por 1.3% durante 2023-2024 y 
+reestructurados por 4.4%. En la evaluación de este factor, la agencia además considera su cobertura de reservas 
+adecuada respecto a la mora mayor a 90 días, pero que a la misma fecha reportada un decrecimiento a 208.8% desde 
+
+ 
+ 
+ 
+ 
+3   30 DE JULIO DE 2025 
+BANCO DE FINANZAS, S.A.
+ 
+Nicaragua 
+281.1%  en 2024, además de la proporción relevante de cartera con garantías reales (marzo 2025: 57%), dada la 
+relevancia de su cartera hipotecaria.  Respecto al riesgo de concentración, este se mantiene moderado, siendo los 20 
+mayores deudores 1.1 veces (x) el patrimonio, y el mayor deudor el 0.2x.  
+GRAFICO 1 Cartera por Categoría de Riesgo       GRAFICO 2 Cartera Clasificada por Tipo de Garantía  
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua      
+Respecto a exposición a riesgo cambiario, la proporción de créditos en dólares es alta, alineada a la plaza, a mazo 2025 
+era el 97.6% de la cartera, de la cual un proporción baja, del 6.5% era en generadores.
+
+[21/12/2021 09:00:00 am] TIPO: FINANCIERO
+l  crecimiento  total  del  balance  fue  un  leve  3.2%,  dicho  crecimiento  explicado  por  activos 
+líquidos, colocados en disponibilidades y el portafolio de inversiones disponible para la venta. 
+Esto contrasta con el crecimiento del sistema a la misma fecha: Los créditos brutos del sistema 
+crecieron un leve 2.1%, mientras que el balance promedio total de la industria 5.7%.  
+Fitch estima que BDF crecerá en colocaciones nuevas de manera modesta al cierre del año. A 
+octubre  de  2021,  la  cartera  bruta  indicaba  un  decrecimiento  de  2%  con  respecto  a  2020, 
+beneficiándose de una aceleración de las colocaciones atribuidas a la estacionalidad del último 
+trimestre del año.  
+
+ 
+Banco de Finanzas, S.A. 
+Informe de Calificación │  21 diciembre 2021 fitchratings.com 4 
+ 
+  
+ 
+Bancos 
+Banca Comercial 
+Nicaragua 
+Resumen de Información Financiera e Indicadores Clave 
+ 
+3T21 3T21 2020 2019 2018 2017 
+ 
+USD millones NIO miles NIO miles NIO miles NIO miles NIO miles 
+Resumen del Estado de Resultados             
+Ingreso Neto por Intereses y Dividendos 19.6 694,313.5 999,777.0 1,181,603.9 1,405,659.0 1,438,088.0 
+Comisiones y Honorarios Netos 0.0 1,615.9 (2,710.0) (6,923.0) 148,320.0 326,505.0 
+Otros Ingresos Operativos 2.5 86,606.6 221,717.7 321,296.3 204,690.0 56,238.0 
+Ingreso Operativo Total 22.1 782,536.0 1,218,784.7 1,495,977.2 1,758,669.0 1,820,831.0 
+Gastos Operativos 15.0 528,621.7 723,823.4 854,601.0 976,729.0 938,037.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+ONES, OTRAS OPINIONES O LOS MATERIALES DE MOODY'S 
+AL TOMAR CUALQUIER DECISIÓN EN MATERIA DE INVERSIÓN. EN CASO DE DUDA, DEBERÍA PONERSE EN CONTACTO CON SU ASESOR FINANCIERO U OTRO ASESOR PROFESIONAL. 
+TODA  LA  INFORMACIÓN  CONTENIDA  EN  EL  PRESENTE  DOCUMENTO  ESTÁ  PROTEGIDA  POR  LEY,  INCLUIDA  PERO  NO  LIMITADA  A  LA  LEY  DE  DERECHOS DE  AUTOR  (COPYRIGHT),  NO 
+PUDIENDO  PARTE  ALGUNA  DE  DICHA  INFORMACIÓN  SER  COPIADA  O  EN  MODO  ALGUNO  REPRODUCIDA,  RECOPILADA,  TRANSMITIDA,  TRANSFERIDA,  DIFUNDIDA,  REDISTRIBUIDA  O 
+REVENDIDA, NI ARCHIVADA PARA SU USO POSTERIOR CON ALGUNO DE DICHOS FINES, EN TODO O EN PARTE, EN FORMATO, MANERA O MEDIO ALGUNO POR NINGUNA PERSONA SIN EL 
+PREVIO CONSENTIMIENTO ESCRITO DE MOODY'S. PARA MAYOR CLARIDAD, NINGUNA INFORMACIÓN CONTENIDA AQUÍ PUEDE SER UTILIZADA PARA DESARROLLAR, MEJORAR, ENTRENAR 
+O  REENTRENAR  CUALQUIER  PROGRAMA  DE  SOFTWARE  O BASE  DE DATOS,  INCLUYENDO,  PERO  SIN  LIMITARSE  A,  CUALQUIER  SOFTWARE  DE  INTELIGENCIA ARTIFICIAL,  APRENDIZAJE 
+AUTOMÁTICO O PROCESAMIENTO DEL LENGUAJE NATURAL, ALGORITMO, METODOLOGÍA Y/O MODELO. 
+LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES Y LOS MATERIALES DE MOODY'S NO ESTÁN DESTINADOS PARA SER UTILIZADOS POR NINGUNA PERSONA COMO 
+UN REFERENTE, SEGÚN SE DEFINE DICHO TÉRMINO A EFECTOS REGULATORIOS, Y NO DEBEN SER UTILIZADOS EN MODO ALGUNO QUE PUDIERA DAR LUGAR A QUE SE LOS CONSIDERE 
+COMO UN REFERENTE.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+a exposición a riesgo cambiario, la proporción de créditos en dólares es alta, alineada a la plaza, a mazo 2025 
+era el 97.6% de la cartera, de la cual un proporción baja, del 6.5% era en generadores.   
+ 
+Menores Prospectos de Rentabilidad 
+El ritmo de crecimiento de la utilidad neta se reducirá en 2025, después de dos años mostrando un crecimiento elevado 
+(2023: 106%; 2024: 47%), dada la combinación de los efectos del menor ingreso proveniente por venta de bienes 
+adjudicados, un mayor gasto por provisiones y una mayor carga tributaria, efectos que se mantendrían durante todo el 
+año. Sin embargo, el margen interanual a marzo 2025 se mantiene relativamente estable, a marzo 2025 era de 5.7% 
+(diciembre 2024: 5.6%), dado un mayor rendimiento financiero interanual  (9.8%), medido como los ingresos financieros 
+acumulados en los últimos doce meses entre el activo productivo promedio (incluyendo el encaje legal),  explicado por 
+la mayor colocación en segmentos como consumo y tarjeta de crédito, y que pudo compensar el mayor costo de los 
+pasivos (marzo 2025: 4.1%).    
+ 
+GRAFICO 3 Comparativo Componentes de la Rentabilidad Marzo 2024 versus Marzo 2025    
+ 
+Fuente: Banco de Finanzas, S.A.
+
+[21/12/2021 09:00:00 am] TIPO: FINANCIERO
+221,717.7 321,296.3 204,690.0 56,238.0 
+Ingreso Operativo Total 22.1 782,536.0 1,218,784.7 1,495,977.2 1,758,669.0 1,820,831.0 
+Gastos Operativos 15.0 528,621.7 723,823.4 854,601.0 976,729.0 938,037.0 
+Utilidad/Pérdida Operativa Tomada como 
+Patrimonio n.a. n.a. n.a. n.a. 0.0 5,742.0 
+Utilidad Operativa antes de Provisiones 7.2 253,914.3 494,961.3 641,376.2 781,940.0 888,536.0 
+Cargo por Provisiones para Préstamos y Otros 1.3 46,941.3 346,479.7 465,089.8 561,198.0 335,202.0 
+Utilidad Operativa 5.9 206,973.0 148,481.6 176,286.4 220,742.0 553,334.0 
+Otros Rubros No Operativos (Neto) (1.1) (37,730.7) (57,293.4) (71,666.4) (55,987.0) (51,783.0) 
+Impuestos 1.4 50,039.2 32,723.3 36,781.2 55,298.0 151,649.0 
+Utilidad Neta 3.4 119,203.1 58,464.9 67,838.8 109,457.0 349,902.0 
+Otro Ingreso Integral n.a n.a n.a n.a n.a n.a 
+Ingreso Integral según Fitch 3.4 119,203.1 58,464.9 67,838.8 109,457.0 349,902.0 
+ 
+            
+Resumen del Balance General             
+Activos             
+Préstamos Brutos 334.8 11,832,693.0 12,249,241.0 14,200,334.2 17,411,937.0 19,370,603.0 
+- De los Cuales Están Vencidos 12.5 440,106.0 493,082.7 460,998.2 483,773.0 237,159.0 
+Reservas para Pérdidas Crediticias 15.2 535,847.1 594,907.6 592,703.5 691,574.0 421,614.0 
+Préstamos Netos 319.6 11,296,845.9 11,654,333.4 13,607,630.7 16,720,363.0 18,948,989.0 
+Préstamos y Operaciones Interbancarias 18.8 662,714.0 504,658.1 1,940,879.7 764,480.0 839,826.0 
+Derivados n.a. n.a. n.a. n.a. n.a. n.a.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+e riesgos y cobranza. 
+Dicha morosidad se concentra mayoritariamente en los primeros 30 días (4%), con un decrecimiento progresivo en 
+atrasos mayores, evidenciando una recuperación efectiva de pagos. 
+GRÁFICO 1 Distribución de cartera según garantías 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+GRÁFICO 2 Cartera por categoría de riesgo 
+ 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+En el caso de las provisiones para préstamos incobrables, registraron C$459,4 millones (USD12,5 millones) a diciembre 
+de 2024, luego de aumentar un 18% anual y 12% semestral, asociado con el crecimiento de la cartera. Dichas provisiones 
+cubrieron en un 247% la cartera improductiva del Banco, lo cual refleja la prudencia del mismo. El monto de las 
+estimaciones se conforma tanto por las provisiones de cartera de crédito como de las provisiones anticíclica y genérica 
+voluntaria. 
+Estabilidad en su estructura de fondeo y adecuadas posiciones de liquidez. 
+Al corte bajo estudio, los activos líquidos de BDF ascendieron a C$4.470,6 millones (USD122,1 millones), constituyendo 
+el 21% del total de activos. Como entidad supervisada por la SIBOIF y sujeta a la Norma sobre Gestión de Riesgo de 
+Liquidez, el Banco mantuvo una Razón de Cobertura de Liquidez (RCL) del 132,9%, superando el umbral regulatorio del 
+100%.  
+El Banco dispone de una liquidez adecuada para cumplir con sus obligaciones, manteniendo un balance suficiente.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+o, y que pudo compensar el mayor costo de los 
+pasivos (marzo 2025: 4.1%).    
+ 
+GRAFICO 3 Comparativo Componentes de la Rentabilidad Marzo 2024 versus Marzo 2025    
+ 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+297 
+24 
+16 
+234 
+33 
+324 
+6 
+44 
+246 
+37 
+ -     50    100    150    200    250    300    350
+Margen Financiero
+Otros Ingresos (gastos) Operativos Netos
+Gastos por Provisiones
+Gastos Administrativos
+Impuestos
+Mar-25
+55%
+20%
+21%
+LiquidaInmobiliariaPrendaria
+FiduciariaOtrasSin garantia
+91%
+94%
+95%
+95%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+100%
+Dic-22Dic-23Dic-24Mar-25
+ABCDE
+
+ 
+ 
+ 
+ 
+4   30 DE JULIO DE 2025 
+BANCO DE FINANZAS, S.A.
+ 
+Nicaragua 
+ 
+Expectativa de Fortalecimiento de Capital 
+Dado los nuevo requerimientos regulatorios de capital, Moodys espera que la posición patrimonial regulatoria del banco 
+mostrará una tendencia positiva en los próximos años, para BDF, el nuevo límite en 2027 incrementará gradualmente a 
+15% desde 10%, a marzo 2025 el índice era de 13.5%.  El fortalecimiento provendría de colocaciones en productos con 
+un menor riesgo cambiario y la acumulación de la totalidad de los resultados durante los próximos dos años.   En la 
+evaluación de este factor, la agencia además pondera, en caso de requerirse, los potenciales aportes de capital que 
+podría recibir de su grupo, donde le beneficia el tamaño pequeño relativo de BDF respecto a su grupo.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+na firma de auditoría y no puede en todos los casos verificar o validar de manera independiente la información recibida en el proceso de calificación crediticia o en la elaboración de 
+los Materiales. 
+En la medida en que las leyes así lo permitan, MOODY's y sus directores, oficiales, empleados, agentes, representantes, licenciadores y proveedores declinan toda responsabilidad frente a cualesquier 
+persona o entidad con relación a pérdidas o daños indirectos, especiales, derivados o accidentales de cualquier naturaleza, derivados de o relacionados con la información aquí contenida o el uso 
+o imposibilidad de uso de dicha información, incluso cuando MOODY's o cualquiera de sus directores, oficiales, empleados, agentes, representantes, licenciadores o proveedores fuera advertido 
+previamente de la posibilidad de dichas pérdidas o daños, incluido pero no limitado a: (a) lucro cesante presente o futuro o (b) cualquier pérdida o daño que surja cuando el instrumento financiero 
+en cuestión no sea objeto de una calificación crediticia concreta otorgada por MOODY'S.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+de Cobertura de Liquidez (RCL) del 132,9%, superando el umbral regulatorio del 
+100%.  
+El Banco dispone de una liquidez adecuada para cumplir con sus obligaciones, manteniendo un balance suficiente. En 
+esa línea, es relevante que continúe preservando un equilibrio entre liquidez y rentabilidad. Asimismo, el Banco 
+estructuralmente es menos susceptible a escenarios de estrés de liquidez y tiene mayor predictibilidad en sus calces de 
+activos y pasivos.   
+ 
+62%
+61%
+59%
+47%
+45%
+16%
+16%
+17%
+14%
+14%
+17%
+17%
+15%
+16%
+17%
+18%
+19%
+0%
+20%
+40%
+60%
+80%
+100%
+Dic-23Mar-24Jun-24Sep-24Dic-24
+LiquidaInmobiliariaPrendariaFiduciariaOtrasSin garantia
+0%
+20%
+40%
+60%
+80%
+100%
+Dic-23Mar-24Jun-24Sep-24Dic-24
+ABCDE
+
+ 
+ 
+ 
+ 
+4 25 DE MARZO DE 2025 
+ 
+BANCO DE FINANZAS, S.A. 
+ 
+Nicaragua 
+Por su parte, a diciembre de 2024, el pasivo del Banco alcanzó un monto de C$19.469,6 millones, equivalente a USD531,6 
+millones, cifra que manifestó un crecimiento del 6% anual, atribuible principalmente a los incrementos en las obligaciones 
+con el público. El fondeo de BDF proviene mayormente de la captación de recursos del público, partida que constituyó el 
+80% del pasivo total al corte de análisis, concentrándose simultáneamente en cuentas de ahorro (42%) y depósitos a 
+plazo (42%), mientras que, el 15% restante se mantuvo a la vista. Resulta relevante destacar que, dada su estructura de 
+fondeo, el Banco mantiene una estructura de fondeo eficiente.
+
+[21/12/2021 09:00:00 am] TIPO: FINANCIERO
+.a. n.a. n.a. 
+Total de Patrimonio 57.6 2,036,507.7 1,913,297.1 2,499,373.3 2,356,226.0 2,275,398.0 
+Total de Pasivos y Patrimonio 528.3 18,671,026.8 18,100,070.4 20,813,060.9 22,047,199.0 24,655,596.0 
+Tipo de Cambio   USD1 = 
+NIO34.9949 
+USD1 = 
+NIO34.8245 
+USD1 =  
+NIO33.8381 
+USD1 =  
+NIO32.5 
+USD1 =  
+NIO30.78 
+n.a. –No aplica. 
+Fuente: Fitch Ratings, Fitch Solutions y BDF. 
+  
+
+ 
+Banco de Finanzas, S.A. 
+Informe de Calificación │  21 diciembre 2021 fitchratings.com 5 
+ 
+  
+ 
+Bancos 
+Banca Comercial 
+Nicaragua 
+Resumen de Información Financiera e Indicadores Clave 
+  3T21 3T21 2020 2019 2018 
+Rentabilidad             
+Utilidad Operativa/Activos Ponderados por Riesgo   
+2.3 1.2 1.2 1.2 2.7 
+Ingreso Neto por Intereses/Activos Productivos 
+Promedio 
+  
+6.9 6.9 6.9 6.9 7.2 
+Gastos No Financieros/Ingresos Brutos   
+67.6 59.4 57.1 55.5 51.5 
+Utilidad Neta/Patrimonio Promedio   
+8.1 2.6 2.8 4.6 16.2 
+       
+Calidad de Activos             
+Indicador de Préstamos Vencidos   
+3.7 4.0 3.3 2.8 1.2 
+Crecimiento de Préstamos Brutos   
+(3.4) (13.7) (18.4) (10.1) 12.6 
+Reservas para Pérdidas Crediticias/Préstamos 
+Vencidos 
+  
+121.8 120.7 128.6 143.0 177.8 
+Gastos por Constitución de Reservas/Préstamos 
+Brutos Promedio 
+  
+0.5 2.6 3.1 3.0 1.8 
+       
+Capitalización             
+Indicador de Capital Común Tier 1 (CET 1)   
+n.a. n.a. n.a. n.a. n.a. 
+Indicador de Capital Común Tier 1 (CET 1) 
+Completamente Implementado 
+  
+n.a. n.a. n.a. n.a. n.a.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+: (a) lucro cesante presente o futuro o (b) cualquier pérdida o daño que surja cuando el instrumento financiero 
+en cuestión no sea objeto de una calificación crediticia concreta otorgada por MOODY'S. 
+En la medida en que las leyes así lo permitan, MOODY's y sus directores, oficiales, empleados, agentes, representantes, licenciadores y proveedores exime de cualquier responsabilidad con respecto 
+a pérdidas o daños directos o indemnizatorios causados a cualquier persona o entidad, incluido pero no limitado a, negligencia (pero excluyendo fraude, conducta dolosa o cualquier otro tipo de 
+responsabilidad  que,  en  aras de  la  claridad, no  pueda  ser  excluida  por  ley),  por  parte  de MOODY's o  cualquiera  de  sus directores,  oficiales,  empleados,  agentes,  representantes, licenciadores o 
+proveedores, o con respecto a toda contingencia dentro o fuera del control de cualquiera de los anteriores, derivada de o relacionada con la información aquí contenida o el uso o imposibilidad de 
+uso de tal información. 
+MOODY'S NO OTORGA NI OFRECE GARANTÍA ALGUNA, EXPRESA O IMPLÍCITA, CON RESPECTO A LA PRECISIÓN, OPORTUNIDAD, EXHAUSTIVIDAD, COMERCIABILIDAD O IDONEIDAD PARA 
+UN FIN DETERMINADO SOBRE CALIFICACIONES CREDITICIAS, EVALUACIONES Y DEMÁS OPINIONES O INFORMACIÓN. 
+Moody's Investors Service, Inc.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+%) y depósitos a 
+plazo (42%), mientras que, el 15% restante se mantuvo a la vista. Resulta relevante destacar que, dada su estructura de 
+fondeo, el Banco mantiene una estructura de fondeo eficiente. 
+De manera complementaria, el financiamiento recibido a través  de instituciones financieras representó el 5% del pasivo, 
+y se componen por préstamos y líneas de crédito con entes financieros nacionales y multilaterales. Asimismo, el Banco 
+mantiene como alternativa de financiamiento el Programa de Emisión de Valores Estandarizados de Renta Fija (ver Tabla 
+2), el cual representa menos del 1% del pasivo al corte de análisis. 
+Tendencia decreciente de la adecuación de capital relacionado al crecimiento del negocio; no obstante, se 
+mantiene en cumplimiento con los límites regulatorios. 
+Al corte de análisis, el patrimonio de la Entidad alcanzó C$2.297,5 millones (USD62,7 millones), luego de exhibir un 
+aumento del 7% anual, debido al incremento de los resultados del periodo. El patrimonio de la Entidad se conforma 
+principalmente por el capital social (43%), el cual, al corte bajo estudio contabilizó C$982,1 millones y se mantuvo estable 
+en el último año. Seguidamente, el resultado acumulado de ejercicios anteriores representó un 28%, las reservas 
+patrimoniales un 23% y el 7% restante el resultado del periodo.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+e: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+ 
+ 
+ 
+ 
+ 
+ 
+488
+459
+491
+522
+689
+605
+525
+740
+3,058
+2,773
+3,166
+2,436
+596
+250
+1,213
+2,043
+1,746
+1,568
+1,458
+74.4%
+72.3%
+67.2%
+67.2%
+62.0%
+64.0%
+66.0%
+68.0%
+70.0%
+72.0%
+74.0%
+76.0%
+0
+1,000
+2,000
+3,000
+4,000
+5,000
+6,000
+7,000
+Dic-22Dic-23Dic-24Mar-25
+Millones Córdobas
+CajaDepósitos en Instituciones FinancierasDepósitos en BCN
+Equivalentes de EfectivoInversionesCobertura de Liquidez
+
+ 
+ 
+ 
+ 
+5   30 DE JULIO DE 2025 
+BANCO DE FINANZAS, S.A.
+ 
+Nicaragua 
+ 
+Anexo  
+Tabla 1 Principales Indicadores Banco de Finanzas S.A. 
+ 
+Mar-25 Dic-24 Dic-23 Dic-22 
+Razón de morosidad 1.4% 1.1% 1.1% 2.0% 
+Provisión para pérdidas crediticas 
+208.8% 281.1% 260.9% 161.9% 
+Adecuación de capital 13.5% 13.8% 14.9% 16.1% 
+Razón de solvencia 10.3% 10.6% 10.4% 10.8% 
+Margen financiero 5.6% 5.6% 5.3% 5.1% 
+Rendimiento sobre el Patrimonio 5.7% 6.8% 4.9% 2.4% 
+Cobertura de Liquidez 67.2% 67.2% 72.3% 74.4% 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+ 
+Tabla 2 Programa de Emisión de Valores Estandarizados de Renta Fija.  
+Programa de Emisión de Valores Estandarizados de Renta Fija 
+USD 50.000.000,00 
+Fecha de registro 2 de junio de 2023 
+Tipo de Emisiones  Bonos Estandarizados y Papel Comercial 
+Monto del Programa y moneda USD50,000,000  
+Destino de los recursos Capital de Trabajo 
+Monto ofertado actual de las 
+emisiones 
+USD7,500,000.00 
+Saldo en circulación USD6,481,000.
+
+[21/12/2021 09:00:00 am] TIPO: FINANCIERO
+Capitalización             
+Indicador de Capital Común Tier 1 (CET 1)   
+n.a. n.a. n.a. n.a. n.a. 
+Indicador de Capital Común Tier 1 (CET 1) 
+Completamente Implementado 
+  
+n.a. n.a. n.a. n.a. n.a. 
+Indicador de Capital Base según Fitch   
+16.3 14.9 15.9 12.0 10.4 
+Patrimonio Común Tangible/Activos Tangibles   
+10.6 10.3 11.8 9.9 8.8 
+Indicador de Apalancamiento de Basilea   
+n.a. n.a. n.a. n.a. n.a. 
+Préstamos Vencidos Netos/Capital Común Tier 1   
+n.a. n.a. n.a. n.a. n.a. 
+Préstamos Vencidos Netos/ Capital Base según Fitch   
+(4.9) (5.5) (5.5) (9.6) (8.6) 
+  
+     
+Fondeo y Liquidez             
+Préstamos/Depósitos de Clientes   
+99.0 110.1 142.0 152.0 128.7 
+Indicador de Cobertura de Liquidez   
+n.a. n.a. n.a. n.a. n.a. 
+Depósitos de Clientes/Fondeo   
+73.3 69.9 55.3 58.7 68.0 
+Indicador de Fondeo Estable Neto   
+n.a. n.a. n.a. n.a. n.a. 
+n.a. –No aplica. 
+Fuente: Fitch Ratings, Fitch Solutions y BDF. 
+  
+
+ 
+Banco de Finanzas, S.A. 
+Informe de Calificación │  21 diciembre 2021 fitchratings.com 6 
+ 
+  
+ 
+Bancos 
+Banca Comercial 
+Nicaragua 
+Indicadores Financieros Clave – Desarrollos Recientes 
+Calidad de Activos 
+Fitch opina que la calidad de activos de BDF se mantendrá en los niveles actuales en el futuro 
+previsible con una tendencia estable. A septiembre de 2021, el indicador de mora mayor de 90 
+días fue de 3.7%, mejor al cierre fiscal previo de 4% y al promedio de la plaza a septiembre de 
+2021  de  3.8%.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+s y se mantuvo estable 
+en el último año. Seguidamente, el resultado acumulado de ejercicios anteriores representó un 28%, las reservas 
+patrimoniales un 23% y el 7% restante el resultado del periodo. 
+Referente al índice de adecuación de capital (IAC), este disminuyó, situándose en un 13,8% al cierre del segundo semestre 
+de 2024, desde 14,9% en diciembre de 2023; aun así, superó el mínimo regulatorio del 10% establecido por la SIBOIF. 
+Dicha reducción se atribuye al crecimiento orgánico del Banco, que implica un aumento en los activos ponderados por 
+riesgo.  Según opinión de la agencia, si bien el IAC todavía refleja una posición de capital suficiente para respaldar el 
+nivel de riesgo asumido, mayores contracciones podrían poner en riesgo la solvencia de la Entidad.
+Crecimiento del resultado del periodo, favorecido por el rendimiento de la cartera. 
+Al finalizar el periodo 2024, el Banco de Finanzas (BDF) reportó una utilidad neta de C$151,4 millones (USD4,1 millones), 
+reflejando un crecimiento interanual del 47%, asociado con el aumento en mayor cuantía de los ingresos totales 
+(+C$190,6 millones) respecto a los gastos totales (+C$142,5 millones), fundamentado por los ingresos financieros 
+generados a partir de la cartera de crédito. Al cierre de diciembre de 2025, proyectan una ganancia acumulada de USD5,4 
+millones, lo que implicaría un aumento del 30% anual motivado principalmente por el rendimiento del portafolio crediticio.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+y Papel Comercial 
+Monto del Programa y moneda USD50,000,000  
+Destino de los recursos Capital de Trabajo 
+Monto ofertado actual de las 
+emisiones 
+USD7,500,000.00 
+Saldo en circulación USD6,481,000.00 
+Análisis macroeconómico y sectorial de Nicaragua  
+La calificación soberana vigente emitida por Moody’s Ratings se ubica en B2, con perspectiva estable. El perfil 
+crediticio de Nicaragua se fundamenta en la existencia de amplios márgenes fiscales y externos, un perfil de 
+vencimientos de deuda favorable y una carga de intereses relativamente baja en comparación con la mayoría de sus 
+pares. Para mayor detalle respecto a los fundamentos de la calificación internacional, referirse a la opinión más 
+reciente publicada por Moody ́s Ratings. 
+La economía de Nicaragua ha crecido de forma sostenida entre el 3.5% y el 4.0% en los últimos años, beneficiándose 
+de una fuerte demanda externa y un aumento sustancial de las entradas de remesas e inversión extranjera directa 
+(IED). 
+A marzo de 2025, el sistema bancario y financiero en Nicaragua registró un indicador de efectivo y equivalente de 
+efectivo sobre las captaciones del público de 33.0% y una adecuación de capital del 18.5%, evidenciando métricas de 
+liquidez y de solvencia apropiadas según los requerimientos internos y regulatorios. Se destaca el dinamismo en el 
+ritmo de colocación de créditos (+17.1% interanual), donde la cartera por actividad, a marzo de 2025, se concentra 
+principalmente en el segmento comercial (35.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+gnadas calificaciones crediticias de Moody’s Investors Service y asimismo han 
+notificado públicamente a la SEC que poseen una participación en MCO superior al 5%, se publica anualmente en www.moodys.com , bajo el capítulo de “Investor Relations – Corporate Governance 
+– Charter  Documents- Director  and  Shareholder  Affiliation  Policy” ["Relaciones con Inversores - Gestión  Corporativa – Documentos Constitutivos - Política  sobre  Relaciones entre  Directores y 
+Accionistas” ]. 
+Moody's SF Japan K.K., Moody's Local AR Agente de Calificación de Riesgo S.A., Moody’s Local BR Agência de Classificação de Risco LTDA, Moody’s Local MX S.A. de C.V, I.C.V., Moody's Local PE 
+Clasificadora de Riesgo S.A., y Moody's Local PA Calificadora de Riesgo S.A. (conjuntamente, las "Moody’s Non-NRSRO CRAs", por sus siglas en ingles) son subsidiarias de agencias de calificación 
+crediticia de propiedad total indirecta de MCO. Ninguna de las Moody’s Non-NRSRO CRAs es una Organización Reconocida Nacionalmente como Organización Estadística de Calificación Crediticia. 
+Términos adicionales solo  para Australia:  Cualquier  publicación  en  Australia  de  este  documento  se  realiza  conforme  a  la  Licencia  de  Servicios Financieros en Australia  de  la  filial  de  MOODY's, 
+Moody's  Investors  Service  Pty  Limited  ABN  61  003  399  657AFSL  336969  y/o Moody's  Analytics  Australia  Pty  Ltd  ABN  94  105  136  972  AFSL  383569  (según  corresponda).
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+. Al cierre de diciembre de 2025, proyectan una ganancia acumulada de USD5,4 
+millones, lo que implicaría un aumento del 30% anual motivado principalmente por el rendimiento del portafolio crediticio. 
+De manera puntual, los ingresos acumulados alcanzaron C$2.138,2 millones (USD58,4 millones), un 10% más que el año 
+anterior, debido al incremento del 13% en ingresos financieros, que representaron el 94% del total, impulsados por la 
+expansión de la cartera en segmentos de alto rendimiento. Contrariamente, los gastos ascendieron a C$1.986,8 millones 
+(USD54,2 millones), aumentando un 8% anual, debido al aumento en gastos de administración y financieros, relacionado 
+con inversión en personal y tecnología, así como mayor financiamiento y provisiones por el crecimiento de la cartera.  
+En cuanto a los indicadores de rentabilidad, tanto el ROA como el ROE presentaron aumentos interanuales dado el 
+comportamiento de las utilidades del periodo, mientras que, el margen financiero se mantuvo estable en el último año. 
+BDF tiene como objetivo principal aumentar sus márgenes de rentabilidad de la mano con el crecimiento que está 
+mostrando el Banco.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+tras que, el margen financiero se mantuvo estable en el último año. 
+BDF tiene como objetivo principal aumentar sus márgenes de rentabilidad de la mano con el crecimiento que está 
+mostrando el Banco. 
+Adicionalmente, desde la perspectiva de eficiencia operativa, la Entidad registra un indicador de gastos administrativos 
+sobre utilidad operacional bruta de 79,2%, el cual si bien se contrae interanualmente (83,0%) continúa mostrando un nivel 
+por encima de la media sectorial (55,3%), lo que refleja importantes oportunidades y retos de optimización, en beneficio 
+de la posición rentable institucional. 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+5 25 DE MARZO DE 2025 
+ 
+BANCO DE FINANZAS, S.A. 
+ 
+Nicaragua 
+GRÁFICO 3 Evolución de resultados 
+ 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+Anexo  
+Tabla 1 Principales Indicadores Banco de Finanzas S.A. 
+ 
+Dic-24 Sep-24 Jun-24 Mar-24 Dic-23 
+Cartera de crédito neta (USD) 413,04 405,17 395,39 381,37 375,43 
+Razón de morosidad 1,2% 1,0% 1,1% 1,3% 1,3% 
+Provisión para pérdidas crediticas 247,5% 261,1% 246,0% 206,4% 218,8% 
+Adecuación de capital 13,8% 14,5% 14,5% 14,4% 14,9% 
+Razón de solvencia 10,6% 10,4% 10,3% 10,4% 10,4% 
+Margen financiero 7,8% 7,5% 7,3% 7,6% 7,6% 
+Rendimiento sobre el Patrimonio 6,8% 3,3% 4,0% 4,5% 4,9% 
+Cobertura de Liquidez 186,9% 173,4% 190,5% 206,7% 227,7% 
+Fuente: Banco de Finanzas, S.A.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+xtranjera AA.ni 
+Estable 
+AA.ni 
+Estable 
+ Entidad Corto Plazo Moneda Extranjera ML A-1.ni 
+- 
+ML A-1.ni 
+- 
+ Programa  de  Emisión  de  Valores  Estandarizados  de    
+Renta Fija 
+AA.ni 
+Estable 
+AA.ni 
+Estable 
+ Programa  de  Emisión  de  Valores  Estandarizados  de 
+Renta Fija 
+ML A-1.ni 
+- 
+ML A-1.ni 
+- 
+ 
+Las calificaciones otorgadas no han sufrido ningún proceso de apelación  por parte de la entidad calificada Moody ́s 
+Local Nicaragua da por primera vez calificación de riesgo a este emisor en octubre 2024. 
+Información considerada para la calificación. 
+La información utilizada en este informe comprende los Estados Financieros no auditados al 31 de marzo de 2025, así 
+como los Estados Financieros Auditados al 31 de diciembre de 2024. Moody’s Local Nicaragua considera que la 
+información recibida es suficiente y satisfactoria para el correspondiente análisis. 
+ 
+Definición de las clasificaciones asignadas 
+→ AA.ni: Emisores o emisiones calificados en AA.ni con una calidad crediticia muy fuerte en comparación con otras 
+entidades y transacciones locales. 
+ 
+→ ML A-1.ni: Los emisores calificados en ML A-1.ni tienen la mayor capacidad para pagar obligaciones de deuda de 
+corto plazo en comparación con otras entidades y transacciones locales. 
+ 
+→ Perspectiva Estable: indica una baja probabilidad de cambio de la calificación en el mediano plazo.
+
+[21/12/2021 09:00:00 am] TIPO: FINANCIERO
+registrados a septiembre 
+de 2021. A septiembre de 2021, el retorno operativo sobre activos ponderados por riesgo fue 
+de 2.3%, superior al promedio de 1.2% registrado desde la crisis social de 2018. La rentabilidad 
+se basa  en un margen de interés neto (MIN) de 6.9%, superior  al promedio de la  plaza  y se 
+sostiene a pesar de la contracción del volumen de negocios por una baja en el costo financiero. 
+Por otro lado, el mayor beneficio a los indicadores de rentabilidad es la reducción en el gasto 
+por provisiones, cercano a 19% del ingreso previo a dicho gasto, esto después de un período 
+largo  de  constitución  de  provisiones  altas.  Además,  el  control  de  gastos  operativos  se 
+mantiene.  
+En contraste, la diversificación de ingresos mantiene una brecha con el promedio del mercado 
+que mejoraría  en la  medida  se recupere el dinamismo económico. A septiembre de 2021, el 
+retorno  neto  sobre  patrimonio  promedio  fue  de  8.1%,  muy  superior  al  promedio  histórico 
+2018-2020 de 3.3%, aunque por debajo de la media de la banca de 9.4%. 
+La  agencia  cree  que  el  enfoque  de  negocios  de  BDF  le  redituará  niveles  de  rentabilidad 
+similares a los sostenidos durante el presente ejercicio. Esto es por sus planes de crecimiento 
+en  sus  clientes  con  perfiles  de  riesgo  relativamente  bajo  y  medio.  Fitch  observa  que  la 
+proporción   de   gastos   operativos   a   activos   totales   promedio   se   mantiene   en   3.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+Moody's no están destinados a ser utilizados ni deben ser confiados por usuarios 
+ubicados en India en relación con valores cotizados o propuestos para su cotización en bolsas de valores de la India. 
+Términos adicionales con respecto a las Opiniones de la Segunda Parte (según se define en los Símbolos y Definiciones de Calificación de Moody's Investors Service): Por favor notar que una Opinión 
+de la Segunda Parte ("OSP") no es una "calificación crediticia". La emisión de OSPs no es una actividad regulada en muchas jurisdicciones, incluida Singapur. 
+JAPÓN: En Japón, el desarrollo y la provisión de OSPs se clasifican como "Negocios Secundarios", no como "Negocios de Calificación Crediticia", y no están sujetos a las regulaciones aplicables a 
+los "Negocios de Calificación Crediticia" según la Ley de Instrumentos Financieros y la Ley de Intercambio de Japón y su regulación relevante. RPC: Cualquier OSP: (1) no constituye una Evaluación 
+de Bonos Verdes de la RPC según se define en las leyes o regulaciones pertinentes de la RPC; (2) no puede incluirse en ninguna declaración de registro, circular de oferta, prospecto ni en ningún 
+otro documento presentado a las autoridades regulatorias de la RPC ni utilizarse para cumplir con ningún requisito de divulgación regulatoria de la RPC; y (3) no puede utilizarse en la RPC para 
+ningún propósito regulatorio ni para ningún otro propósito que no esté permitido por las leyes o regulaciones pertinentes de la RPC.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+% 10,4% 
+Margen financiero 7,8% 7,5% 7,3% 7,6% 7,6% 
+Rendimiento sobre el Patrimonio 6,8% 3,3% 4,0% 4,5% 4,9% 
+Cobertura de Liquidez 186,9% 173,4% 190,5% 206,7% 227,7% 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+0
+500 000
+1 000 000
+1 500 000
+2 000 000
+2 500 000
+Dic-22Dic-23Dic-24
+Ingresos totalesGastos totalesResultado del período
+
+ 
+ 
+ 
+ 
+6 25 DE MARZO DE 2025 
+ 
+BANCO DE FINANZAS, S.A. 
+ 
+Nicaragua 
+Tabla 2 Programa de Emisión de Valores Estandarizados de Renta Fija.  
+Programa de Emisión de Valores Estandarizados de Renta Fija 
+USD 50.000.000,00 
+Fecha de registro 2 de junio de 2023 
+Tipo de Emisiones  Bonos Estandarizados y Papel Comercial 
+Monto del Programa y 
+moneda 
+USD50.000.000  
+Destino de los recursos Capital de Trabajo 
+Monto ofertado actual de 
+las emisiones 
+USD7.500.000,00 
+Saldo en circulación USD6.298.000,00 
+Resumen Macroeconómico de Nicaragua 
+La calificación soberana vigente emitida por Moody’s Ratings se ubica en B2, con perspectiva estable. El perfil crediticio 
+de Nicaragua se fundamenta en la existencia de amplios márgenes fiscales y externos, un perfil de vencimientos de 
+deuda favorable y una carga de intereses relativamente baja en comparación con la mayoría de sus pares. Para mayor 
+detalle respecto a los fundamentos de la calificación internacional, referirse a la opinión más reciente publicada por 
+Moody ́s Ratings.
+
+[21/12/2021 09:00:00 am] TIPO: FINANCIERO
+estrés, BDF podría sostener una capacidad conveniente de absorción de pérdidas, 
+considerando  que  sus  metas  del  siguiente  ejercicio  fiscal  y  el  crecimiento  moderado 
+proyectado de cartera.  
+Fondeo y Liquidez 
+Fitch prevé que la estructura de fondeo y liquidez de BDF se mantenga adecuada a su perfil 
+de riesgo, con niveles de liquidez buenos. A septiembre de 2021, el indicador de préstamos a 
+depósitos fue de 99%, mejor al 110% de 2020 y 142% de 2019. Esto es principalmente por el 
+crecimiento  incrementado  de  los  depósitos  de  7.4%.  y  por  la  reducción  deliberada  de  las 
+exposiciones  crediticias.  Por  su parte,  el  banco  cuenta  con  acceso  contingente  a  liquidez 
+adecuado y ha seguido expandiéndolo. Acorde con la industria local, la captación de depósitos 
+favorece los depósitos a la vista sobre los depósitos a plazo, reduciendo el costo financiero. 
+Por  su  parte,  Fitch  opina  que  los  riesgos  por  concentración  de  depositantes  siguen  al  alza, 
+natural  dada  la  contracción  del  mercado  y  un  reto  para  las instituciones  en  general: Los  20 
+mayores depositantes representan un alto 42% (1T21: 38%), divididos consistentemente  en 
+51% en depósitos a plazo y 49% en depósitos a la vista. 
+El  fondeo  se  complementa  con  líneas  de  crédito,  emisiones  de  bonos  en  el  mercado  local, 
+deuda subordinada y préstamos con instituciones financieras internacionales, que en conjunto 
+constituyen 26.7% del total de fondeo.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+Local Nicaragua llevó a cabo la presente evaluación siguiendo la nueva 
+Metodología de Calificación de Riesgo de Instituciones Financieras de Crédito, 
+inscrita en noviembre de 2024 ante el regulador. 
+La calificación asignada toma en consideración el respaldo del nuevo Grupo al 
+que pertenece el Banco desde junio de 2024, cuya transacción se cerró el 01 de 
+Agosto 2024: Nueva Tenedora Banpro, conformado por Grupo Promerica y Grupo 
+ASSA, los cuales también son dueños de Banco de la Producción S.A. (Banpro), 
+así como a la experiencia y sinergias que puede obtener BDF del actual banco 
+más grande del sistema financiero de Nicaragua. 
+De igual forma, se pondera de manera positiva el Gobierno Corporativo del Banco 
+y su administración prudente de los riesgos, en cumplimiento de las leyes y 
+normativas a las cuales se encuentra sujeto. 
+Por  su  parte,  la  cartera  de  créditos  mantiene  una  tendencia  creciente, 
+acompañada de buenos indicadores crediticios y una cobertura holgada de sus 
+créditos improductivos.  
+Asimismo, dispone de niveles de liquidez alineados con los parámetros internos 
+y  en  cumplimiento  de  los  límites  normativos,  lo  que  permite  asegurar  una 
+cobertura adecuada para aquellas obligaciones de mayor exigibilidad financiera. 
+No obstante, algunas métricas se ubican por debajo del promedio del sector 
+bancario.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+as de la región centroamericana. Como una 
+característica intrínseca de este mercado, se identifica la alta participación de la dolarización derivada, en parte, por los 
+importantes flujos de remesas. 
+Información Complementaria 
+ 
+Tipo de calificación / Instrumento 
+Calificación 
+actual 
+Perspectiva  
+actual 
+Calificación 
+anterior 
+Perspectiva 
+anterior 
+Banco de Finanzas S.A.         
+ Entidad Largo Plazo Moneda Local AA.ni 
+Estable 
+AA.ni 
+Estable 
+ Entidad Corto Plazo Moneda Local ML A-1.ni 
+- 
+ML A-1.ni 
+- 
+ Entidad Largo Plazo Moneda Extranjera AA.ni 
+Estable 
+AA.ni 
+Estable 
+ Entidad Corto Plazo Moneda Extranjera ML A-1.ni 
+- 
+ML A-1.ni 
+- 
+ Programa de Emisión de Valores Estandarizados de    
+Renta Fija 
+AA.ni 
+Estable 
+AA.ni 
+Estable 
+ Programa de Emisión de Valores Estandarizados de 
+Renta Fija 
+ML A-1.ni 
+- 
+ML A-1.ni 
+- 
+
+ 
+ 
+ 
+ 
+7 25 DE MARZO DE 2025 
+ 
+BANCO DE FINANZAS, S.A. 
+ 
+Nicaragua 
+ 
+Las calificaciones otorgadas no han sufrido ningún proceso de apelación  por parte de la entidad calificada Moody ́s 
+Local Nicaragua da por primera vez calificación de riesgo a este emisor en octubre 2024. 
+Información considerada para la calificación. 
+La información utilizada en este informe comprende los estados financieros no auditados a septiembre y diciembre de 
+2024 de Banco de Finanzas S.A., así como la documentación respectiva sobre su Programa de Emisión. 
+Definición de las clasificaciones asignadas 
+→ AA.ni: Emisores o emisiones calificados en AA.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+lo  que  permite  asegurar  una 
+cobertura adecuada para aquellas obligaciones de mayor exigibilidad financiera. 
+No obstante, algunas métricas se ubican por debajo del promedio del sector 
+bancario. 
+Respecto al fondeo, presenta una estructura concentrada en captaciones del 
+público, esencialmente cuentas de ahorro y depósitos a plazo, los cuales se 
+asocian a un menor costo financiero; en adición, poseen financiamiento a través 
+de entidades financieras y de su Programa de Emisión de Valores Estandarizados 
+de Renta Fija en menor proporción.  
+En cuanto al patrimonio, su índice de adecuación de capital muestra una ligera 
+tendencia a la baja, dado el crecimiento que viene mostrando su cartera y el 
+Banco en general; sin embargo, se considera suficiente para absorber pérdidas 
+potenciales y mantener una posición financiera estable. 
+ 
+ 
+ 
+INFORME DE CALIFICACIÓN 
+ 
+Sesión: n.° 4172024 
+Fecha: 11 de diciembre de 2024 
+CALIFICACIÓN PÚBLICA
+ 
+Informe de revisión completo 
+ 
+CALIFICACIONES ACTUALES (*) 
+ 
+Calificación Perspectiva 
+Entidad Largo Plazo 
+Moneda Local 
+AA.ni Estable 
+Entidad Corto Plazo 
+Moneda Local 
+ML A-1.ni N/A 
+Entidad Largo Plazo 
+Moneda Extranjera 
+AA.ni Estable 
+Entidad Corto Plazo 
+Moneda Extranjera 
+ML A-1.ni N/A 
+Programa de Emisión de 
+Valores Estandarizados de 
+Renta Fija 
+AA.ni Estable 
+Programa de Emisión de 
+Valores Estandarizados de 
+Renta Fija 
+ML A-1.ni N/A 
+ 
+(*) La nomenclatura 'ni' refleja riesgos solo comparables 
+en Nicaragua.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+RICOS.  
+LOS  MATERIALES  DE  SCR  PODRÁN  INCLUIR  ASIMISMO  PREVISIONES  BASADAS  EN  UN  MODELO  CUANTITATIVO  DE  RIESGO  CREDITICIO  Y  OPINIONES  O  COMENTARIOS 
+RELACIONADOS PUBLICADOS POR SCR. LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES Y MATERIALES DE SCR NO CONSTITUYEN NI PROPORCIONAN 
+ASESORAMIENTO FINANCIERO O DE INVERSIÓN, Y LAS CALIFICACIONES CREDITICIAS, EVALUACIONES Y OTRAS OPINIONES DE SCR NO SON NI SUPONEN RECOMENDACIÓN ALGUNA 
+PARA LA COMPRA, VENTA O MANTENIMIENTO DE TÍTULOS DE VALOR CONCRETOS. LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES Y MATERIALES DE SCR 
+NO EMITEN OPINIÓN SOBRE LA IDONEIDAD DE UNA INVERSIÓN PARA UN INVERSOR CONCRETO.  SCR EMITE SUS CALIFICACIONES CREDITICIAS, EVALUACIONES Y OTRAS OPINIONES 
+Y PUBLICA O DE CUALQUIER OTRA MANERA PONE A DISPOSICIÓN SUS MATERIALES EN LA CONFIANZA Y EN EL ENTENDIMIENTO DE QUE CADA INVERSOR LLEVARÁ A CABO, CON 
+LA DEBIDA DILIGENCIA, SU PROPIO ESTUDIO Y EVALUACIÓN DEL TÍTULO DE VALOR QUE ESTÉ CONSIDERANDO COMPRAR, CONSERVAR O VENDER. 
+LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES Y MATERIALES NO ESTÁN DESTINADAS PARA EL USO DE INVERSORES MINORISTAS Y SERÍA TEMERARIO E 
+INAPROPIADO POR PARTE DE LOS INVERSORES MINORISTAS TENER EN CUENTA LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES O LOS MATERIALES DE SCR AL 
+TOMAR CUALQUIER DECISIÓN EN MATERIA DE INVERSIÓN.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+s Estandarizados de 
+Renta Fija 
+AA.ni Estable 
+Programa de Emisión de 
+Valores Estandarizados de 
+Renta Fija 
+ML A-1.ni N/A 
+ 
+(*) La nomenclatura 'ni' refleja riesgos solo comparables 
+en Nicaragua.
+Para mayor detalle sobre las calificaciones asignadas ver 
+la sección de información complementaria, al final de 
+este reporte.
+ 
+CONTACTOS 
+Yoanna Garita Araya                            
+Associate Credit Analyst 
+yoanna.garita@moodys.com 
+ 
+Marcela Mora Rodríguez                            
+Associate Director – Credit Analyst 
+marcela.mora@moodys.com 
+ 
+Jaime Tarazona Arista                           
+Rating Manager 
+jaime.tarazona@moodys.com 
+ 
+ 
+SERVICIO AL CLIENTE 
+Costa Rica 
++506. 4102.9400 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+2 11 DE DICIEMBRE DE 2024 
+ 
+BANCO DE FINANZAS S.A. 
+ 
+Nicaragua 
+A nivel de rentabilidad, sus indicadores se ubican por debajo del promedio del sector, por lo que, BDF tiene como reto 
+crear estrategias que generen un mayor rendimiento financiero, contención del costo del pasivo, y una adecuada 
+eficiencia operativa, de manera que se refleje en el crecimiento sostenible de la Entidad. Finalmente, Moody’s Local 
+Nicaragua dará seguimiento a la estrategia del nuevo grupo accionista y su implicación en la dirección del Banco. 
+Fortalezas crediticias 
+→ Forma parte del Grupo Nueva Tenedora Banpro, el cual le ofrece experiencia y sinergias cruzadas con el Banco de la 
+Producción, S.A. (BANPRO), quien también pertenece al Grupo.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+PIADO POR PARTE DE LOS INVERSORES MINORISTAS TENER EN CUENTA LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES O LOS MATERIALES DE SCR AL 
+TOMAR CUALQUIER DECISIÓN EN MATERIA DE INVERSIÓN. EN CASO DE DUDA, DEBERÍA PONERSE EN CONTACTO CON SU ASESOR FINANCIERO U OTRO ASESOR PROFESIONAL. 
+TODA LA INFORMACIÓN CONTENIDA EN EL PRESENTE DOCUMENTO ESTÁ PROTEGIDA POR LEY, INCLUIDA PERO NO LIMITADA A LA LEY DE DERECHOS DE AUTOR (COPYRIGHT), NO 
+PUDIENDO PARTE ALGUNA DE DICHA INFORMACIÓN SER COPIADA O EN MODO ALGUNO REPRODUCIDA, RECOPILADA, TRANSMITIDA, TRANSFERIDA, DIFUNDIDA, REDISTRIBUIDA O 
+REVENDIDA, NI ARCHIVADA PARA SU USO POSTERIOR CON ALGUNO DE DICHOS FINES, EN TODO O EN PARTE, EN FORMATO, MANERA O MEDIO ALGUNO POR NINGUNA PERSONA SIN EL 
+PREVIO CONSENTIMIENTO ESCRITO DE SCR. PARA MAYOR CLARIDAD, NINGUNA INFORMACIÓN CONTENIDA AQUÍ PUEDE SER UTILIZADA PARA DESARROLLAR, MEJORAR, ENTRENAR O 
+REENTRENAR CUALQUIER PROGRAMA DE SOFTWARE O BASE DE DATOS, INCLUYENDO, PERO SIN LIMITARSE A, CUALQUIER SOFTWARE DE INTELIGENCIA ARTIFICIAL, APRENDIZAJE 
+AUTOMÁTICO O PROCESAMIENTO DEL LENGUAJE NATURAL, ALGORITMO, METODOLOGÍA Y/O MODELO. 
+LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES Y LOS MATERIALES DE SCR NO ESTÁN DESTINADOS PARA SER UTILIZADOS POR NINGUNA PERSONA COMO UN 
+REFERENTE, SEGÚN SE DEFINE DICHO TÉRMINO A EFECTOS REGULATORIOS, Y NO DEBEN SER UTILIZADOS EN MODO ALGUNO QUE PUDIERA DAR LUGAR A QUE SE LOS CONSIDERE COMO 
+UN REFERENTE.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+rtalezas crediticias 
+→ Forma parte del Grupo Nueva Tenedora Banpro, el cual le ofrece experiencia y sinergias cruzadas con el Banco de la 
+Producción, S.A. (BANPRO), quien también pertenece al Grupo. 
+→ Sólida estructura de Gobierno Corporativo y políticas de gestión de riesgo. 
+→ Cartera crediticia atomizada según deudores, acompañada de buenos indicadores crediticios. 
+→ Diversificación en sus fuentes de fondeo, enfocados principalmente en captaciones del público. 
+→ Adecuado índice de suficiencia patrimonial. 
+Debilidades crediticias 
+→ Actualmente presenta un costo financiero por encima del promedio del sector, dada su concentración en créditos de 
+vivienda. 
+→ Alta proporción de gastos administrativos en relación a la utilidad operacional, lo cual reduce el crecimiento de su 
+rentabilidad. 
+→ Espacios de mejora en cuanto al fortalecimiento digital y la implementación exitosa de herramientas que logren una 
+mayor eficiencia en los procesos del Banco. 
+Oportunidades 
+→ Innovación de nuevos productos tanto financieros como no financieros al servicio del cliente. 
+→ Digitalización en todos los procesos del Banco.  
+Amenazas 
+→ Exposición a volatilidades económicas internas e internacionales que generen potenciales efectos adversos en la 
+estructura financiera y operativa de la Entidad.  
+→ Crecimiento de la oferta de productos financieros por parte de nuevos participantes en la plaza nicaragüense.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+n potenciales efectos adversos en la 
+estructura financiera y operativa de la Entidad.  
+→ Crecimiento de la oferta de productos financieros por parte de nuevos participantes en la plaza nicaragüense. 
+Factores que pueden generar una mejora de la calificación 
+→ Crecimiento importante de la cartera de crédito, acompañada de un mejor rendimiento financiero. 
+→ Mejora sostenida de los indicadores de rentabilidad y eficiencia operativa del Banco. 
+Factores que pueden generar un deterioro de la calificación 
+→ Deterioro sostenido en los indicadores de calidad de cartera que afecten la cobertura de las estimaciones y la 
+rentabilidad del Banco.  
+→ Dificultades para cumplir los objetivos relacionados con la mejora de los indicadores de rentabilidad, que impacten 
+tanto los indicadores de solvencia como el crecimiento futuro del Banco. 
+→ Contracción en los niveles de liquidez que coloquen a la Entidad en situaciones de estrés de liquidez o descalces 
+contractuales entre pasivos y activos. 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+3 11 DE DICIEMBRE DE 2024 
+ 
+BANCO DE FINANZAS S.A. 
+ 
+Nicaragua 
+Generalidades 
+ 
+Perfil de la Entidad 
+Banco de Finanzas, S.A. es una sociedad anónima fundada en 1992, constituida bajo las leyes de la República de 
+Nicaragua. Su actividad principal es la intermediación financiera, prestación de servicios bancarios, atención de sectores 
+productivos y desarrollo del comercio, esto a través del financiamiento.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+PRECIOS.    LAS  CALIFICACIONES  CREDITICIAS, 
+EVALUACIONES NO CREDITICIAS (“EVALUACIONES”) Y OTRAS OPINIONES INCLUIDAS EN LOS MATERIALES DE SCR NO SON DECLARACIONES DE HECHOS ACTUALES O HISTÓRICOS.  
+LOS  MATERIALES  DE  SCR  PODRÁN  INCLUIR  ASIMISMO  PREVISIONES  BASADAS  EN  UN  MODELO  CUANTITATIVO  DE  RIESGO  CREDITICIO  Y  OPINIONES  O  COMENTARIOS 
+RELACIONADOS  PUBLICADOS  POR  SCR.  LAS  CALIFICACIONES  CREDITICIAS,  EVALUACIONES,  OTRAS  OPINIONES  Y  MATERIALES  DE  SCR  NO  CONSTITUYEN  NI  PROPORCIONAN 
+ASESORAMIENTO FINANCIERO O DE INVERSIÓN, Y LAS CALIFICACIONES CREDITICIAS, EVALUACIONES Y OTRAS OPINIONES DE SCR NO SON NI SUPONEN RECOMENDACIÓN ALGUNA 
+PARA LA COMPRA, VENTA O MANTENIMIENTO DE TÍTULOS DE VALOR CONCRETOS. LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES Y MATERIALES DE SCR 
+NO EMITEN OPINIÓN SOBRE LA IDONEIDAD DE UNA INVERSIÓN PARA UN INVERSOR CONCRETO.  SCR EMITE SUS CALIFICACIONES CREDITICIAS, EVALUACIONES Y OTRAS OPINIONES 
+Y PUBLICA O DE CUALQUIER OTRA MANERA PONE A DISPOSICIÓN SUS MATERIALES EN LA CONFIANZA Y EN EL ENTENDIMIENTO DE QUE CADA INVERSOR LLEVARÁ A CABO, CON 
+LA DEBIDA DILIGENCIA, SU PROPIO ESTUDIO Y EVALUACIÓN DEL TÍTULO DE VALOR QUE ESTÉ CONSIDERANDO COMPRAR, CONSERVAR O VENDER.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+na firma 
+de auditoría y no puede en todos los casos verificar o validar de manera independiente la información recibida en el proceso de calificación crediticia o en la elaboración de los Materiales. 
+En la medida en que las leyes así lo permitan, SCR y sus directores, oficiales, empleados, agentes, representantes, licenciadores y proveedores declinan toda responsabilidad frente a cualesquier 
+persona o entidad con relación a pérdidas o daños indirectos, especiales, derivados o accidentales de cualquier naturaleza, derivados de o relacionados con la información aquí contenida o el uso 
+o imposibilidad de uso de dicha información, incluso cuando SCR o cualquiera de sus directores, oficiales, empleados, agentes, representantes, licenciadores o proveedores fuera advertido 
+previamente de la posibilidad de dichas pérdidas o daños, incluido pero no limitado a: (a) lucro cesante presente o futuro o (b) cualquier pérdida o daño que surja cuando el instrumento financiero 
+en cuestión no sea objeto de una calificación crediticia concreta otorgada por SCR.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+de 
+Nicaragua. Su actividad principal es la intermediación financiera, prestación de servicios bancarios, atención de sectores 
+productivos y desarrollo del comercio, esto a través del financiamiento. Como banco comercial del sector privado, se 
+encuentra regulado por la Ley General de Bancos, Instituciones Financieras no Bancarias y Grupos Financieros (Ley 
+General 561/2005), y supervisado por la Superintendencia de Bancos y de Otras Instituciones Financieras de Nicaragua 
+(SIBOIF).  
+A junio de 2024, BDF ostenta una cuota de mercado del 7% en términos de activos totales, ubicándose en la quinta 
+posición entre los 8 bancos operativos en Nicaragua. Respecto a su cartera de crédito, representa el 8% del total de 
+colocaciones en el país, destacándose como el líder en créditos de vivienda. 
+El Banco era una subsidiaria 100% del Grupo BDF, S.A. con domicilio en la República de Panamá; a septiembre de 2020, 
+Grupo ASSA S.A. llegó a alcanzar una participación accionaria del 79%. No obstante, en junio 2024, Grupo Promerica y 
+Grupo ASSA, ambos basados en Panamá, fusionaron sus operaciones nicaragüenses en Nueva Tenedora Banpro, 
+consolidando el 100% de BANPRO y BDF. Por lo anterior, la participación indirecta de Grupo ASSA S.A. disminuyó a 
+8,5%% y aumentó la participación de Grupo Promerica a 89,2%. Dicho movimiento estratégico busca mejorar la oferta de 
+servicios financieros y la experiencia del cliente aprovechando las fortalezas de ambos bancos.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+LA CONFIANZA Y EN EL ENTENDIMIENTO DE QUE CADA INVERSOR LLEVARÁ A CABO, CON 
+LA DEBIDA DILIGENCIA, SU PROPIO ESTUDIO Y EVALUACIÓN DEL TÍTULO DE VALOR QUE ESTÉ CONSIDERANDO COMPRAR, CONSERVAR O VENDER. 
+LAS  CALIFICACIONES  CREDITICIAS,  EVALUACIONES,  OTRAS  OPINIONES  Y  MATERIALES  NO  ESTÁN  DESTINADAS  PARA  EL  USO  DE  INVERSORES  MINORISTAS  Y  SERÍA  TEMERARIO  E 
+INAPROPIADO POR PARTE DE LOS INVERSORES MINORISTAS TENER EN CUENTA LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES O LOS MATERIALES DE SCR AL 
+TOMAR CUALQUIER DECISIÓN EN MATERIA DE INVERSIÓN. EN CASO DE DUDA, DEBERÍA PONERSE EN CONTACTO CON SU ASESOR FINANCIERO U OTRO ASESOR PROFESIONAL. 
+TODA  LA  INFORMACIÓN  CONTENIDA  EN  EL  PRESENTE  DOCUMENTO  ESTÁ  PROTEGIDA  POR  LEY,  INCLUIDA  PERO  NO  LIMITADA  A  LA  LEY  DE  DERECHOS DE  AUTOR  (COPYRIGHT),  NO 
+PUDIENDO  PARTE  ALGUNA  DE  DICHA  INFORMACIÓN  SER  COPIADA  O  EN  MODO  ALGUNO  REPRODUCIDA,  RECOPILADA,  TRANSMITIDA,  TRANSFERIDA,  DIFUNDIDA,  REDISTRIBUIDA  O 
+REVENDIDA, NI ARCHIVADA PARA SU USO POSTERIOR CON ALGUNO DE DICHOS FINES, EN TODO O EN PARTE, EN FORMATO, MANERA O MEDIO ALGUNO POR NINGUNA PERSONA SIN EL 
+PREVIO CONSENTIMIENTO ESCRITO DE SCR.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+do a: (a) lucro cesante presente o futuro o (b) cualquier pérdida o daño que surja cuando el instrumento financiero 
+en cuestión no sea objeto de una calificación crediticia concreta otorgada por SCR. 
+En la medida en que las leyes así lo permitan, SCR y sus directores, oficiales, empleados, agentes, representantes, licenciadores y proveedores exime de cualquier responsabilidad con respecto a 
+pérdidas o daños directos o indemnizatorios causados a cualquier persona o entidad, incluido pero no limitado a, negligencia (pero excluyendo fraude, conducta dolosa o cualquier otro tipo de 
+responsabilidad que, en aras de la claridad, no pueda ser excluida por ley), por parte de SCR o cualquiera de sus directores, oficiales, empleados, agentes, representantes, licenciadores o proveedores, 
+o con respecto a toda contingencia dentro o fuera del control de cualquiera de los anteriores, derivada de o relacionada con la información aquí contenida o el uso o imposibilidad de uso de tal 
+información. 
+SCR NO OTORGA NI OFRECE GARANTÍA ALGUNA, EXPRESA O IMPLÍCITA, CON RESPECTO A LA PRECISIÓN, OPORTUNIDAD, EXHAUSTIVIDAD, COMERCIABILIDAD O IDONEIDAD PARA UN 
+FIN DETERMINADO SOBRE CALIFICACIONES CREDITICIAS, EVALUACIONES Y DEMÁS OPINIONES O INFORMACIÓN. 
+Moody's Investors Service, Inc.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+tó la participación de Grupo Promerica a 89,2%. Dicho movimiento estratégico busca mejorar la oferta de 
+servicios financieros y la experiencia del cliente aprovechando las fortalezas de ambos bancos. 
+Principales aspectos crediticios  
+Existe una tendencia creciente en sus activos producto del dinamismo de la cartera crediticia, lo cual podría 
+persistir en futuras evaluaciones. 
+Los activos registrados por el Banco han presentado un comportamiento creciente en los últimos 3 años, impulsado por 
+la cartera de créditos (principal cuenta de activos con el 67% de participación a junio de 2024) dados los esfuerzos de 
+colocación y el soporte a través de las diferentes fuentes de fondeo. Al corte de análisis, BDF registró activos por 
+C$21.692,17 millones, equivalentes a USD592,29 millones, los cuales aumentaron un 10% anual y 6% semestral, asociado 
+con el dinamismo de la cartera, aunado los incrementos en las partidas de inversiones y efectivo y equivalentes. 
+Al cierre del período 2024, el Banco estima un incremento del 5% interanual en sus activos, con el portafolio crediticio 
+como el principal impulsor de este crecimiento. En línea con lo indicado, se anticipa un aumento en la cartera de créditos 
+cercano a 11%. 
+Por su parte, a junio de 2024, los activos líquidos de BDF, principalmente efectivo y equivalentes, ascendieron a C$4.519 
+millones (USD123,39 millones), constituyendo el 21% del total de activos tras un aumento del 8% anual y 1% semestral.
+
+[21/12/2021 09:00:00 am] TIPO: FINANCIERO
+una investigación mayor de hechos ni la verificación por terceros puede asegurar 
+que toda la información en la que Fitch se basa en relación con una calificación o un informe será exacta y completa. En última instancia, el 
+emisor y sus asesores son responsables de la exactitud de la información que proporcionan a Fitch y al mercado en los documentos de oferta 
+y  otros  informes.  Al  emitir  sus  calificaciones  y  sus  informes,  Fitch  debe  confiar  en  la  labor  de  los  expertos,  incluyendo  los auditores 
+independientes con respecto a los estados financieros y abogados con respecto a los aspectos legales y fiscales. Además, las calificaciones y 
+las  proyecciones  de  información  financiera  y  de  otro  tipo  son  intrínsecamente  una  visión  hacia  el  futuro  e  incorporan  las  hipótesis  y 
+predicciones  sobre acontecimientos futuros  que  por su naturaleza  no se  pueden comprobar como hechos. Como resultado, a  pesar de la 
+comprobación de los hechos actuales, las calificaciones y proyecciones pueden verse afectadas por eventos futuros o condiciones que no se 
+previeron en el momento en que se emitió o afirmo una calificación o una proyección. 
+La información contenida en este informe se proporciona "tal cual" sin ninguna representación o garantía de ningún tipo, y Fitch no representa 
+o  garantiza  que  el  informe  o  cualquiera  de  sus  contenidos  cumplirán  alguno  de  los  requerimientos  de  un  destinatario  del  informe.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+os líquidos de BDF, principalmente efectivo y equivalentes, ascendieron a C$4.519 
+millones (USD123,39 millones), constituyendo el 21% del total de activos tras un aumento del 8% anual y 1% semestral. 
+Como entidad supervisada por la SIBOIF y sujeta a la Norma sobre Gestión de Riesgo de Liquidez, el Banco mantuvo una 
+Razón de Cobertura de Liquidez (RCL) del 132,9%, superando el umbral regulatorio del 100%.  
+El Banco dispone de una liquidez adecuada para cumplir con sus obligaciones, manteniendo un balance óptimo. En esa 
+línea,  es  relevante  que  continúe  preservando  un equilibrio  entre  liquidez  y  rentabilidad.  Asimismo,  el  Banco 
+estructuralmente es menos susceptible a escenarios de estrés de liquidez y tiene mayor predictibilidad en sus calces de 
+activos y pasivos. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+4 11 DE DICIEMBRE DE 2024 
+ 
+BANCO DE FINANZAS S.A. 
+ 
+Nicaragua 
+GRÁFICO 1 Evolución de los Activos Totales 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+GRÁFICO 2 Composición de los Activos 
+ 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua
+Es una fortaleza para el Banco la calidad de su cartera de créditos y los niveles de cobertura que brindan sus 
+provisiones. 
+Referente a la cartera de crédito neta, a junio de 2024, el Banco alcanzó la suma de C$14.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+necesarias para que la información 
+que utiliza al asignar una calificación crediticia sea de suficiente calidad y de fuentes que SCR considera fiables, incluidos, en su caso, terceros independientes.  Sin embargo, SCR no es una firma 
+de auditoría y no puede en todos los casos verificar o validar de manera independiente la información recibida en el proceso de calificación crediticia o en la elaboración de los Materiales. 
+En la medida en que las leyes así lo permitan, SCR y sus directores, oficiales, empleados, agentes, representantes, licenciadores y proveedores declinan toda responsabilidad frente a cualesquier 
+persona o entidad con relación a pérdidas o daños indirectos, especiales, derivados o accidentales de cualquier naturaleza, derivados de o relacionados con la información aquí contenida o el uso 
+o  imposibilidad  de  uso  de  dicha  información,  incluso  cuando  SCR  o  cualquiera  de  sus  directores,  oficiales,  empleados,  agentes,  representantes,  licenciadores  o  proveedores  fuera  advertido 
+previamente de la posibilidad de dichas pérdidas o daños, incluido pero no limitado a: (a) lucro cesante presente o futuro o (b) cualquier pérdida o daño que surja cuando el instrumento financiero 
+en cuestión no sea objeto de una calificación crediticia concreta otorgada por SCR.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+ignadas calificaciones 
+crediticias de Moody’s Investors Service y asimismo han notificado públicamente a la SEC que poseen una participación en MCO superior al 5%, se publica anualmente en ir.moodys.com , bajo el 
+capítulo de “Investor Relations – Corporate Governance – Charter Documents- Director and Shareholder Affiliation Policy” ["Relaciones con Inversores - Gestión Corporativa – Documentos 
+Constitutivos - Política sobre Relaciones entre Directores y Accionistas” ]. 
+Moody's SF Japan K.K., Moody's Local AR Agente de Calificación de Riesgo S.A., Moody’s Local BR Agência de Classificação de Risco LTDA, Moody’s Local MX S.A. de C.V, I.C.V., Moody's Local PE 
+Clasificadora de Riesgo S.A., y Moody's Local PA Calificadora de Riesgo S.A. (conjuntamente, las "Moody’s Non-NRSRO CRAs", por sus siglas en ingles) son subsidiarias de agencias de calificación 
+crediticia de propiedad total indirecta de MCO. Ninguna de las Moody’s Non-NRSRO CRAs es una Organización Reconocida Nacionalmente como Organización Estadística de Calificación Crediticia.
+Términos adicionales solo para Australia: Cualquier publicación en Australia de este documento se realiza conforme a la Licencia de Servicios Financieros en Australia de la filial de MOODY's,
+Moody's Investors Service Pty Limited ABN 61 003 399 657AFSL 336969 y/o Moody's Analytics Australia Pty Ltd ABN 94 105 136 972 AFSL 383569 (según corresponda).
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+do a: (a) lucro cesante presente o futuro o (b) cualquier pérdida o daño que surja cuando el instrumento financiero 
+en cuestión no sea objeto de una calificación crediticia concreta otorgada por SCR. 
+En la medida en que las leyes así lo permitan, SCR y sus directores, oficiales, empleados, agentes, representantes, licenciadores y proveedores exime de cualquier responsabilidad con respecto a 
+pérdidas  o  daños directos o  indemnizatorios causados a  cualquier  persona  o entidad,  incluido  pero  no  limitado  a,  negligencia  (pero excluyendo  fraude,  conducta  dolosa o  cualquier  otro  tipo de 
+responsabilidad que, en aras de la claridad, no pueda ser excluida por ley), por parte de SCR o cualquiera de sus directores, oficiales, empleados, agentes, representantes, licenciadores o proveedores, 
+o con respecto a toda contingencia dentro o fuera del control de cualquiera de los anteriores, derivada de o relacionada con la información aquí contenida o el uso o imposibilidad de uso de tal 
+información. 
+SCR NO OTORGA NI OFRECE GARANTÍA ALGUNA, EXPRESA O IMPLÍCITA, CON RESPECTO A LA PRECISIÓN, OPORTUNIDAD, EXHAUSTIVIDAD, COMERCIABILIDAD O IDONEIDAD PARA UN 
+FIN DETERMINADO SOBRE CALIFICACIONES CREDITICIAS, EVALUACIONES Y DEMÁS OPINIONES O INFORMACIÓN. 
+Moody's Investors Service, Inc.
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+Moody's no están destinados a ser utilizados ni deben ser confiados por usuarios 
+ubicados en India en relación con valores cotizados o propuestos para su cotización en bolsas de valores de la India. 
+Términos adicionales con respecto a las Opiniones de la Segunda Parte y las evaluaciones de cero emisiones netas (según se definen en los Símbolos y Definiciones de Calificaciones de 
+Moody'sRatings ): Por favor notar que ni una Opinión de Segunda Parte ("OSP")  ni una Evaluación de Cero Emisiones Netas (“NZA”) son “calificaciones crediticias” . La emisión de OSP y NZAno es 
+una actividad regulada en muchas jurisdicciones, incluida Singapur. 
+JAPÓN: En Japón, el desarrollo y la provisión de OSP y NZAse clasifican como "Negocios Secundarios", no como "Negocios de Calificación Crediticia", y no están sujetos a las regulaciones aplicables 
+a los "Negocios de Calificación Crediticia" según la Ley de Instrumentos Financieros y la Ley de Intercambio de Japón y su regulación relevante.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+24
+LiquidaInmobiliariaPrendariaFiduciariaOtrasSin garantia
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+100%
+Jun-23Sep-23Dic-23Mar-24Jun-24
+ABCDE
+
+ 
+ 
+ 
+ 
+5 11 DE DICIEMBRE DE 2024 
+ 
+BANCO DE FINANZAS S.A. 
+ 
+Nicaragua 
+El fondeo proviene principalmente de las captaciones con el público, lo cual le permite tener un costo de fondeo 
+eficiente. 
+A junio de 2024, el pasivo del Banco alcanzó un monto de C$19.459,47 millones, equivalente a USD531,33 millones, cifra 
+que manifestó un crecimiento del 10% anual y 6% semestral, atribuible principalmente a los incrementos en las 
+obligaciones con el público. El fondeo de BDF proviene mayormente de la captación de recursos del público, partida que 
+constituyó el 81% del pasivo total al corte de análisis, concentrándose simultáneamente en cuentas de ahorro (44%) y 
+depósitos a plazo (41%). Resulta relevante destacar que, dada su estructura de fondeo, el Banco mantiene una estructura 
+de fondeo eficiente. 
+De manera complementaria, el financiamiento recibido a través  de instituciones financieras representó el 8% del pasivo, 
+y se componen por préstamos y líneas de crédito con entes financieros nacionales y multilaterales. Por otra parte, el 
+Banco mantiene como alternativa de financiamiento el Programa de Emisión de Valores Estandarizados de Renta Fija (ver 
+Tabla 2), registrando un 1% del pasivo al corte de análisis.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+gnadas  calificaciones 
+crediticias de Moody’s Investors Service y asimismo han notificado públicamente a la SEC que poseen una participación en MCO superior al 5%, se publica anualmente en ir.moodys.com , bajo el 
+capítulo de “Investor  Relations – Corporate  Governance – Charter  Documents- Director  and  Shareholder  Affiliation  Policy” ["Relaciones con Inversores - Gestión  Corporativa – Documentos 
+Constitutivos - Política sobre Relaciones entre Directores y Accionistas” ]. 
+Moody's SF Japan K.K., Moody's Local AR Agente de Calificación de Riesgo S.A., Moody’s Local BR Agência de Classificação de Risco LTDA, Moody’s Local MX S.A. de C.V, I.C.V., Moody's Local PE 
+Clasificadora de Riesgo S.A., y Moody's Local PA Calificadora de Riesgo S.A. (conjuntamente, las "Moody’s Non-NRSRO CRAs", por sus siglas en ingles) son subsidiarias de agencias de calificación 
+crediticia de propiedad total indirecta de MCO. Ninguna de las Moody’s Non-NRSRO CRAs es una Organización Reconocida Nacionalmente como Organización Estadística de Calificación Crediticia. 
+Términos adicionales solo  para  Australia:  Cualquier  publicación  en  Australia  de  este  documento  se  realiza  conforme  a  la  Licencia  de  Servicios Financieros en  Australia  de  la  filial  de  MOODY's, 
+Moody's  Investors  Service  Pty  Limited  ABN  61  003  399  657AFSL  336969  y/o Moody's  Analytics  Australia  Pty  Ltd  ABN  94  105  136  972  AFSL  383569  (según  corresponda).
+
+[04/08/2025 12:00:00 p.m] TIPO: FINANCIERO
+cia", y no están sujetos a las regulaciones aplicables 
+a los "Negocios de Calificación Crediticia" según la Ley de Instrumentos Financieros y la Ley de Intercambio de Japón y su regulación relevante. RPC: Cualquier OSP: (1) no constituye una Evaluación 
+de Bonos Verdes de la RPC según se define en las leyes o regulaciones pertinentes de la RPC; (2) no puede incluirse en ninguna declaración de registro, circular de oferta, prospecto ni en ningún 
+otro documento presentado a las autoridades regulatorias de la RPC ni utilizarse para cumplir con ningún requisito de divulgación regulatoria de la RPC; y (3) no puede utilizarse en la RPC para 
+ningún propósito regulatorio ni para ningún otro propósito que no esté permitido por las leyes o regulaciones pertinentes de la RPC. Para los fines de este descargo de responsabilidad, "RPC" se 
+refiere a la parte continental de la República Popular China, excluyendo Hong Kong, Macao y Taiwán.
+
+[21/12/2021 09:00:00 am] TIPO: FINANCIERO
+icia de la NRSRO están enlistadas en el Ítem 3 del documento “Form NRSRO” 
+y, como tales, están autorizadas para emitir calificaciones crediticias en nombre de la NRSRO (ver 
+https://www.fitchratings.com/site/regulatory), otras subsidiarias no están enlistadas en el documento “Form NRSRO” (las “no NRSRO”) y, por 
+tanto,  las  calificaciones  crediticias  emitidas  por  estas  subsidiarias  no  son  emitidas  en  nombre  de  la  NRSRO.  Sin  embargo,  personal  de las 
+subsidiarias no NRSRO puede participar en la determinación de calificaciones crediticias emitidas por, o en nombre de, la NRSRO. 
+Solamente  para  Australia,  Nueva  Zelanda,  Taiwán  y  Corea  del  Norte:  Fitch  Australia  Pty  Ltd  tiene  una  licencia  australiana  de servicios 
+financieros (licencia no. 337123) que le autoriza a proveer calificaciones crediticias solamente a “clientes mayoristas”. La información  de 
+calificaciones crediticias publicada por Fitch no tiene el fin de ser utilizada por personas que sean “clientes minoristas” según la definición de 
+la “Corporations Act 2001”.  
+Derechos de autor © 2021 por Fitch Ratings, Inc. y Fitch Ratings, Ltd. y sus subsidiarias. 33 Whitehall Street, New York, NY 10004. Teléfono: 
+1-800-753-4824,  (212)  908-0500.  Fax:  (212)  480-4435.  La  reproducción  o  distribución  total  o  parcial  está  prohibida,  salvo  con  permiso. 
+Todos los derechos reservados.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+Por otra parte, el 
+Banco mantiene como alternativa de financiamiento el Programa de Emisión de Valores Estandarizados de Renta Fija (ver 
+Tabla 2), registrando un 1% del pasivo al corte de análisis. 
+Tendencia decreciente de la adecuación de capital relacionado al crecimiento del negocio; no obstante, se 
+mantiene en cumplimiento con los límites regulatorios. 
+Al cierre de junio de 2024, el patrimonio de la Entidad alcanzó C$2.232,69 millones (USD60,96 millones), luego de exhibir 
+un aumento del 4% tanto anual como semestral, debido al incremento de los resultados acumulados. El patrimonio de la 
+Entidad se conforma principalmente por el capital social (44%), el cual, al corte bajo estudio contabilizó C$982,11 millones 
+y se mantuvo estable en el último año. Seguidamente, el resultado acumulado de ejercicios anteriores representó un 28%, 
+las reservas patrimoniales un 23% y el 5% restante el resultado del periodo. 
+El índice de adecuación de capital (IAC) del Banco disminuyó, situándose en un 14,5% al cierre del primer semestre de 
+2024, aun así, supera el mínimo regulatorio del 10% establecido por la SIBOIF. Esta reducción se atribuye al crecimiento 
+orgánico del Banco, que implica un aumento en los activos ponderados por riesgo.  A pesar de la disminución, el IAC 
+todavía refleja una posición capital suficiente para respaldar el nivel de riesgo asumido.
+GRÁFICO 5 Composición del patrimonio 
+ 
+Fuente: Banco de Finanzas, S.A.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+.  A pesar de la disminución, el IAC 
+todavía refleja una posición capital suficiente para respaldar el nivel de riesgo asumido.
+GRÁFICO 5 Composición del patrimonio 
+ 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+GRÁFICO 6 Comportamiento del IAC 
+ 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+Reducción en las utilidades dado un mayor incremento de los gastos; sin embargo, se espera una recuperación 
+para el cierre del presente ejercicio. 
+Al finalizar el primer semestre de 2024, el Banco de Finanzas (BDF) reportó una utilidad neta de C$86,24 millones 
+(USD2,35 millones), reflejando una disminución interanual del 15%. Este retroceso se atribuye a un incremento de gastos 
+(+C$88.14 millones) que superó el alza de ingresos (+C$73.22 millones). Sin embargo, se espera una recuperación para 
+finales de año, proyectando una ganancia acumulada de USD4.98 millones, lo que implicaría un aumento del 76% anual 
+motivado principalmente por los ingresos de la cartera de crédito. 
+ 
+ 
+0%
+20%
+40%
+60%
+80%
+100%
+Jun-23Set-23Dic-23Mar-24Jun-24
+Capital Social PagadoReservas PatrimonialesResultados Acumulados
+Resultado del EjercicioAjustes de Transición
+12,00%
+13,00%
+14,00%
+15,00%
+16,00%
+17,00%
+18,00%
+Jun-22Sep-22Dic-22Mar-23Jun-23Sep-23Dic-23Mar-24Jun-24
+
+ 
+ 
+ 
+ 
+6 11 DE DICIEMBRE DE 2024 
+ 
+BANCO DE FINANZAS S.A. 
+ 
+Nicaragua 
+Los ingresos acumulados alcanzaron C$1.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+Moody's no están destinados a ser utilizados ni deben ser confiados por usuarios 
+ubicados en India en relación con valores cotizados o propuestos para su cotización en bolsas de valores de la India. 
+Términos  adicionales  con  respecto  a  las  Opiniones  de  la  Segunda  Parte  y  las  evaluaciones  de  cero  emisiones  netas  (según  se  definen  en  los  Símbolos  y  Definiciones  de  Calificaciones  de 
+Moody'sRatings ): Por favor notar que ni una Opinión de Segunda Parte ("OSP")  ni una Evaluación de Cero Emisiones Netas (“NZA”) son “calificaciones crediticias” . La emisión de OSP y NZAno es 
+una actividad regulada en muchas jurisdicciones, incluida Singapur. 
+JAPÓN: En Japón, el desarrollo y la provisión de OSP y NZAse clasifican como "Negocios Secundarios", no como "Negocios de Calificación Crediticia", y no están sujetos a las regulaciones aplicables 
+a los "Negocios de Calificación Crediticia" según la Ley de Instrumentos Financieros y la Ley de Intercambio de Japón y su regulación relevante.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+0%
+15,00%
+16,00%
+17,00%
+18,00%
+Jun-22Sep-22Dic-22Mar-23Jun-23Sep-23Dic-23Mar-24Jun-24
+
+ 
+ 
+ 
+ 
+6 11 DE DICIEMBRE DE 2024 
+ 
+BANCO DE FINANZAS S.A. 
+ 
+Nicaragua 
+Los ingresos acumulados alcanzaron C$1.026,14 millones (USD28,02 millones), un 8% más que el año anterior, debido al 
+incremento del 11% en ingresos financieros, que representaron el 94% del total, impulsados por la expansión de la cartera 
+en segmentos de alto rendimiento. Contrariamente, los gastos ascendieron a C$939,90 millones (USD25,66 millones), un 
+10% más que el año anterior, debido al aumento en gastos de administración y financieros, reflejando inversión en 
+personal y tecnología, así como mayor financiamiento y provisiones por el crecimiento de la cartera.  
+En cuanto a los indicadores de rentabilidad, tanto el ROA como el ROE presentaron contracciones interanuales asociado 
+con la disminución de las utilidades del periodo y se posicionaron por debajo del promedio del sector. BDF tiene como 
+principal objetivo aumentar sus márgenes de rentabilidad de la mano con el crecimiento que está mostrando el Banco. 
+GRÁFICO 7 Evolución de resultados 
+ 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+Anexos  
+Tabla 1 Principales Indicadores Banco de Finanzas S.A.
+
+[27/03/2025 03:00:00 pm] TIPO: FINANCIERO
+cia", y no están sujetos a las regulaciones aplicables 
+a los "Negocios de Calificación Crediticia" según la Ley de Instrumentos Financieros y la Ley de Intercambio de Japón y su regulación relevante. RPC: Cualquier OSP: (1) no constituye una Evaluación 
+de Bonos Verdes de la RPC según se define en las leyes o regulaciones pertinentes de la RPC; (2) no puede incluirse en ninguna declaración de registro, circular de oferta, prospecto ni en ningún 
+otro documento presentado a las autoridades regulatorias de la RPC ni utilizarse para cumplir con ningún requisito de divulgación regulatoria de la RPC; y (3) no puede utilizarse en la RPC para 
+ningún propósito regulatorio ni para ningún otro propósito que no esté permitido por las leyes o regulaciones pertinentes de la RPC. Para los fines de este descargo de responsabilidad, "RPC" se 
+refiere a la parte continental de la República Popular China, excluyendo Hong Kong, Macao y Taiwán.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+e está mostrando el Banco. 
+GRÁFICO 7 Evolución de resultados 
+ 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+Anexos  
+Tabla 1 Principales Indicadores Banco de Finanzas S.A. 
+ 
+Jun-24 Mar-24 Dic-23 Se-23 Jun-23 
+Sistema 
+Bancos 
+Razón de morosidad 1,1% 1,3% 1,3% 1,3% 1,4% 1,6% 
+Provisión para pérdidas crediticas 246,0% 206,4% 218,8% 201,7% 193,3% 321,5% 
+Adecuación de capital 14,5% 14,4% 14,9% 15,7% 15,9% 19,3% 
+Razón de solvencia 10,3% 10,4% 10,4% 10,9% 10,8% 16,9% 
+Margen financiero 7,2% 7,4% 7,5% 7,5% 7,6% 8,4% 
+Rendimiento sobre el Patrimonio 7,9% 7,6% 4,9% 9,6% 9,5% 13,7% 
+Cobertura de Liquidez 190,5% 206,7% 227,7% 223,5% 255,9% 83,1% 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+0,00
+200 000,00
+400 000,00
+600 000,00
+800 000,00
+1 000 000,00
+1 200 000,00
+Jun-21Jun-22Jun-23Jun-24
+IngresosGastosResultados del Periodo
+
+ 
+ 
+ 
+ 
+7 11 DE DICIEMBRE DE 2024 
+ 
+BANCO DE FINANZAS S.A. 
+ 
+Nicaragua 
+Tabla 2 Programa de Emisión de Valores Estandarizados de Renta Fija.  
+Programa de Emisión de Valores Estandarizados de Renta Fija 
+USD 50.000.000,00 
+Fecha de registro 2 de junio de 2023 
+Tipo de Emisiones  Bonos Estandarizados y Papel Comercial 
+Monto del Programa y 
+moneda 
+USD50.000.000  
+Destino de los recursos Capital de Trabajo 
+Monto ofertado actual de 
+las emisiones 
+USD7.500.000,00 
+Saldo en circulación USD6.298.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+os y Papel Comercial 
+Monto del Programa y 
+moneda 
+USD50.000.000  
+Destino de los recursos Capital de Trabajo 
+Monto ofertado actual de 
+las emisiones 
+USD7.500.000,00 
+Saldo en circulación USD6.298.000,00 
+Resumen Macroeconómico de Nicaragua 
+De acuerdo con datos del Banco Central de Nicaragua (BCN), la producción medida a través del Producto Interno Bruto 
+(PIB), al cierre del primer trimestre de 2024, muestra un crecimiento de 4,6% interanual. A junio de 2024, al medir la 
+producción por el Índice Mensual de Actividad Económica (IMAE) como indicador que se anticipa al comportamiento del 
+PIB y tomando como referencia la tendencia-ciclo (lo que permite medir el comportamiento subyacente de la producción), 
+dicho índice tuvo un crecimiento cercano al 3% interanual y del 2% trimestral anualizado, por lo que la economía sigue 
+presentando señales de recuperación.  
+Al cierre de junio de 2024, el déficit comercial acumulado es de USD4.796 millones (se incrementa en 19% respecto al 
+mismo periodo de 2023). Dicho resultado se explica por un dinamismo menor en las exportaciones, las cuales crecen 3% 
+interanual, en comparación con las importaciones, que aumentan en 11% en comparación con el año anterior. En cuanto 
+a las remesas, a la fecha de análisis, éstas presentan un saldo acumulado de USD4.923 millones (aumento de 22% anual).
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+importaciones, que aumentan en 11% en comparación con el año anterior. En cuanto 
+a las remesas, a la fecha de análisis, éstas presentan un saldo acumulado de USD4.923 millones (aumento de 22% anual).  
+Los resultados fiscales del Gobierno Central Presupuestario, a junio de 2024, indican que el superávit fiscal (acumulado 
+de los últimos 12 meses) después de donaciones es de C$21.354 millones. Este resultado responde a que los ingresos 
+totales se incrementan en 20% de forma interanual; mientras que los gastos crecen en cerca del 16%. El aumento en los 
+ingresos se ve influido por el incremento en la recaudación de los impuestos (+20% interanual). La deuda pública, con 
+corte a junio de 2024, muestra un saldo de C$381.176 millones, el cual exhibe un aumento interanual del 5,3% (5,6% en 
+junio de 2023). 
+Respecto a la inflación, medida por el Índice de Precios al Consumidor nacional (IPC), esta reflejó un incremento 
+interanual de 4,8% a junio de 2024 (9,9% en junio de 2023). Además, la inflación subyacente, a la misma fecha de corte, 
+también muestra un aumento, el cual es de 4,2% anual (8,3% a junio de 2023).  
+Según el BCN, en el informe de “Perspectivas Macroeconómicas 2024” de abril de 2024, se proyecta que la economía 
+crecerá entre 3,5% y 4,5% en este 2024 y que la inflación se ubicaría en el rango de entre 3,5% y 4,5% para dicho año.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+1.ni 
+N/A SCR 1 (NIC) Estable 
+ Programa de Emisión de Valores Estandarizados de    
+Renta Fija 
+AA.ni 
+Estable scr AA (NIC) N/A 
+ Programa de Emisión de Valores Estandarizados de 
+Renta Fija 
+ML A-1.ni 
+N/A SCR 1 (NIC) N/A 
+ 
+Las calificaciones otorgadas no han sufrido ningún proceso de apelación  por parte de la entidad calificada Moody ́s 
+Local Nicaragua da por primera vez calificación de riesgo a este emisor en octubre de 2024. 
+Información considerada para la calificación. 
+La información utilizada en este informe comprende los estados financieros auditados al 31 de diciembre de 2021, 2022 
+y 2023, así como los estados financieros intermedios desde el 30 de junio de 2023 y al 30 de junio de 2024 de Banco de 
+Finanzas S.A., así como la documentación respectiva sobre su Programa de Emisión. 
+Definición de las clasificaciones asignadas 
+→ AA.ni: Emisores o emisiones calificados en AA.ni con una calidad crediticia muy fuerte en comparación con otras 
+entidades y transacciones locales. 
+ 
+→ ML A-1.ni: Los emisores calificados en ML A-1.ni tienen la mayor capacidad para pagar obligaciones de deuda de 
+corto plazo en comparación con otras entidades y transacciones locales. 
+ 
+→ Perspectiva Estable: indica una baja probabilidad de cambio de la calificación en el mediano plazo. 
+Moody ́s Local Nicaragua agrega los modificadores “+” y “-” a cada categoría de calificación genérica que va de AA a 
+CCC, y de ML A-1.ni a ML A-3.ni.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+DE 
+MOODY'S PODRÁN INCLUIR ASIMISMO PREVISIONES BASADAS EN UN MODELO CUANTITATIVO DE RIESGO CREDITICIO Y OPINIONES O COMENTARIOS RELACIONADOS 
+PUBLICADOS POR MOODY'S ANALYTICS, INC. Y/O SUS FILIALES. LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES Y MATERIALES DE MOODY'S NO 
+CONSTITUYEN NI PROPORCIONAN ASESORAMIENTO FINANCIERO O DE INVERSIÓN, Y LAS CALIFICACIONES CREDITICIAS, EVALUACIONES Y OTRAS OPINIONES DE MOODY’S NO 
+SON NI SUPONEN RECOMENDACIÓN ALGUNA PARA LA COMPRA, VENTA O MANTENIMIENTO DE TÍTULOS DE VALOR CONCRETOS. LAS CALIFICACIONES CREDITICIAS, 
+EVALUACIONES, OTRAS OPINIONES Y MATERIALES DE MOODY'S NO EMITEN OPINIÓN SOBRE LA IDONEIDAD DE UNA INVERSIÓN PARA UN INVERSOR CONCRETO.  MOODY'S EMITE 
+SUS CALIFICACIONES CREDITICIAS, EVALUACIONES Y OTRAS OPINIONES Y PUBLICA O DE CUALQUIER OTRA MANERA PONE A DISPOSICIÓN SUS MATERIALES EN LA CONFIANZA Y 
+EN EL ENTENDIMIENTO DE QUE CADA INVERSOR LLEVARÁ A CABO, CON LA DEBIDA DILIGENCIA, SU PROPIO ESTUDIO Y EVALUACIÓN DEL TÍTULO DE VALOR QUE ESTÉ 
+CONSIDERANDO COMPRAR, CONSERVAR O VENDER. 
+LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES Y MATERIALES NO ESTÁN DESTINADAS PARA EL USO DE INVERSORES MINORISTAS Y SERÍA TEMERARIO E 
+INAPROPIADO POR PARTE DE LOS INVERSORES MINORISTAS TENER EN CUENTA LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES O LOS MATERIALES DE MOODY'S 
+AL TOMAR CUALQUIER DECISIÓN EN MATERIA DE INVERSIÓN.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+O POR PARTE DE LOS INVERSORES MINORISTAS TENER EN CUENTA LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES O LOS MATERIALES DE MOODY'S 
+AL TOMAR CUALQUIER DECISIÓN EN MATERIA DE INVERSIÓN. EN CASO DE DUDA, DEBERÍA PONERSE EN CONTACTO CON SU ASESOR FINANCIERO U OTRO ASESOR PROFESIONAL. 
+TODA LA INFORMACIÓN CONTENIDA EN EL PRESENTE DOCUMENTO ESTÁ PROTEGIDA POR LEY, INCLUIDA PERO NO LIMITADA A LA LEY DE DERECHOS DE AUTOR (COPYRIGHT), NO 
+PUDIENDO PARTE ALGUNA DE DICHA INFORMACIÓN SER COPIADA O EN MODO ALGUNO REPRODUCIDA, RECOPILADA, TRANSMITIDA, TRANSFERIDA, DIFUNDIDA, REDISTRIBUIDA O 
+REVENDIDA, NI ARCHIVADA PARA SU USO POSTERIOR CON ALGUNO DE DICHOS FINES, EN TODO O EN PARTE, EN FORMATO, MANERA O MEDIO ALGUNO POR NINGUNA PERSONA SIN EL 
+PREVIO CONSENTIMIENTO ESCRITO DE MOODY'S. PARA MAYOR CLARIDAD, NINGUNA INFORMACIÓN CONTENIDA AQUÍ PUEDE SER UTILIZADA PARA DESARROLLAR, MEJORAR, 
+ENTRENAR O REENTRENAR CUALQUIER PROGRAMA DE SOFTWARE O BASE DE DATOS, INCLUYENDO, PERO SIN LIMITARSE A, CUALQUIER SOFTWARE DE INTELIGENCIA ARTIFICIAL, 
+APRENDIZAJE AUTOMÁTICO O PROCESAMIENTO DEL LENGUAJE NATURAL, ALGORITMO, METODOLOGÍA Y/O MODELO. 
+LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES Y LOS MATERIALES DE MOODY'S NO ESTÁN DESTINADOS PARA SER UTILIZADOS POR NINGUNA PERSONA COMO 
+UN REFERENTE, SEGÚN SE DEFINE DICHO TÉRMINO A EFECTOS REGULATORIOS, Y NO DEBEN SER UTILIZADOS EN MODO ALGUNO QUE PUDIERA DAR LUGAR A QUE SE LOS CONSIDERE 
+COMO UN REFERENTE.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+na firma de auditoría y no puede en todos los casos verificar o validar de manera independiente la información recibida en el proceso de calificación crediticia o en la elaboración 
+de los Materiales. 
+En la medida en que las leyes así lo permitan, MOODY's y sus directores, oficiales, empleados, agentes, representantes, licenciadores y proveedores declinan toda responsabilidad frente a 
+cualesquier persona o entidad con relación a pérdidas o daños indirectos, especiales, derivados o accidentales de cualquier naturaleza, derivados de o relacionados con la información aquí 
+contenida o el uso o imposibilidad de uso de dicha información, incluso cuando MOODY's o cualquiera de sus directores, oficiales, empleados, agentes, representantes, licenciadores o 
+proveedores fuera advertido previamente de la posibilidad de dichas pérdidas o daños, incluido pero no limitado a: (a) lucro cesante presente o futuro o (b) cualquier pérdida o daño que surja 
+cuando el instrumento financiero en cuestión no sea objeto de una calificación crediticia concreta otorgada por MOODY'S.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+: (a) lucro cesante presente o futuro o (b) cualquier pérdida o daño que surja 
+cuando el instrumento financiero en cuestión no sea objeto de una calificación crediticia concreta otorgada por MOODY'S. 
+En la medida en que las leyes así lo permitan, MOODY's y sus directores, oficiales, empleados, agentes, representantes, licenciadores y proveedores exime de cualquier responsabilidad con 
+respecto a pérdidas o daños directos o indemnizatorios causados a cualquier persona o entidad, incluido pero no limitado a, negligencia (pero excluyendo fraude, conducta dolosa o cualquier otro 
+tipo de responsabilidad que, en aras de la claridad, no pueda ser excluida por ley), por parte de MOODY's o cualquiera de sus directores, oficiales, empleados, agentes, representantes, 
+licenciadores o proveedores, o con respecto a toda contingencia dentro o fuera del control de cualquiera de los anteriores, derivada de o relacionada con la información aquí contenida o el uso o 
+imposibilidad de uso de tal información. 
+MOODY'S NO OTORGA NI OFRECE GARANTÍA ALGUNA, EXPRESA O IMPLÍCITA, CON RESPECTO A LA PRECISIÓN, OPORTUNIDAD, EXHAUSTIVIDAD, COMERCIABILIDAD O IDONEIDAD PARA 
+UN FIN DETERMINADO SOBRE CALIFICACIONES CREDITICIAS, EVALUACIONES Y DEMÁS OPINIONES O INFORMACIÓN. 
+Moody's Investors Service, Inc.
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+gnadas calificaciones crediticias de Moody’s Investors Service y asimismo han 
+notificado públicamente a la SEC que poseen una participación en MCO superior al 5%, se publica anualmente en www.moodys.com , bajo el capítulo de “Investor Relations – Corporate 
+Governance – Charter Documents- Director and Shareholder Affiliation Policy” ["Relaciones con Inversores - Gestión Corporativa – Documentos Constitutivos - Política sobre Relaciones entre 
+Directores y Accionistas” ]. 
+Moody's SF Japan K.K., Moody's Local AR Agente de Calificación de Riesgo S.A., Moody’s Local BR Agência de Classificação de Risco LTDA, Moody’s Local MX S.A. de C.V, I.C.V., Moody's Local PE 
+Clasificadora de Riesgo S.A., y Moody's Local PA Calificadora de Riesgo S.A. (conjuntamente, las "Moody’s Non-NRSRO CRAs", por sus siglas en ingles) son subsidiarias de agencias de calificación 
+crediticia de propiedad total indirecta de MCO. Ninguna de las Moody’s Non-NRSRO CRAs es una Organización Reconocida Nacionalmente como Organización Estadística de Calificación 
+Crediticia. 
+Términos adicionales solo para Australia: Cualquier publicación en Australia de este documento se realiza conforme a la Licencia de Servicios Financieros en Australia de la filial de MOODY's, 
+Moody's Investors Service Pty Limited ABN 61 003 399 657AFSL 336969 y/o Moody's Analytics Australia Pty Ltd ABN 94 105 136 972 AFSL 383569 (según corresponda).
+
+[12/12/2024 02:00 p.m] TIPO: FINANCIERO
+Moody's no están destinados a ser utilizados ni deben ser confiados por usuarios 
+ubicados en India en relación con valores cotizados o propuestos para su cotización en bolsas de valores de la India. 
+Términos adicionales con respecto a las Opiniones de la Segunda Parte (según se define en los Símbolos y Definiciones de Calificación de Moody's Investors Service): Por favor notar que una 
+Opinión de la Segunda Parte ("OSP") no es una "calificación crediticia". La emisión de OSPs no es una actividad regulada en muchas jurisdicciones, incluida Singapur. 
+JAPÓN: En Japón, el desarrollo y la provisión de OSPs se clasifican como "Negocios Secundarios", no como "Negocios de Calificación Crediticia", y no están sujetos a las regulaciones aplicables a 
+los "Negocios de Calificación Crediticia" según la Ley de Instrumentos Financieros y la Ley de Intercambio de Japón y su regulación relevante. RPC: Cualquier OSP: (1) no constituye una Evaluación 
+de Bonos Verdes de la RPC según se define en las leyes o regulaciones pertinentes de la RPC; (2) no puede incluirse en ninguna declaración de registro, circular de oferta, prospecto ni en ningún 
+otro documento presentado a las autoridades regulatorias de la RPC ni utilizarse para cumplir con ningún requisito de divulgación regulatoria de la RPC; y (3) no puede utilizarse en la RPC para 
+ningún propósito regulatorio ni para ningún otro propósito que no esté permitido por las leyes o regulaciones pertinentes de la RPC.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+Informe de Calificación │  21 diciembre 2021 fitchratings.com 1 
+ 
+ 
+  
+ 
+Bancos 
+Banca Comercial 
+Nicaragua 
+Banco de Finanzas, S.A. 
+Factores Clave de Calificación 
+Calificaciones por Soporte: Las calificaciones nacionales de Banco de Finanzas, S.A. (BDF) y las 
+de sus emisiones se fundamentan en el soporte que, en opinión de Fitch Ratings, le brindaría 
+su accionista en última instancia Grupo ASSA S.A. (Grupo ASSA) [BBB-, Perspectiva Negativa] 
+en caso de ser necesario. La calificación de la matriz (que da lugar al soporte de BDF) es muy 
+superior a  la  del entorno operativo de Nicaragua, lo que permite mantener las calificaciones 
+actuales, con Perspectiva Estable, a pesar del entorno operativo desafiante que Fitch continúa 
+evaluando  con  tendencia  negativa  y  de  la  Perspectiva  Negativa  en  la  calificación  de  Grupo 
+ASSA. 
+Riesgo Alto de Transferencia y Convertibilidad: Fitch también considera el riesgo país asociado 
+a  los  riesgos  de  transferencia  y  convertibilidad  con  influencia  alta.  Esto se  debe  a que  lo 
+anterior podría limitar la capacidad de la subsidiaria para utilizar el soporte de su matriz. 
+Perspectiva  de  Desempeño  Limitada: Para  Fitch,  con  respecto  a  la  propensión  de  soporte, 
+tienen  importancia  alta  las  perspectivas  de  desempeño  del  banco  en  un  entorno  operativo 
+retador por factores estructurales y coyunturales del país. Fitch opina que las oportunidades 
+de negocio de BDF seguirán limitadas.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+Comunicado oficial 
+Nicaragua 
+11 de diciembre de 2024 
+ 
+  
+Pág. 1 de 3  
+  
+ 
+Licenciado.  
+Luis Ángel Montenegro E. 
+Superintendente 
+Superintendencia de Bancos y Otras 
+Instituciones Financieras 
+Managua, Nicaragua 
+ 
+Comunicado de Hecho Relevante 
+Procedemos a informar las calificaciones asignadas en la Sesión Extraordinaria n° 4172024, celebrada el 11 
+de diciembre de 2024, con información financiera auditada  a diciembre de 2023 y no auditada  a marzo y 
+junio  de  2024, para el Banco  de Finanzas,  S.A. y  su  Programa. Adjunto  se  envían  los  fundamentos  de  la 
+calificación. En Ref: ML MLNIC_Informe_BDF_11122024. 
+Nombre del emisor 
+Nombre de la 
+emisión  
+Moneda 
+Escala de Calificación 
+Actual * 
+Fecha de la 
+información 
+financiera en 
+que se basó 
+la calificación  
+Fecha de 
+ratificación 
+de la 
+Calificación 
+Banco de Finanzas S.A. 
+Entidad Largo 
+Plazo Moneda 
+Local 
+NIO 
+AA.ni Estable 
+30/06/2024 11/12/2024 
+Banco de  Finanzas S.A. 
+Entidad Largo 
+Plazo Moneda 
+Extranjera 
+USD 
+AA.ni Estable 
+30/06/2024 11/12/2024 
+Banco de  Finanzas S.A. 
+Entidad Corto 
+Plazo Moneda 
+Local 
+NIO 
+ML A-1.ni  N/A 
+30/06/2024 11/12/2024 
+Banco de  Finanzas S.A. 
+Entidad Corto 
+Plazo Moneda 
+Extranjera 
+USD 
+ML A-1.ni N/A 
+30/06/2024 11/12/2024 
+Banco de  Finanzas S.A. 
+Programa de 
+Emisión de 
+Valores 
+Estandarizados 
+de 
+Renta Fija  
+USD AA.
+
+[27/03/2025 03:00:00 pm] TIPO: OTRO
+Nicaragua 
+ 
+ 
+1 
+ 
+Nicaragua, 25 de marzo de 2025 
+ 
+ 
+Licenciado 
+Luis Ángel Montenegro Espinoza 
+Superintendente 
+Superintendencia de Bancos y Otras  
+Instituciones Financieras 
+Managua, Nicaragua 
+ 
+ 
+Ref: Comunicado de calificación   
+ 
+En cumplimiento a lo descrito en la Norma sobre Sociedades Calificadoras de Riesgo, aprobadas 
+bajo resolución N° CD-SIBOIF-579-2-ABR1-2009, específicamente en el artículo 24 inciso cuarto que 
+establece: “...Los acuerdos mediante los cuales se actualice una calificación de riesgo, deberán 
+remitirse al Superintendente, a la Bolsa de Valores y a los puestos de bolsa representantes del emisor 
+a más tardar dentro de los primeros 7 días posteriores de la reunión del Comité de Calificación en el 
+que se asigne dicha calificación...”  Se adjunta a la presente opinión sobre la calificación de riesgo.    
+ 
+ 
+Atentamente, 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Erick Fabricio Campos Bolaños  
+Gerente General 
+Moody’s Local CR Calificadora de Riesgo, S.A. 
+ 
+ 
+CC.: Licda. Lucy del Carmen Herrera Marenco, Intendente de Valores  
+          Lic. Gerardo Argüello Leiva, Gerente General, Bolsa de Valores de Nicaragua  
+ 
+ 
+
+ 
+ 
+ 
+ 
+1 25 DE MARZO DE 2025 
+ 
+BANCO DE FINANZAS, S.A. 
+ 
+Nicaragua 
+Banco de Finanzas, S.A.  
+RESUMEN  
+Moody’s Local CR Calificadora de Riesgo, S.A. (en adelante, Moody’s Local 
+Nicaragua) afirma a Banco de Finanzas, S.A. (en adelante, BDF o el Banco) la 
+calificación AA.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+Finanzas S.A. 
+Entidad Corto 
+Plazo Moneda 
+Extranjera 
+USD 
+ML A-1.ni N/A 
+30/06/2024 11/12/2024 
+Banco de  Finanzas S.A. 
+Programa de 
+Emisión de 
+Valores 
+Estandarizados 
+de 
+Renta Fija  
+USD AA.ni Estable 
+30/06/2024 11/12/2024 
+Banco de  Finanzas S.A. 
+Programa de 
+Emisión de 
+Valores 
+Estandarizados 
+de 
+Renta Fija  
+USD ML A-1.ni  N/A 
+30/06/2024 11/12/2024 
+*Existe variación respecto a la calificación anterior debido a una nueva escala y nomenclatura de calificación.  
+
+ 
+ 
+                                                                                                                   
+Comunicado oficial 
+Nicaragua 
+11 de diciembre de 2024 
+ 
+  
+Pág. 2 de 3  
+  
+AA.ni: emisores o emisiones calificados en AA.ni con una calidad crediticia muy fuerte en comparación con 
+otras entidades y transacciones locales. 
+ML A-1.ni: los emisores calificados en ML A-1.ni tienen la mayor capacidad para pagar obligaciones de deuda 
+de corto plazo en comparación con otras entidades y transacciones locales. 
+Perspectiva Estable: se percibe una baja probabilidad de que la calificación varíe en el mediano plazo. 
+Moody ́s Local Nicaragua agrega los modificadores “+” y “-” a cada categoría de calificación genérica que 
+va de AA.ni a CCC.ni y de ML A-1.ni a ML A-3.ni.
+
+[04/08/2025 12:00:00 p.m] TIPO: OTRO
+rada dentro de la plaza, con 
+participaciones de mercado entre el 6.4% y 7.2% en activos, créditos y depósitos 
+a marzo 2025.   
+Su modelo de negocio se concentra en banca de personas (marzo 2025: 65.1%), 
+donde hipotecas residenciales ponderaba a esa misma fecha el 36.9% de la 
+cartera, siendo el segundo jugador más grande la plaza con una participación 
+del 25.0% a esa misma fecha. Respecto a la calidad de su cartera, a marzo 2025 
+el banco exhibía un moderado incremento en la razón de créditos vencidos 
+(mora mayor a 90 días a cartera bruta) respecto a lo reportado durante 2023 y 
+2024, con 1.4% desde 1.1%. Este incremento proviene del mayor crecimiento en 
+cartero de consumo así como de exposiciones en el segmento empresarial, que 
+a julio ya se habían normalizado. En opinión de Moodys, este indicador 
+mostraría una leve reducción respecto a marzo 2025 pero levemente por arriba 
+de sus promedio 2023-2024, pero consistentes con su nivel de calificación 
+actual. 
+La rentabilidad, se ha visto afectada por el mayor deterioro de su cartera 
+además de menores ingresos provenientes de venta de bienes adjudicados y 
+una mayor carga tributaria, en opinión de Moodys podría mostrar una moderada 
+mejora dado el mayor apetito de colocación en segmentos más rentables, 
+aunque por debajo de lo reportado en 2024.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+o  y  corto  plazo  de  los  títulos 
+estandarizados  de  renta  fija  están  alineadas  con  riesgo  emisor  de  BDF.  La probabilidad  de 
+incumplimiento es la misma para las emisiones y la entidad.  
+Sensibilidades de Calificación 
+Factores  que  podrían,  individual  o  colectivamente,  conducir  a  una  acción  de  calificación 
+negativa/baja: 
+• las calificaciones de BDF y sus emisiones bajarían ante una evaluación menor de Fitch 
+sobre la propensión y/o capacidad de soporte de Grupo ASSA; 
+• una baja en el techo país que indique un incremento en los riesgos de transferencia y 
+convertibilidad, y limite la capacidad de BDF para recibir el soporte de su accionista en 
+última instancia. 
+Factores  que  podrían,  individual  o  colectivamente,  conducir  a  una  acción  de  calificación 
+positiva/alza: 
+• las calificaciones de BDF y sus emisiones son contingentes a un cambio positivo en a la 
+evaluación  de  Fitch  del  riesgo  país  de  Nicaragua,  y  de  la  capacidad  y  propensión  de 
+Grupo ASSA de dar soporte. 
+ 
+Calificaciones  
+ 
+ 
+Escala Nacional 
+Nacional, Largo Plazo AA+(nic) 
+Nacional, Corto Plazo F1+(nic) 
+ 
+Perspectivas  
+Nacional, Largo Plazo Estable 
+ 
+Metodologías Aplicables 
+Metodología de Calificación de Bancos 
+(Septiembre 2019) 
+Metodología de Calificaciones en Escala 
+Nacional (Diciembre 2020) 
+ 
+Publicaciones Relacionadas 
+Grupo ASSA, S.A. (Marzo de 2021) 
+ 
+ 
+ 
+ 
+ 
+ 
+Analistas 
+Álvaro Castro  
++503 2516 6615 
+alvaro.castro@fitchratings.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+la calificación varíe en el mediano plazo. 
+Moody ́s Local Nicaragua agrega los modificadores “+” y “-” a cada categoría de calificación genérica que 
+va de AA.ni a CCC.ni y de ML A-1.ni a ML A-3.ni. El modificador “+” indica que la calificación se ubica en el 
+extremo superior de su categoría de calificación genérica; ningún modificador indica una calificación media; 
+y el modificador “-” indica una calificación en el extremo inferior de la categoría de calificación genérica. 
+“La calificación de riesgo emitida representa la opinión de la Sociedad Calificadora basada en análisis 
+objetivos  realizados  por  profesionales.  No  es  una  recomendación  para  comprar,  vender  o  mantener 
+determinados  instrumentos,  ni  un  aval  o  garantía  de  una inversión,  emisión  o  su  emisor.  Se  recomienda 
+analizar  el  prospecto,  información  financiera  y  los  hechos  relevantes  de  la  entidad  calificada  que  están 
+disponibles  en  las  oficinas  del  emisor,  en  la  Superintendencia  de  Bancos  y  de  Otras  Instituciones 
+Financieras (SIBOIF), Bolsas de Valores y puestos representantes”. 
+Las calificaciones otorgadas no han sufrido ningún proceso de apelación  por parte de la entidad calificada. 
+Moody ́s Local Nicaragua da por primera vez calificación de riesgo a este emisor en octubre 2024.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+ificaciones otorgadas no han sufrido ningún proceso de apelación  por parte de la entidad calificada. 
+Moody ́s Local Nicaragua da por primera vez calificación de riesgo a este emisor en octubre 2024. Toda la 
+información contenida en el informe que presenta los fundamentos de calificación se basa en información 
+obtenida de los emisores y suscriptores y otras fuentes consideradas confiables por Moody’s Local 
+Nicaragua. Moody’s Local Nicaragua no audita o comprueba la veracidad o precisión de esa información, 
+además no considera la liquidez que puedan tener los distintos valores tanto en el mercado primario como 
+en el secundario. La información contenida en este documento se presenta tal cual proviene del emisor o 
+administrador, sin asumir ningún tipo de representación o garantía. 
+ 
+Atentamente 
+ 
+ 
+ 
+ 
+ 
+ 
+C.C.: Licda. Lucy del Carmen Herrera Marenco, Intendente de Valores 
+Lic. Gerardo Argüello, Gerente General Bolsa de Valores de Nicaragua 
+              Sr. Mauricio Padilla, Gerente General Invernic 
+Archivo. 
+ 
+ 
+
+ 
+ 
+                                                                                                                   
+Comunicado oficial 
+Nicaragua 
+11 de diciembre de 2024 
+ 
+  
+Pág. 3 de 3  
+  
+La veracidad y la oportunidad de este Comunicado de Hecho Relevante es responsabilidad de 
+Sociedad Calificadora de Riesgo Centroamericana, S.A., y no de la Superintendencia de Bancos y Otras 
+Instituciones Financieras.
+
+[04/08/2025 12:00:00 p.m] TIPO: OTRO
+arizados de 
+Renta Fija 
+ 
+AA.ni 
+ 
+Estable 
+Programa de Emisión de 
+Valores Estandarizados de 
+Renta Fija 
+ 
+ML A-1.ni 
+ 
+- 
+ 
+(*) La nomenclatura 'ni' refleja riesgos solo comparables en 
+Nicaragua. 
+Para mayor detalle sobre las calificaciones asignadas ver la 
+sección de información complementaria, al final de este 
+reporte. 
+ 
+ 
+CONTACTOS 
+Amada Rubio                  
+Senior Credit Analyst ML 
+amada.rubio@moodys.com
+ 
+Rolando Martínez                    
+Director ML 
+rolando.martínez@moodys.com
+ 
+René Medrano                    
+Ratings Manager ML 
+rene.medrano@moodys.com
+ 
+ 
+SERVICIO AL CLIENTE 
+Costa Rica 
++506.4102.9400 
+El Salvador 
++503.2243.7419 
+ 
+
+ 
+ 
+ 
+ 
+2   30 DE JULIO DE 2025 
+BANCO DE FINANZAS, S.A.
+ 
+Nicaragua 
+Respecto al indicador regulatorio, a la misma fecha era de 13.5% contra un límite de 12.5%.  Moodys opina que, dado los 
+nuevos requerimiento de capital regulatorio, este factor mostraría una tendencia positiva en los próximos años, dadas 
+las iniciativas para su fortalecimiento como un menor apetito de crecimiento en ciertos segmentos.  
+La liquidez, medida a través de la razón ente activos liquidez a depósitos a la vista, se mantenía estable a marzo 2025 
+en 67.2% respecto a 2024. En la evaluación de este factor, la agencia además pondera su estructura de fondeo 
+fundamentada en depósitos del público en 84.7%, y que ha mostrado una tendencia favorable respecto a su promedio 
+histórico (2022-2024: 79.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+portunidad de este Comunicado de Hecho Relevante es responsabilidad de 
+Sociedad Calificadora de Riesgo Centroamericana, S.A., y no de la Superintendencia de Bancos y Otras 
+Instituciones Financieras. 
+ 
+ 
+ 
+2024 Moody's Corporation, Moody's Investors Service, Inc., Moody's Analytics, Inc. y/o sus licenciadores y filiales (conjuntamente “MOODY’S”). Todos los derechos reservados. 
+LAS CALIFICACIONES CREDITICIAS EMITIDAS POR LAS FILIALES DE CALIFICACIÓN CREDITICIA DE MOODY’S CONSTITUYEN SUS OPINIONES ACTUALES  RESPECTO  AL  RIESGO 
+CREDITICIO  FUTURO  RELATIVO  DE  ENTIDADES,  COMPROMISOS  CREDITICIOS,  O  INSTRUMENTOS  DE  DEUDA  O  SIMILARES,  Y  LOS  MATERIALES,  PRODUCTOS,  SERVICIOS  E 
+INFORMACIÓN PUBLICADA O DE CUALQUIER OTRA MANERA PUESTA A DISPOSICIÓN POR MOODY’S (COLECTIVAMENTE LOS “MATERIALES”) PUEDEN INCLUIR DICHAS OPINIONES 
+ACTUALES.    MOODY'S  DEFINE  EL  RIESGO  CREDITICIO  COMO  EL  RIESGO  DERIVADO DE  LA  IMPOSIBILIDAD  POR  PARTE  DE  UNA  ENTIDAD  DE  CUMPLIR  CON  SUS  OBLIGACIONES 
+FINANCIERAS CONTRACTUALES A SU VENCIMIENTO Y LAS PÉRDIDAS ECONÓMICAS ESTIMADAS EN CASO DE INCUMPLIMIENTO O INCAPACIDAD. CONSULTE LOS SIMBOLOS Y LAS 
+DEFINICIONES  DE  CALIFICACIÓN  DE MOODY’S PARA OBTENER INFORMACIÓN SOBRE LOS TIPOS DE OBLIGACIONES FINANCIERAS CONTRACTUALES ENUNCIADAS POR LAS 
+CALIFICACIONES  CREDITICIAS  DE  MOODY'S.
+
+[27/03/2025 03:00:00 pm] TIPO: OTRO
+Factores que pueden generar un deterioro de la calificación 
+→ Deterioro sostenido en los indicadores de calidad de cartera que afecten la cobertura de las estimaciones y la 
+rentabilidad del Banco.  
+→ Dificultades para cumplir los objetivos relacionados con la mejora de los indicadores de rentabilidad, que impacten 
+tanto los indicadores de solvencia como el crecimiento futuro del Banco. 
+→ Contracción en los niveles de liquidez que coloquen a la Entidad en situaciones de estrés de liquidez o descalces 
+contractuales entre pasivos y activos. 
+→ Mayor contracción de la adecuación de capital del Banco, afectando la solvencia y respaldo de la Entidad. 
+Generalidades 
+Perfil de la Entidad 
+Banco de Finanzas, S.A. es una sociedad anónima fundada en 1992, constituida bajo las leyes de la República de 
+Nicaragua. Su actividad principal es la intermediación financiera, prestación de servicios bancarios, atención de sectores 
+productivos y desarrollo del comercio, esto a través del financiamiento. El Banco pertenece al grupo Nueva Tenedora 
+Banpro, donde los principales accionistas corresponden a Grupo Promerica (89%) y Grupo ASSA (9%). 
+
+ 
+ 
+ 
+ 
+3 25 DE MARZO DE 2025 
+ 
+BANCO DE FINANZAS, S.A. 
+ 
+Nicaragua 
+Al corte bajo análisis, BDF ostenta una cuota de mercado del 7% en términos de activos totales, ubicándose en la quinta 
+posición entre los 8 bancos operativos en Nicaragua.
+
+[27/03/2025 03:00:00 pm] TIPO: OTRO
+NANZAS, S.A. 
+ 
+Nicaragua 
+Al corte bajo análisis, BDF ostenta una cuota de mercado del 7% en términos de activos totales, ubicándose en la quinta 
+posición entre los 8 bancos operativos en Nicaragua. Respecto a su cartera de crédito, representa el 8% del total de 
+colocaciones en el país, destacándose como el líder en créditos de vivienda. 
+Principales aspectos crediticios  
+Crecimiento sostenido de la cartera, acompañado de sanos indicadores crediticios. 
+Al cierre de diciembre de 2024, la cartera de crédito bruta del Banco registró C$15.441,9 millones, equivalente a USD421,6 
+millones, luego de aumentar un 10% anual y 5% semestral, fundamentado por una mayor colocación en el segmento de 
+personas, donde destacaron los créditos de consumo y vehículo. Por su parte, dentro del segmento de empresas 
+resaltaron las colocaciones en pymes y comercio. Al corte de análisis, BDF mantiene su concentración en la banca de 
+personas (64%) y proyecta, al término del periodo 2025, un crecimiento del 12% anual, impulsado por los sectores antes 
+mencionados. 
+La Entidad muestra una calidad crediticia adecuada, luego de contabilizar el 95% de sus créditos vigentes, 4% 
+clasificados como reestructurados y el 1% restante como vencido, destacando una gestión eficaz de riesgos y cobranza. 
+Dicha morosidad se concentra mayoritariamente en los primeros 30 días (4%), con un decrecimiento progresivo en 
+atrasos mayores, evidenciando una recuperación efectiva de pagos.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+POR NINGUNA PERSONA COMO 
+UN REFERENTE, SEGÚN SE DEFINE DICHO TÉRMINO A EFECTOS REGULATORIOS, Y NO DEBEN SER UTILIZADOS EN MODO ALGUNO QUE PUDIERA DAR LUGAR A QUE SE LOS CONSIDERE 
+COMO UN REFERENTE. 
+Toda la información incluida en el presente documento ha sido obtenida por MOODY'S a partir de fuentes que estima correctas y fiables. No obstante, debido a la posibilidad de error humano o 
+mecánico, así como de otros factores, toda la información aquí contenida se proporciona “TAL Y COMO ESTÁ”, sin garantía de ningún tipo. MOODY'S adopta todas las medidas necesarias para que 
+la información que utiliza al asignar una calificación crediticia sea de suficiente calidad y de fuentes que Moody's considera fiables, incluidos, en su caso, terceros independientes.  Sin embargo, 
+Moody's no es una firma de auditoría y no puede en todos los casos verificar o validar de manera independiente la información recibida en el proceso de calificación crediticia o en la elaboración de 
+los Materiales.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+,296,845.9 11,654,333.4 13,607,630.7 16,720,363.0 18,948,989.0 
+Préstamos y Operaciones Interbancarias 18.8 662,714.0 504,658.1 1,940,879.7 764,480.0 839,826.0 
+Derivados n.a. n.a. n.a. n.a. n.a. n.a. 
+Otros Títulos Valores y Activos Productivos 47.7 1,687,161.1 795,647.0 818,789.0 1,014,058.0 1,250,716.0 
+Total de Activos Productivos 386.1 13,646,721.0 12,954,638.5 16,367,299.4 18,498,901.0 21,039,531.0 
+Efectivo y Depósitos en Bancos 117.4 4,148,236.1 4,282,656.6 3,549,863.3 2,910,368.0 2,994,557.0 
+Otros Activos 24.8 876,069.7 862,775.3 895,898.2 637,930.0 621,508.0 
+Total de Activos 528.3 18,671,026.8 18,100,070.4 20,813,060.9 22,047,199.0 24,655,596.0 
+ 
+            
+Pasivos             
+Depósitos de Clientes 338.1 11,948,595.7 11,123,008.0 9,998,979.0 11,452,306.0 15,052,593.0 
+Fondeo Interbancario y Otro de Corto Plazo 35.2 1,245,284.8 1,139,731.0 1,666,718.4 7,573,823.0 2,065,994.0 
+Otro Fondeo de Largo Plazo 87.6 3,094,612.4 3,650,477.1 6,391,284.4 494,693.0 4,538,381.0 
+Obligaciones Negociables y Derivados 0.4 12,467.7 11,308.6 14,576.0 0.0 489,053.0 
+Total de Fondeo 461.2 16,300,960.6 15,924,524.7 18,071,557.8 19,520,822.0 22,146,021.0 
+Otros Pasivos 9.4 333,558.5 262,248.6 242,129.8 170,151.0 234,177.0 
+Acciones Preferentes y Capital Híbrido n.a. n.a. n.a. n.a. n.a. n.a. 
+Total de Patrimonio 57.6 2,036,507.7 1,913,297.1 2,499,373.3 2,356,226.0 2,275,398.0 
+Total de Pasivos y Patrimonio 528.3 18,671,026.8 18,100,070.4 20,813,060.9 22,047,199.0 24,655,596.
+
+[04/08/2025 12:00:00 p.m] TIPO: OTRO
+factor, la agencia además pondera, en caso de requerirse, los potenciales aportes de capital que 
+podría recibir de su grupo, donde le beneficia el tamaño pequeño relativo de BDF respecto a su grupo. A diciembre 
+2024, la operación de BDF ponderaba en términos de activos el 2% de los activos totales de Grupo Promerica.  
+Estructura de Fondeo Adecuada 
+La razón de cobertura de liquidez, medida como la razón de activos líquidos libres de restricción respecto a los 
+depósitos a la vista, se mantenía a marzo 2025 en 67.2%. Dentro de la evaluación de este factor Moodys pondera 
+positivamente la estructura de fondeo fundamentada en depósitos del público, los cuales ha mostrado una tendencia 
+positiva dentro de la composición del fondeo, siendo a marzo 2025 el 81.4% contra 75.5% en diciembre 2022, aunque 
+con un riesgo de concentración alto, siendo los 20 mayores depositantes el 34.3% y el mayor el 6.5%. De estas 
+exposiciones, el 54% corresponde a depósitos a plazo. 
+El fondeo se complementa con facilidades crediticias con fondeadores nacionales e internacionales, donde Moodys 
+opina que se beneficia de su pertenencia a un grupo regional. Además, el banco mantiene un programa para emisiones 
+de bonos en el mercado local.  
+GRAFICO 4 Evolución y Composición de Activos Líquidos  
+ 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+ 
+ 
+ 
+ 
+ 
+ 
+488
+459
+491
+522
+689
+605
+525
+740
+3,058
+2,773
+3,166
+2,436
+596
+250
+1,213
+2,043
+1,746
+1,568
+1,458
+74.4%
+72.3%
+67.2%
+67.2%
+62.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+ISIÓN, OPORTUNIDAD, EXHAUSTIVIDAD, COMERCIABILIDAD O IDONEIDAD PARA 
+UN FIN DETERMINADO SOBRE CALIFICACIONES CREDITICIAS, EVALUACIONES Y DEMÁS OPINIONES O INFORMACIÓN. 
+Moody's Investors Service, Inc., agencia de calificación crediticia, subsidiaria de propiedad total de Moody's Corporation (“MCO”), informa por la presente que la mayoría de los emisores de títulos 
+de  deuda  (incluidos bonos corporativos y  municipales,  obligaciones,  notas  y  pagarés)  y  acciones preferentes calificados por  Moody's Investors  Service,  Inc.  han  acordado,  con  anterioridad  a  la 
+asignación  de  cualquier  calificación,  abonar  a  Moody's  Investors  Service,  Inc.  por  sus  servicios  de  opinión  y  calificación. MCO y Moody’s Investors Service también mantienen políticas y 
+procedimientos para garantizar la independencia de las calificaciones y los procesos de asignación de calificaciones crediticias de Moody’s Investors Service,Inc. La información relativa a ciertas 
+afiliaciones que pudieran existir entre directores de MCO y entidades calificadas,  y entre entidades que tienen asignadas calificaciones crediticias de Moody’s Investors Service y asimismo han 
+notificado públicamente a la SEC que poseen una participación en MCO superior al 5%, se publica anualmente en www.moodys.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+ible con una tendencia estable. A septiembre de 2021, el indicador de mora mayor de 90 
+días fue de 3.7%, mejor al cierre fiscal previo de 4% y al promedio de la plaza a septiembre de 
+2021  de  3.8%.  Paralelamente,  las  coberturas  de  vencidos se  mantienen  un  prudente  122%, 
+aunque  menor que  el  promedio  de  la  industria  de  200%.  La  agencia  opina  que  la  baja  de 
+vencidos evidencia el manejo prudente de la colocación y controles de cobro. También destaca 
+la reducción de activos adjudicados y reducción de castigos netos en relación con su historia 
+reciente. 
+A septiembre de 2021, la agencia observa que un nivel menor de castigos a períodos previos 
+(1.4% con respecto a la cartera bruta promedio frente promedio de 2017 a 2020 de 1.9%) y 
+una reducción en términos absolutos de activos adjudicados, probando la efectividad del banco 
+bajo   un   entorno   presionado.   Por   su   parte,   el   porcentaje   de   créditos   prorrogados y 
+reestructurados de 10% es  consistente  en el tiempo, razonable para un entorno económico 
+sujeto a cambios políticos y sociales bruscos y ligeramente inferior al sistema bancario de 12%, 
+aunque  pudiesen  representar  un  diferimiento  de  pérdidas  por  deterioro  crediticio  en  el 
+mediano plano. 
+Por otro lado, la cartera presenta garantías reales amplias, de cerca de 87% de la cartera total, 
+distribuidas  en  garantías  hipotecaria  (82%),  prendarias  (13%)  y  líquidas  (3%).  La  agencia  lo 
+considera favorable.
+
+[04/08/2025 12:00:00 p.m] TIPO: OTRO
+atorios. Se destaca el dinamismo en el 
+ritmo de colocación de créditos (+17.1% interanual), donde la cartera por actividad, a marzo de 2025, se concentra 
+principalmente en el segmento comercial (35.1%), industriales (15.1%), personales (14.8%) y cartera hipotecaria (10.2%), a 
+
+ 
+ 
+ 
+ 
+6   30 DE JULIO DE 2025 
+BANCO DE FINANZAS, S.A.
+ 
+Nicaragua 
+pesar de lo anterior, se mantienen niveles bajos de morosidad (marzo 2025: 1.4%). Por su parte, los depósitos del 
+sistema bancario Nicaragüense evidenciaron un crecimiento interanual del 9.8%, favoreciendo niveles amplios de 
+liquidez. 
+Además, presenta niveles de rentabilidad altos por encima de otras plazas de la región centroamericana. Asimismo, la 
+plaza se caracteriza por niveles altos de dolarización, sin embargo, el riesgo cambiario se mitiga parcialmente por la 
+estabilidad esperada del tipo de cambio. 
+Información Complementaria 
+Tipo de calificación / Instrumento 
+Calificación 
+actual 
+Perspectiva  
+actual 
+Calificación 
+anterior 
+Perspectiva 
+anterior 
+Banco de Finanzas, S.A.         
+ Entidad Largo Plazo Moneda Local AA.ni 
+Estable 
+AA.ni 
+Estable 
+ Entidad Corto Plazo Moneda Local ML A-1.ni 
+- 
+ML A-1.ni 
+- 
+ Entidad Largo Plazo Moneda Extranjera AA.ni 
+Estable 
+AA.ni 
+Estable 
+ Entidad Corto Plazo Moneda Extranjera ML A-1.ni 
+- 
+ML A-1.ni 
+- 
+ Programa  de  Emisión  de  Valores  Estandarizados  de    
+Renta Fija 
+AA.ni 
+Estable 
+AA.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+presenta garantías reales amplias, de cerca de 87% de la cartera total, 
+distribuidas  en  garantías  hipotecaria  (82%),  prendarias  (13%)  y  líquidas  (3%).  La  agencia  lo 
+considera favorable. 
+Fitch considera que el banco tiene una diversificación buena por sector económico aparte de 
+la  clara inclinación  hacia  las  hipotecas  residenciales.  Por  su  parte,  los  20  mayores  deudores 
+representan 17.2% del total de préstamos brutos o 1.6x el Capital Base según Fitch (16.6% y 
+1.04x a marzo de 2021, respectivamente). La mayoría de estos deudores registra calificaciones 
+de riesgo relativo ‘A’ o ‘B’. Fitch destaca que las garantías en todos los mayores deudores son 
+amplias y, por otro lado, espera que las concentraciones se reduzcan paulatinamente una vez 
+el ritmo de colocaciones aumente. 
+El portafolio de inversiones representa cerca de 9% del total de activos y en línea con la plaza, 
+tienen  una  concentración  en  papeles  con  garantía  estatal  y  con  propósito  regulatorio  y  de 
+liquidez. Fitch espera que se reduzca en la medida que las colocaciones crediticias esperadas 
+para el final del año se realicen. 
+Ganancias y Rentabilidad 
+Fitch opina que BDF mantendrá los niveles de rentabilidad operativa registrados a septiembre 
+de 2021. A septiembre de 2021, el retorno operativo sobre activos ponderados por riesgo fue 
+de 2.3%, superior al promedio de 1.2% registrado desde la crisis social de 2018.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+l  de  MOODY's, 
+Moody's  Investors  Service  Pty  Limited  ABN  61  003  399  657AFSL  336969  y/o Moody's  Analytics  Australia  Pty  Ltd  ABN  94  105  136  972  AFSL  383569  (según  corresponda). Este  documento  está 
+destinado únicamente a “clientes mayoristas” según lo dispuesto en el artículo 761G de la Ley de Sociedades de 2001. Al acceder a este documento desde cualquier lugar dentro de Australia, usted 
+declara  ante  MOODY'S  ser  un  "cliente  mayorista"  o  estar  accediendo  al  mismo  como  un  representante  de  aquél,  así  como  que  ni  usted  ni  la  entidad  a  la  que  representa  divulgarán,  directa  o 
+indirectamente,  este  documento  ni  su  contenido a “clientes minoristas” según se desprende del artículo 761G de la Ley de Sociedades de 2001. Las calificaciones crediticias de MOODY'S  son 
+opiniones sobre la calidad  crediticia de una  obligación de deuda del emisor y no sobre los valores de capital del emisor ni ninguna  otra forma de instrumento que se encuentre a disposición de 
+clientes minoristas. 
+Términos adicionales solo para India: Las calificaciones crediticias, Evaluaciones, otras opiniones y Materiales de Moody's no están destinados a ser utilizados ni deben ser confiados por usuarios 
+ubicados en India en relación con valores cotizados o propuestos para su cotización en bolsas de valores de la India.
+
+[04/08/2025 12:00:00 p.m] TIPO: OTRO
+ligaciones de deuda de 
+corto plazo en comparación con otras entidades y transacciones locales. 
+ 
+→ Perspectiva Estable: indica una baja probabilidad de cambio de la calificación en el mediano plazo. 
+ 
+Moody ́s Local Nicaragua agrega los modificadores “+” y “-” a cada categoría de calificación genérica que va de AA a 
+CCC, El modificador “+” indica que la obligación se ubica en el extremo superior de su categoría de calificación 
+genérica, ningún modificador indica una calificación media, y el modificador “-” indica una calificación en el extremo 
+inferior de la categoría de calificación genérica 
+
+ 
+ 
+ 
+ 
+7   30 DE JULIO DE 2025 
+BANCO DE FINANZAS, S.A.
+ 
+Nicaragua 
+La calificación de riesgo emitida representa la opinión de la Sociedad Calificadora basada en análisis objetivos 
+realizados por profesionales. No es una recomendación para comprar, vender o mantener determinados instrumentos, 
+ni un aval o garantía de una inversión, emisión o su emisor. Se recomienda analizar el prospecto, información financiera 
+y los hechos relevantes de la entidad calificada que están disponibles en las oficinas del emisor, en la 
+Superintendencia de Bancos y de Otras Instituciones Financieras (SIBOIF) 
+ 
+Metodología Utilizada. 
+→ La Metodología de calificación de Instituciones Financieras de Crédito - (27/Nov/2024) utilizada por Moody’s Local 
+CR Calificadora de Riesgo, S.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+n  sus  clientes  con  perfiles  de  riesgo  relativamente  bajo  y  medio.  Fitch  observa  que  la 
+proporción   de   gastos   operativos   a   activos   totales   promedio   se   mantiene   en   3.8%, 
+favorablemente inferior al promedio histórico 2018-2020 de 4%. De manera positiva, el gasto 
+operativo ha decrecido interanualmente cerca de 4%, superando su meta de reducirse en 3%.  
+
+ 
+Banco de Finanzas, S.A. 
+Informe de Calificación │  21 diciembre 2021 fitchratings.com 7 
+ 
+  
+ 
+Bancos 
+Banca Comercial 
+Nicaragua 
+Capitalización y Apalancamiento 
+La  agencia  prevé  que  el  indicador  de Capital Base  según  Fitch  se  mantenga  en  niveles 
+adecuados para absorber potenciales pérdidas. A septiembre de 2021, dicho indicador fue de 
+16.3%,  superior  al  cierre  fiscal  previo  de  14.9%.  También,  favorablemente,  el  indicador  de 
+capital regulatorio es también un bueno 14.1%. Por otro lado, de acuerdo a la administración, 
+no hay planes de pago de dividendos en el corto plazo. La entidad no declara y paga dividendos 
+desde 2018. 
+El aumento del indicador de Capital Base según Fitch se favorece a la contracción de cartera 
+crediticia  y  la  abstención  de  pagar  dividendos  a  su  matriz. La  agencia  considera  que,  en  un 
+escenario de estrés, BDF podría sostener una capacidad conveniente de absorción de pérdidas, 
+considerando  que  sus  metas  del  siguiente  ejercicio  fiscal  y  el  crecimiento  moderado 
+proyectado de cartera.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+ón regulatoria de la RPC; y (3) no puede utilizarse en la RPC para 
+ningún propósito regulatorio ni para ningún otro propósito que no esté permitido por las leyes o regulaciones pertinentes de la RPC. Para los fines de este descargo de responsabilidad, "RPC" se 
+refiere a la parte continental de la República Popular China, excluyendo Hong Kong, Macao y Taiwán. 
+ 
+
+ 
+ 
+ 
+ 
+1 11 DE DICIEMBRE DE 2024 
+ 
+BANCO DE FINANZAS S.A. 
+ 
+Nicaragua 
+Banco de Finanzas, S.A. 
+RESUMEN  
+Sociedad Calificadora de Riesgo Centroamericana S.A. (en adelante, Moody’s 
+Local Nicaragua) asigna a Banco de Finanzas, S.A. (en adelante, BDF o el Banco) 
+la calificación AA.ni como Entidad a Largo Plazo, en moneda local y extranjera; y 
+el nivel ML A-1.ni para Corto Plazo en moneda local y extranjera. De igual forma, 
+asigna las calificaciones AA.ni a Largo Plazo en moneda extranjera y ML A-1.ni a 
+Corto Plazo en moneda extranjera para el Programa de Emisión de Valores 
+Estandarizados de Renta Fija. La perspectiva de las calificaciones de Largo Plazo 
+es Estable. 
+Moody’s Local Nicaragua llevó a cabo la presente evaluación siguiendo la nueva 
+Metodología de Calificación de Riesgo de Instituciones Financieras de Crédito, 
+inscrita en noviembre de 2024 ante el regulador.
+
+[27/03/2025 03:00:00 pm] TIPO: OTRO
+e baja en comparación con la mayoría de sus pares. Para mayor 
+detalle respecto a los fundamentos de la calificación internacional, referirse a la opinión más reciente publicada por 
+Moody ́s Ratings. 
+Desde la recuperación tras la pandemia, la economía de Nicaragua ha crecido de forma sostenida entre el 3,5% y el 4%, 
+beneficiándose de una fuerte demanda externa y un aumento sustancial de las entradas de remesas e inversión 
+extranjera directa (IED).  
+Respecto al riesgo de la industria, el sistema bancario y de financieras en Nicaragua presenta solidez, bajo métricas de 
+liquidez y de solvencia apropiadas según los requerimientos internos y regulatorios. Se destaca el dinamismo en el ritmo 
+de colocación de créditos (+19% en comparación con el ejercicio 2023), afianzado a través de un mayor volumen de 
+depósitos con el público (+6% respecto a lo registrado en el 2023). Dicha expansión crediticia se da en un contexto en 
+donde las principales métricas de calidad de cartera se mantienen estables (1,5% de morosidad a diciembre de 2024), 
+que se acompaña de niveles rentables aceptables, por encima de otras plazas de la región centroamericana. Como una 
+característica intrínseca de este mercado, se identifica la alta participación de la dolarización derivada, en parte, por los 
+importantes flujos de remesas.
+
+[04/08/2025 12:00:00 p.m] TIPO: OTRO
+ones Financieras (SIBOIF) 
+ 
+Metodología Utilizada. 
+→ La Metodología de calificación de Instituciones Financieras de Crédito - (27/Nov/2024) utilizada por Moody’s Local 
+CR Calificadora de Riesgo, S.A (“Moody ́s Local Nicaragua”) fue actualizada ante el regulador en la fecha menciona 
+anteriormente, disponible en https://moodyslocal.com.ni/ .  
+El presente informe no debe considerarse una publicidad, propaganda, difusión o recomendación para adquirir, 
+vender o negociar los instrumentos objeto de calificación.  
+
+ 
+ 
+ 
+ 
+8   30 DE JULIO DE 2025 
+BANCO DE FINANZAS, S.A.
+ 
+Nicaragua 
+ 
+ 
+ 
+ 
+© 2025 Moody's Corporation, Moody's Investors Service, Inc., Moody's Analytics, Inc. y/o sus licenciadores y filiales (conjuntamente “MOODY’S”). Todos los derechos reservados. 
+LAS CALIFICACIONES CREDITICIAS EMITIDAS POR LAS AFILIADAS DE CALIFICACIÓN CREDITICIA DE MOODY’S, INCLUYENDO LAS DE SOCIEDAD CALIFICADORA DE RIESGO 
+CENTROAMERICANA S.A.,  SCRIESGO S.A., SCRIESGO S.A. DE CV "CLASIFICADORA DE RIESGO", SCRIESGO, SOCIEDAD CALIFICADORA DE RIESGO S.R.L. (CONJUNTAMENTE “SCR”), 
+CONSTITUYEN SUS OPINIONES ACTUALES RESPECTO AL RIESGO CREDITICIO FUTURO RELATIVO DE ENTIDADES, COMPROMISOS CREDITICIOS, O INSTRUMENTOS DE DEUDA O 
+SIMILARES. LOS MATERIALES, PRODUCTOS, SERVICIOS E INFORMACIÓN PUBLICADA O DE CUALQUIER OTRA MANERA PUESTA A DISPOSICIÓN POR SCR (COLECTIVAMENTE LOS 
+“MATERIALES”) PUEDEN INCLUIR DICHAS OPINIONES ACTUALES.
+
+[04/08/2025 12:00:00 p.m] TIPO: OTRO
+LARES. LOS MATERIALES, PRODUCTOS, SERVICIOS E INFORMACIÓN PUBLICADA O DE CUALQUIER OTRA MANERA PUESTA A DISPOSICIÓN POR SCR (COLECTIVAMENTE LOS 
+“MATERIALES”) PUEDEN INCLUIR DICHAS OPINIONES ACTUALES. SCR DEFINE EL RIESGO CREDITICIO COMO EL RIESGO DERIVADO DE LA IMPOSIBILIDAD POR PARTE DE UNA 
+ENTIDAD DE CUMPLIR CON SUS OBLIGACIONES FINANCIERAS CONTRACTUALES A SU VENCIMIENTO Y LAS PÉRDIDAS ECONÓMICAS ESTIMADAS EN CASO DE INCUMPLIMIENTO O
+INCAPACIDAD. CONSULTE LOS SIMBOLOS Y LAS DEFINICIONES DE CALIFICACIÓN DE SCR PARA OBTENER INFORMACIÓN SOBRE LOS TIPOS DE OBLIGACIONES FINANCIERAS 
+CONTRACTUALES ENUNCIADAS POR LAS CALIFICACIONES CREDITICIAS DE SCR. LAS CALIFICACIONES CREDITICIAS NO HACEN REFERENCIA A NINGÚN OTRO RIESGO, INCLUIDOS 
+A MODO ENUNCIATIVO Y NO LIMITATIVO: RIESGO DE LIQUIDEZ, RIESGO RELATIVO AL VALOR DE MERCADO O VOLATILIDAD DE PRECIOS.  LAS CALIFICACIONES CREDITICIAS, 
+EVALUACIONES NO CREDITICIAS (“EVALUACIONES”) Y OTRAS OPINIONES INCLUIDAS EN LOS MATERIALES DE SCR NO SON DECLARACIONES DE HECHOS ACTUALES O HISTÓRICOS.  
+LOS  MATERIALES  DE  SCR  PODRÁN  INCLUIR  ASIMISMO  PREVISIONES  BASADAS  EN  UN  MODELO  CUANTITATIVO  DE  RIESGO  CREDITICIO  Y  OPINIONES  O  COMENTARIOS 
+RELACIONADOS PUBLICADOS POR SCR.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+íneas  de  crédito,  emisiones  de  bonos  en  el  mercado  local, 
+deuda subordinada y préstamos con instituciones financieras internacionales, que en conjunto 
+constituyen 26.7% del total de fondeo.  
+Para 2022, Fitch prevé que la liquidez del banco se mantenga cercana a los niveles alcanzados: 
+A  septiembre  de  2021,  la  proporción  de  activos  líquidos  (caja  y  bancos  y  títulos  valores 
+disponibles  para  la  venta)  a  activos  totales es  de  27%  o  42.2%  de  los  depósitos  totales. 
+Asimismo, el indicador de cobertura de liquidez es de 156%, considerado sano. Por otra parte, 
+según  la  administración,  a  diciembre  de  2021, las  relaciones  con  la  banca  corresponsal  se 
+mantenían intactas. 
+Calificación de Deuda 
+Las  emisiones  de  largo  y  corto  plazo  de  BDF  reflejan  las  mismas  calificaciones  del  emisor 
+debido a que no cuentan con garantías especiales ni posee ningún tipo de subordinación. Por 
+lo tanto, en opinión de Fitch, la capacidad de recuperación de esta emisión es similar a la de 
+cualquier deuda no garantizada del emisor ante un escenario de liquidación de la entidad. Esta 
+emisión favorece el calce de plazos del banco y le permite diversificar sus fuentes de fondeo.
+
+[27/03/2025 03:00:00 pm] TIPO: OTRO
+re de 
+2024 de Banco de Finanzas S.A., así como la documentación respectiva sobre su Programa de Emisión. 
+Definición de las clasificaciones asignadas 
+→ AA.ni: Emisores o emisiones calificados en AA.ni con una calidad crediticia muy fuerte en comparación con otras 
+entidades y transacciones locales. 
+→ ML A-1.ni: Los emisores calificados en ML A-1.ni tienen la mayor capacidad para pagar obligaciones de deuda de 
+corto plazo en comparación con otras entidades y transacciones locales. 
+→ Perspectiva Estable: indica una baja probabilidad de cambio de la calificación en el mediano plazo. 
+Moody ́s Local Nicaragua agrega los modificadores “+” y “-” a cada categoría de calificación genérica que va de AA a 
+CCC, y de ML A-1.ni a ML A-3.ni. El modificador “+” indica que la obligación se ubica en el extremo superior de su 
+categoría de calificación genérica, ningún modificador indica una calificación media, y el modificador “-” indica una 
+calificación en el extremo inferior de la categoría de calificación genérica. 
+La calificación de riesgo emitida representa la opinión de la Sociedad Calificadora basada en análisis objetivos realizados 
+por profesionales. No es una recomendación para comprar, vender o mantener determinados instrumentos, ni un aval o 
+garantía de una inversión, emisión o su emisor.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+a la de 
+cualquier deuda no garantizada del emisor ante un escenario de liquidación de la entidad. Esta 
+emisión favorece el calce de plazos del banco y le permite diversificar sus fuentes de fondeo.  
+Características Principales de Emisiones 
+Denominación 
+Tipo de 
+Instrumento Moneda 
+Monto 
+Autorizado 
+(USD 
+millones) Plazo Garantía Series Vigentes 
+Programa de 
+Emisión de 
+Valores 
+Estandarizados  
+de Renta Fija 
+Papel 
+Comercial y 
+Bonos 
+Dólares 
+estadounidenses 
+o su equivalente 
+en moneda 
+nacional con 
+mantenimiento 
+de valor 
+50.0 Definida  
+según serie 
+Sin 
+garantía 
+específica 
+12-2021-1 
+12-2021-2 
+18-2020-1 
+24-2019-1 
+36-2018-1 
+ 48-2018-1 
+Fuente: BDF. 
+
+ 
+Banco de Finanzas, S.A. 
+Informe de Calificación │  21 diciembre 2021 fitchratings.com 8 
+ 
+  
+ 
+Bancos 
+Banca Comercial 
+Nicaragua 
+ 
+Información Regulatoria 
+NOMBRE EMISOR O ENTIDAD: Banco de Finanzas, S.A. 
+FECHA DEL COMITÉ: 15/diciembre/2021 
+NÚMERO DE SESIÓN: 020-2021 
+CALIFICACIÓN PREVIA (SI SE ENCUENTRA DISPONIBLE): 
+--Calificación nacional de largo plazo ‘AA+(nic)’, Perspectiva Estable; 
+--Calificación nacional de corto plazo ‘F1+(nic)’; 
+--Calificación nacional de largo plazo del Programa de Emisiones Estandarizadas de Renta Fija 
+‘AA+(nic)’; 
+--Calificación nacional de corto plazo del Programa de Emisiones Estandarizadas de Renta Fija 
+‘F1+(nic)’. 
+DETALLE DE EMISIONES: 
+--Denominación: Programa de Emisión de Valores Estandarizados de Renta Fija. 
+--Tipo: Papel comercial y bonos.
+
+[27/03/2025 03:00:00 pm] TIPO: OTRO
+da en análisis objetivos realizados 
+por profesionales. No es una recomendación para comprar, vender o mantener determinados instrumentos, ni un aval o 
+garantía de una inversión, emisión o su emisor. Se recomienda analizar el prospecto, información financiera y los hechos 
+relevantes de la entidad calificada que están disponibles en las oficinas del emisor, en la Superintendencia de Bancos y 
+de Otras Instituciones Financieras (SIBOIF). 
+Metodología Utilizada. 
+→ La Metodología de calificación de Instituciones Financieras de Crédito-(27/Nov/2024) utilizada por Moody ́s Local 
+Nicaragua fue actualizada ante el regulador en la fecha menciona anteriormente, disponible en 
+https://moodyslocal.com.ni/ .  
+El presente informe no debe considerarse una publicidad, propaganda, difusión o recomendación para adquirir, 
+vender o negociar los instrumentos objeto de calificación.  
+ 
+
+ 
+ 
+ 
+ 
+8 25 DE MARZO DE 2025 
+ 
+BANCO DE FINANZAS, S.A. 
+ 
+Nicaragua 
+ 
+© 2025 Moody's Corporation, Moody's Investors Service, Inc., Moody's Analytics, Inc. y/o sus licenciadores y filiales (conjuntamente “MOODY’S”). Todos los derechos reservados. 
+LAS CALIFICACIONES CREDITICIAS EMITIDAS POR LAS AFILIADAS DE CALIFICACIÓN CREDITICIA DE MOODY’S, INCLUYENDO LAS DE SOCIEDAD CALIFICADORA  DE  RIESGO 
+CENTROAMERICANA S.A.,  SCRIESGO S.A., SCRIESGO S.A. DE CV "CLASIFICADORA DE RIESGO", SCRIESGO, SOCIEDAD CALIFICADORA DE RIESGO S.R.L.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+l Programa de Emisiones Estandarizadas de Renta Fija 
+‘F1+(nic)’. 
+DETALLE DE EMISIONES: 
+--Denominación: Programa de Emisión de Valores Estandarizados de Renta Fija. 
+--Tipo: Papel comercial y bonos. 
+--Moneda: Dólares estadounidenses o su equivalente en moneda nacional con mantenimiento 
+de valor. 
+--Plazo: Definido según serie. 
+--Monto: USD50 millones. 
+--Inscrito bajo el número: 0401 y resolución: 0413 del 12 de septiembre de 2016. 
+--Series vigentes: 12-2021-1, 12-2021-2, 18-2020-1, 24-2019-1, 36-2018-1 y 48-2018-1. 
+Las calificaciones emitidas representan la opinión de la Sociedad Calificadora para el período y 
+valores  analizados  y no  constituye  una  recomendación  para  comprar,  vender  o  mantener 
+determinados instrumentos.  
+ 
+
+ 
+Banco de Finanzas, S.A. 
+Informe de Calificación │  21 diciembre 2021 fitchratings.com 9 
+ 
+  
+ 
+Bancos 
+Banca Comercial 
+Nicaragua 
+Las calificaciones mencionadas fueron requeridas y se asignaron o se les dio seguimiento por 
+solicitud del emisor calificado o de un tercero relacionado. Cualquier excepción se indicará.  
+Todas las calificaciones crediticias de Fitch Ratings (Fitch) están sujetas a ciertas limitaciones y estipulaciones. Por 
+favor, lea estas limitaciones y estipulaciones siguiendo este enlace: 
+https://www.fitchratings.com/understandingcreditratings.
+
+[27/03/2025 03:00:00 pm] TIPO: OTRO
+A DE MOODY’S, INCLUYENDO LAS DE SOCIEDAD CALIFICADORA  DE  RIESGO 
+CENTROAMERICANA S.A.,  SCRIESGO S.A., SCRIESGO S.A. DE CV "CLASIFICADORA DE RIESGO", SCRIESGO, SOCIEDAD CALIFICADORA DE RIESGO S.R.L. (CONJUNTAMENTE “SCR”), 
+CONSTITUYEN  SUS  OPINIONES  ACTUALES  RESPECTO  AL  RIESGO  CREDITICIO  FUTURO  RELATIVO  DE  ENTIDADES,  COMPROMISOS  CREDITICIOS,  O  INSTRUMENTOS  DE  DEUDA  O 
+SIMILARES. LOS MATERIALES, PRODUCTOS, SERVICIOS E INFORMACIÓN PUBLICADA O DE CUALQUIER OTRA MANERA PUESTA A DISPOSICIÓN POR SCR (COLECTIVAMENTE LOS 
+“MATERIALES”) PUEDEN INCLUIR DICHAS OPINIONES ACTUALES. SCR DEFINE EL RIESGO CREDITICIO COMO EL RIESGO DERIVADO DE LA IMPOSIBILIDAD  POR  PARTE  DE  UNA 
+ENTIDAD DE CUMPLIR CON SUS OBLIGACIONES FINANCIERAS CONTRACTUALES A SU VENCIMIENTO Y LAS PÉRDIDAS ECONÓMICAS ESTIMADAS EN CASO DE INCUMPLIMIENTO O 
+INCAPACIDAD.  CONSULTE  LOS  SIMBOLOS  Y  LAS  DEFINICIONES  DE  CALIFICACIÓN  DE  SCR  PARA  OBTENER  INFORMACIÓN  SOBRE  LOS  TIPOS  DE  OBLIGACIONES  FINANCIERAS 
+CONTRACTUALES ENUNCIADAS POR LAS CALIFICACIONES CREDITICIAS DE SCR. LAS CALIFICACIONES CREDITICIAS NO HACEN REFERENCIA A NINGÚN OTRO RIESGO, INCLUIDOS 
+A  MODO  ENUNCIATIVO  Y  NO  LIMITATIVO:  RIESGO  DE  LIQUIDEZ,  RIESGO  RELATIVO  AL  VALOR  DE  MERCADO  O  VOLATILIDAD  DE  PRECIOS.    LAS  CALIFICACIONES  CREDITICIAS, 
+EVALUACIONES NO CREDITICIAS (“EVALUACIONES”) Y OTRAS OPINIONES INCLUIDAS EN LOS MATERIALES DE SCR NO SON DECLARACIONES DE HECHOS ACTUALES O HISTÓRICOS.
+
+[04/08/2025 12:00:00 p.m] TIPO: OTRO
+POR NINGUNA PERSONA COMO UN 
+REFERENTE, SEGÚN SE DEFINE DICHO TÉRMINO A EFECTOS REGULATORIOS, Y NO DEBEN SER UTILIZADOS EN MODO ALGUNO QUE PUDIERA DAR LUGAR A QUE SE LOS CONSIDERE COMO 
+UN REFERENTE. 
+Toda la información incluida en el presente documento ha sido obtenida por SCR a partir de fuentes que estima correctas y fiables. No obstante, debido a la posibilidad de error humano o mecánico, 
+así como de otros factores, toda la información aquí contenida se proporciona “TAL Y COMO ESTÁ”, sin garantía de ningún tipo. SCR adopta todas las medidas necesarias para que la información 
+que utiliza al asignar una calificación crediticia sea de suficiente calidad y de fuentes que SCR considera fiables, incluidos, en su caso, terceros independientes.  Sin embargo, SCR no es una firma 
+de auditoría y no puede en todos los casos verificar o validar de manera independiente la información recibida en el proceso de calificación crediticia o en la elaboración de los Materiales.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+ings (Fitch) están sujetas a ciertas limitaciones y estipulaciones. Por 
+favor, lea estas limitaciones y estipulaciones siguiendo este enlace: 
+https://www.fitchratings.com/understandingcreditratings. Además, las definiciones de calificación de Fitch para 
+cada escala de calificación y categorías de calificación, incluidas las definiciones relacionadas con incumplimiento, 
+están  disponibles  en www.fitchratings.com bajo  el  apartado de  Definiciones  de  Calificación.  Las  calificaciones 
+públicas, criterios y metodologías están disponibles en este sitio en todo momento. El código de conducta, las 
+políticas  sobre  confidencialidad,  conflictos  de  interés,  barreras  para  la  información  para  con  sus  afiliadas, 
+cumplimiento, y demás políticas y procedimientos de Fitch están también disponibles en la sección de Código de 
+Conducta   de   este   sitio.   Los   intereses   relevantes   de   los   directores   y  accionistas   están   disponibles   en 
+https://www.fitchratings.com/site/regulatory.  Fitch  puede  haber  proporcionado  otro  servicio  admisible  o 
+complementario a  la entidad calificada o a terceros relacionados.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+disponibles   en 
+https://www.fitchratings.com/site/regulatory.  Fitch  puede  haber  proporcionado  otro  servicio  admisible  o 
+complementario a  la entidad calificada o a terceros relacionados. Los detalles  del(los) servicio(s) admisible(s) de 
+calificación o del(los) servicio(s) complementario(s) para el(los) cual(es) el analista líder tenga sede en una compañía 
+de  Fitch  Ratings  registrada  ante  ESMA  o  FCA  (o  una  sucursal  de  dicha  compañía)  se  pueden  encontrar  en  el 
+resumen de la entidad en el sitio web de Fitch Ratings. 
+En la asignación y el mantenimiento de sus calificaciones, así como en la realización de otros informes (incluyendo información prospectiva), 
+Fitch se basa en información factual que recibe de los emisores y sus agentes y de otras fuentes que Fitch considera creíbles. Fitch lleva a 
+cabo una investigación razonable de la información factual sobre la que se basa  de acuerdo con sus metodologías de calificación, y obtiene 
+verificación razonable de dicha información de fuentes independientes, en la medida de que dichas fuentes se encuentren disponibles para 
+una emisión dada o en una determinada jurisdicción.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+y obtiene 
+verificación razonable de dicha información de fuentes independientes, en la medida de que dichas fuentes se encuentren disponibles para 
+una emisión dada o en una determinada jurisdicción. La forma en que Fitch lleve a cabo la investigación factual y el alcance de la verificación 
+por parte de terceros que se obtenga variará dependiendo de la naturaleza de la emisión calificada y el emisor, los requisitos y prácticas en la 
+jurisdicción en que se ofrece y coloca la emisión y/o donde el emisor se encuentra, la disponibilidad y la naturaleza de la información pública 
+relevante,  el  acceso a  representantes  de  la  administración  del  emisor  y  sus  asesores,  la  disponibilidad  de  verificaciones  preexistentes  de 
+terceros tales como los  informes de auditoría, cartas  de procedimientos acordadas, evaluaciones,  informes actuariales, informes  técnicos, 
+dictámenes legales y otros informes proporcionados por terceros, la disponibilidad de fuentes de verificación independiente y competentes 
+de  terceros  con  respecto  a  la  emisión  en  particular  o  en  la  jurisdicción  del  emisor,  y  una  variedad  de  otros  factores.  Los  usuarios  de 
+calificaciones e informes de Fitch deben entender que ni una investigación mayor de hechos ni la verificación por terceros puede asegurar 
+que toda la información en la que Fitch se basa en relación con una calificación o un informe será exacta y completa.
+
+[27/03/2025 03:00:00 pm] TIPO: OTRO
+DA  O 
+REVENDIDA, NI ARCHIVADA PARA SU USO POSTERIOR CON ALGUNO DE DICHOS FINES, EN TODO O EN PARTE, EN FORMATO, MANERA O MEDIO ALGUNO POR NINGUNA PERSONA SIN EL 
+PREVIO CONSENTIMIENTO ESCRITO DE SCR. PARA MAYOR CLARIDAD, NINGUNA INFORMACIÓN CONTENIDA AQUÍ PUEDE SER UTILIZADA PARA DESARROLLAR, MEJORAR, ENTRENAR O 
+REENTRENAR  CUALQUIER  PROGRAMA  DE  SOFTWARE  O  BASE  DE  DATOS,  INCLUYENDO,  PERO  SIN  LIMITARSE  A,  CUALQUIER  SOFTWARE  DE  INTELIGENCIA  ARTIFICIAL,  APRENDIZAJE 
+AUTOMÁTICO O PROCESAMIENTO DEL LENGUAJE NATURAL, ALGORITMO, METODOLOGÍA Y/O MODELO. 
+LAS CALIFICACIONES CREDITICIAS, EVALUACIONES, OTRAS OPINIONES Y LOS MATERIALES DE SCR NO ESTÁN DESTINADOS PARA SER UTILIZADOS POR NINGUNA PERSONA COMO UN 
+REFERENTE, SEGÚN SE DEFINE DICHO TÉRMINO A EFECTOS REGULATORIOS, Y NO DEBEN SER UTILIZADOS EN MODO ALGUNO QUE PUDIERA DAR LUGAR A QUE SE LOS CONSIDERE COMO 
+UN REFERENTE. 
+Toda la información incluida en el presente documento ha sido obtenida por SCR a partir de fuentes que estima correctas y fiables. No obstante, debido a la posibilidad de error humano o mecánico, 
+así como de otros factores, toda la información aquí contenida se proporciona “TAL Y COMO ESTÁ”, sin garantía de ningún tipo. SCR adopta todas las medidas necesarias para que la información 
+que utiliza al asignar una calificación crediticia sea de suficiente calidad y de fuentes que SCR considera fiables, incluidos, en su caso, terceros independientes.
+
+[04/08/2025 12:00:00 p.m] TIPO: OTRO
+ISIÓN, OPORTUNIDAD, EXHAUSTIVIDAD, COMERCIABILIDAD O IDONEIDAD PARA UN 
+FIN DETERMINADO SOBRE CALIFICACIONES CREDITICIAS, EVALUACIONES Y DEMÁS OPINIONES O INFORMACIÓN. 
+Moody's Investors Service, Inc., agencia de calificación crediticia, subsidiaria de propiedad total de Moody's Corporation (“MCO”), informa por la presente que la mayoría de los emisores de títulos 
+de deuda (incluidos bonos corporativos y municipales, obligaciones, notas y pagarés) y acciones preferentes calificados por Moody's Investors Service, Inc. han acordado, con anterioridad a la 
+asignación de cualquier calificación, abonar a Moody's Investors Service, Inc. por sus servicios de opinión y calificación.  MCO y todas las entidades de MCO que emiten calificaciones bajo la marca 
+“Moodys Ratings” (“Moodys Ratings”), también mantienen políticas y procedimientos para garantizar la independencia de las calificaciones y los procesos de asignación de calificaciones crediticias 
+de Moody’s Ratings. La información relativa a ciertas afiliaciones que pudieran existir entre directores de MCO y entidades calificadas, y entre entidades que tienen asignadas calificaciones 
+crediticias de Moody’s Investors Service y asimismo han notificado públicamente a la SEC que poseen una participación en MCO superior al 5%, se publica anualmente en ir.moodys.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+ón o garantía de ningún tipo, y Fitch no representa 
+o  garantiza  que  el  informe  o  cualquiera  de  sus  contenidos  cumplirán  alguno  de  los  requerimientos  de  un  destinatario  del  informe.  Una 
+calificación de Fitch es una opinión en cuanto a la calidad crediticia de una emisión. Esta opinión y los informes realizados por Fitch se basan 
+en criterios establecidos y metodologías que Fitch evalúa y actualiza en forma continua. Por lo tanto, las calificaciones y los informes son un 
+producto de trabajo colectivo de Fitch y ningún individuo, o grupo de individuos, es únicamente responsable por una calificación o un informe. 
+La calificación no incorpora el riesgo de pérdida debido a los riesgos que no sean relacionados a riesgo de crédito, a menos que dichos riesgos 
+sean mencionados específicamente. Fitch no está  comprometido en la  oferta o venta  de ningún título. Todos los informes de Fitch son de 
+autoría compartida. Los individuos identificados en un informe de Fitch estuvieron involucrados en, pero no son individualmente responsables 
+por, las opiniones vertidas en él. Los individuos son nombrados solo con el propósito de ser contactos. Un informe con una  calificación de 
+Fitch no es un prospecto de emisión ni un substituto de la información elaborada, verificada y presentada a los inversores por el emisor y sus 
+agentes en relación con la venta de los títulos.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+para el Banco la calidad de su cartera de créditos y los niveles de cobertura que brindan sus 
+provisiones. 
+Referente a la cartera de crédito neta, a junio de 2024, el Banco alcanzó la suma de C$14.480,83 millones, equivalente a 
+USD395,39 millones, luego de aumentar un 11% anual y 5% semestral, fundamentado por una mayor colocación en los 
+segmentos de consumo y comercio, en búsqueda de una mayor rentabilidad; no obstante, cabe señalar que, el segmento 
+de consumo es más susceptible a deterioros por lo cual, resulta relevante el seguimiento cercano de dicha cartera. Al 
+corte de análisis, BDF colocó el 62% de sus créditos en banca de personas y el 38% restante en banca de empresas.  
+La cartera del Banco muestra una calidad crediticia adecuada, con un 95% de créditos vigentes y solo un 5% entre 
+reestructurados  y  morosos,  destacando  una  gestión  eficaz  de  riesgos  y  cobranzas.  La  morosidad  se  concentra 
+mayoritariamente en los primeros 30 días (5%), con un decrecimiento progresivo en atrasos mayores, evidenciando una 
+recuperación efectiva de pagos. Estos indicadores, superiores a la media del mercado, reflejan una posición financiera 
+sólida y una estrategia de riesgo prudente. 
+GRÁFICO 3 Distribución de cartera según garantías 
+ 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+GRÁFICO 4 Cartera por categoría de riesgo 
+ 
+Fuente: Banco de Finanzas, S.A.
+
+[04/08/2025 12:00:00 p.m] TIPO: OTRO
+os en Australia de la filial de MOODY's,
+Moody's Investors Service Pty Limited ABN 61 003 399 657AFSL 336969 y/o Moody's Analytics Australia Pty Ltd ABN 94 105 136 972 AFSL 383569 (según corresponda). Este documento está 
+destinado únicamente a “clientes mayoristas” según lo dispuesto en el artículo 761G de la Ley de Sociedades de 2001. Al acceder a este documento desde cualquier lugar dentro de Australia, usted 
+declara ante MOODY'S ser un "cliente mayorista" o estar accediendo al mismo como un representante de aquél, así como que ni usted ni la entidad a la que representa divulgarán, directa o 
+indirectamente, este documento ni su contenido a “clientes minoristas” según se desprende del artículo 761G de la Ley de Sociedades de 2001. Las calificaciones crediticias de MOODY'S son 
+opiniones sobre la calidad crediticia de una obligación de deuda del emisor y no sobre los valores de capital del emisor ni ninguna otra forma de instrumento que se encuentre a disposición de 
+clientes minoristas. 
+Términos adicionales solo para India: Las calificaciones crediticias, Evaluaciones, otras opiniones y Materiales de Moody's no están destinados a ser utilizados ni deben ser confiados por usuarios 
+ubicados en India en relación con valores cotizados o propuestos para su cotización en bolsas de valores de la India.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+ión de 
+Fitch no es un prospecto de emisión ni un substituto de la información elaborada, verificada y presentada a los inversores por el emisor y sus 
+agentes en relación con la venta de los títulos. Las calificaciones pueden ser modificadas o retiradas en cualquier momento por cualquier razón 
+a sola discreción de Fitch. Fitch no proporciona asesoramiento de inversión de cualquier tipo. Las calificaciones no son una recomendación 
+para comprar, vender o mantener cualquier título. Las calificaciones no hacen ningún comentario sobre la adecuación del precio de mercado, 
+la  conveniencia  de cualquier título para  un inversor particular, o la  naturaleza  impositiva  o fiscal de los pagos efectuados en relación a  los 
+títulos. Fitch recibe honorarios por parte de los emisores, aseguradores, garantes, otros agentes y originadores de títulos, por las calificaciones. 
+Dichos honorarios generalmente varían desde USD1,000 a USD750,000 (u otras monedas aplicables) por emisión. En algunos casos, Fitch 
+calificará todas o algunas de las emisiones de un emisor en particular, o emisiones aseguradas o garantizadas por un asegurador o garante en 
+particular, por una cuota anual. Se espera que dichos honorarios varíen entre USD10,000 y USD1,500,000 (u otras monedas aplicables).
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+RÁFICO 3 Distribución de cartera según garantías 
+ 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua 
+GRÁFICO 4 Cartera por categoría de riesgo 
+ 
+Fuente: Banco de Finanzas, S.A. / Elaboración: Moody’s Local Nicaragua
+En el caso de las provisiones para préstamos incobrables, registraron C$409,93 millones (USD11,19 millones) a junio de 
+2024, luego de aumentar un 13% anual y 5% semestral, asociado con el crecimiento de la cartera. Al cierre del primer 
+semestre de 2024, las provisiones cubrieron en un 246% la cartera improductiva del Banco, lo cual refleja la prudencia 
+del Banco. El monto de las estimaciones se conforma tanto por las provisiones de cartera de crédito como de las 
+provisiones anticíclica y genérica voluntaria. 
+ 
+ 
+ 
+18 000 000,00
+18 500 000,00
+19 000 000,00
+19 500 000,00
+20 000 000,00
+20 500 000,00
+21 000 000,00
+21 500 000,00
+22 000 000,00
+Jun-22Sep-22Dic-22Mar-23Jun-23Sep-23Dic-23Mar-24Jun-24
+21%
+20%
+22%
+21%
+21%
+10%
+10%
+8%
+8%
+9%
+66%
+68%
+67%
+67%
+67%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+100%
+Jun-23Set-23Dic-23Mar-24Jun-24
+Efectivo y EquivalentesInversionesCartera de Créditos, Neta
+65%
+62%
+62%
+61%
+59%
+14%
+14%
+16%
+16%
+17%
+16%
+15%
+15%
+16%
+17%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+100%
+Jun-23Sep-23Dic-23Mar-24Jun-24
+LiquidaInmobiliariaPrendariaFiduciariaOtrasSin garantia
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+100%
+Jun-23Sep-23Dic-23Mar-24Jun-24
+ABCDE
+
+ 
+ 
+ 
+ 
+5 11 DE DICIEMBRE DE 2024 
+ 
+BANCO DE FINANZAS S.A.
+
+[27/03/2025 03:00:00 pm] TIPO: OTRO
+ISIÓN, OPORTUNIDAD, EXHAUSTIVIDAD, COMERCIABILIDAD O IDONEIDAD PARA UN 
+FIN DETERMINADO SOBRE CALIFICACIONES CREDITICIAS, EVALUACIONES Y DEMÁS OPINIONES O INFORMACIÓN. 
+Moody's Investors Service, Inc., agencia de calificación crediticia, subsidiaria de propiedad total de Moody's Corporation (“MCO”), informa por la presente que la mayoría de los emisores de títulos 
+de  deuda  (incluidos bonos corporativos y  municipales,  obligaciones,  notas  y  pagarés)  y  acciones preferentes calificados por  Moody's Investors  Service,  Inc.  han  acordado,  con  anterioridad  a  la 
+asignación de cualquier calificación, abonar a Moody's Investors Service, Inc. por sus servicios de opinión y calificación.  MCO y todas las entidades de MCO que emiten calificaciones bajo la marca 
+“Moodys Ratings” (“Moodys Ratings”), también mantienen políticas y procedimientos para garantizar la independencia de las calificaciones y los procesos de asignación de calificaciones crediticias 
+de Moody’s Ratings. La información relativa a ciertas afiliaciones que pudieran existir entre directores de MCO y entidades calificadas,  y  entre  entidades  que  tienen  asignadas  calificaciones 
+crediticias de Moody’s Investors Service y asimismo han notificado públicamente a la SEC que poseen una participación en MCO superior al 5%, se publica anualmente en ir.moodys.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+emisiones aseguradas o garantizadas por un asegurador o garante en 
+particular, por una cuota anual. Se espera que dichos honorarios varíen entre USD10,000 y USD1,500,000 (u otras monedas aplicables). La 
+asignación, publicación o diseminación de una calificación de Fitch no constituye el consentimiento de Fitch a usar su nombre como un experto 
+en conexión con cualquier declaración de registro presentada bajo las leyes de mercado de Estados Unidos, el “Financial Services and Markets 
+Act of 2000” de Gran Bretaña, o las leyes de títulos y valores de cualquier jurisdicción en particular. Debido a la relativa eficiencia  de  la 
+publicación y distribución electrónica, los informes de Fitch pueden estar disponibles hasta tres días antes para los suscriptores electrónicos 
+que para otros suscriptores de imprenta. 
+Fitch Ratings, Inc. está registrada en la Comisión de Bolsa y Valores de Estados Unidos (en inglés, U.S. Securities and Exchange Commission) 
+como  una  Organización  de  Calificación  Estadística  Reconocida  a  Nivel  Nacional  (“NRSRO”; Nationally  Recognized  Statistical  Rating 
+Organization). Aunque ciertas subsidiarias de calificación crediticia de la NRSRO están enlistadas en el Ítem 3 del documento “Form NRSRO” 
+y, como tales, están autorizadas para emitir calificaciones crediticias en nombre de la NRSRO (ver 
+https://www.fitchratings.
+
+[27/03/2025 03:00:00 pm] TIPO: OTRO
+l  de  MOODY's, 
+Moody's  Investors  Service  Pty  Limited  ABN  61  003  399  657AFSL  336969  y/o Moody's  Analytics  Australia  Pty  Ltd  ABN  94  105  136  972  AFSL  383569  (según  corresponda). Este  documento  está 
+destinado únicamente a “clientes mayoristas” según lo dispuesto en el artículo 761G de la Ley de Sociedades de 2001. Al acceder a este documento desde cualquier lugar dentro de Australia, usted 
+declara  ante  MOODY'S  ser  un  "cliente  mayorista"  o  estar  accediendo  al  mismo  como  un  representante  de  aquél,  así  como  que  ni  usted  ni  la  entidad  a  la  que  representa  divulgarán,  directa  o 
+indirectamente, este documento ni su contenido a “clientes minoristas” según se desprende del artículo 761G de la Ley de Sociedades de  2001.  Las  calificaciones  crediticias  de MOODY'S  son 
+opiniones sobre la calidad  crediticia de una  obligación de deuda del emisor y no sobre los valores de capital del emisor ni ninguna  otra forma de instrumento que se encuentre a disposición de 
+clientes minoristas. 
+Términos adicionales solo para India: Las calificaciones crediticias, Evaluaciones, otras opiniones y Materiales de Moody's no están destinados a ser utilizados ni deben ser confiados por usuarios 
+ubicados en India en relación con valores cotizados o propuestos para su cotización en bolsas de valores de la India.
+
+[21/12/2021 09:00:00 am] TIPO: OTRO
+distribución  total  o  parcial  está  prohibida,  salvo  con  permiso. 
+Todos los derechos reservados.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+Perspectivas Macroeconómicas 2024” de abril de 2024, se proyecta que la economía 
+crecerá entre 3,5% y 4,5% en este 2024 y que la inflación se ubicaría en el rango de entre 3,5% y 4,5% para dicho año. 
+Cabe destacar que, en marzo de 2024, Moody’s Ratings mejoró la calificación soberana de Nicaragua de B3 a B2, con 
+base en el fortalecimiento estructural del perfil crediticio del soberano, dada una acumulación de importantes colchones 
+fiscales y externos por encima de las expectativas previas de dicha calificadora de riesgos, calificación que se mantiene 
+a la fecha de emisión del presente informe. 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+8 11 DE DICIEMBRE DE 2024 
+ 
+BANCO DE FINANZAS S.A. 
+ 
+Nicaragua 
+Información Complementaria 
+ 
+Tipo de calificación / Instrumento 
+Calificación 
+actual 
+Perspectiva  
+actual 
+Calificación 
+anterior 
+Perspectiva 
+anterior 
+Banco de Finanzas S.A.         
+ Entidad Largo Plazo Moneda Local AA.ni 
+Estable scr AA (NIC) Estable 
+ Entidad Corto Plazo Moneda Local ML A-1.ni 
+N/A SCR 1 (NIC) Estable 
+ Entidad Largo Plazo Moneda Extranjera AA.ni 
+Estable scr AA (NIC) Estable 
+ Entidad Corto Plazo Moneda Extranjera ML A-1.ni 
+N/A SCR 1 (NIC) Estable 
+ Programa de Emisión de Valores Estandarizados de    
+Renta Fija 
+AA.ni 
+Estable scr AA (NIC) N/A 
+ Programa de Emisión de Valores Estandarizados de 
+Renta Fija 
+ML A-1.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+e cambio de la calificación en el mediano plazo. 
+Moody ́s Local Nicaragua agrega los modificadores “+” y “-” a cada categoría de calificación genérica que va de AA a 
+CCC, y de ML A-1.ni a ML A-3.ni. El modificador “+” indica que la obligación se ubica en el extremo superior de su 
+categoría de calificación genérica, ningún modificador indica una calificación media, y el modificador “-” indica una 
+calificación en el extremo inferior de la categoría de calificación genérica 
+La calificación de riesgo emitida representa la opinión de la Sociedad Calificadora basada en análisis objetivos realizados 
+por profesionales. No es una recomendación para comprar, vender o mantener determinados instrumentos, ni un aval o 
+garantía de una inversión, emisión o su emisor. Se recomienda analizar el prospecto, información financiera y los hechos 
+relevantes de la entidad calificada que están disponibles en las oficinas del emisor, en la Superintendencia de Bancos y 
+de Otras Instituciones Financieras (SIBOIF), Bolsa de Valores y puestos representantes. 
+Moody’s Local Nicaragua considera que la información recibida es suficiente y satisfactoria para el correspondiente 
+análisis. 
+ 
+ 
+
+ 
+ 
+ 
+ 
+9 11 DE DICIEMBRE DE 2024 
+ 
+BANCO DE FINANZAS S.A. 
+ 
+Nicaragua 
+Metodología Utilizada.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+dera que la información recibida es suficiente y satisfactoria para el correspondiente 
+análisis. 
+ 
+ 
+
+ 
+ 
+ 
+ 
+9 11 DE DICIEMBRE DE 2024 
+ 
+BANCO DE FINANZAS S.A. 
+ 
+Nicaragua 
+Metodología Utilizada. 
+→ La Metodología de calificación de Instituciones Financieras de Crédito-(27/Nov/2024) utilizada por Moody ́s Local 
+Nicaragua fue  actualizada  ante  el regulador  en la  fecha  menciona  anteriormente, disponible  en 
+https://moodyslocal.com.ni/   
+El presente informe no debe considerarse una publicidad, propaganda, difusión o recomendación para adquirir, 
+vender o negociar los instrumentos objeto de calificación.  
+ 
+
+ 
+ 
+ 
+ 
+10 11 DE DICIEMBRE DE 2024 
+ 
+BANCO DE FINANZAS S.A. 
+ 
+Nicaragua 
+ 
+2024 Moody's Corporation, Moody's Investors Service, Inc., Moody's Analytics, Inc. y/o sus licenciadores y filiales (conjuntamente “MOODY’S”). Todos los derechos reservados. 
+LAS CALIFICACIONES CREDITICIAS EMITIDAS POR LAS FILIALES DE CALIFICACIÓN CREDITICIA DE MOODY’S CONSTITUYEN SUS OPINIONES ACTUALES RESPECTO AL RIESGO 
+CREDITICIO FUTURO RELATIVO DE ENTIDADES, COMPROMISOS CREDITICIOS, O INSTRUMENTOS DE DEUDA O SIMILARES, Y LOS MATERIALES, PRODUCTOS, SERVICIOS E 
+INFORMACIÓN PUBLICADA O DE CUALQUIER OTRA MANERA PUESTA A DISPOSICIÓN POR MOODY’S (COLECTIVAMENTE LOS “MATERIALES”) PUEDEN INCLUIR DICHAS OPINIONES 
+ACTUALES.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+Y LOS MATERIALES, PRODUCTOS, SERVICIOS E 
+INFORMACIÓN PUBLICADA O DE CUALQUIER OTRA MANERA PUESTA A DISPOSICIÓN POR MOODY’S (COLECTIVAMENTE LOS “MATERIALES”) PUEDEN INCLUIR DICHAS OPINIONES 
+ACTUALES.  MOODY'S DEFINE EL RIESGO CREDITICIO COMO EL RIESGO DERIVADO DE LA IMPOSIBILIDAD POR PARTE DE UNA ENTIDAD DE CUMPLIR CON SUS OBLIGACIONES 
+FINANCIERAS CONTRACTUALES A SU VENCIMIENTO Y LAS PÉRDIDAS ECONÓMICAS ESTIMADAS EN CASO DE INCUMPLIMIENTO O INCAPACIDAD. CONSULTE LOS SIMBOLOS Y LAS 
+DEFINICIONES DE CALIFICACIÓN DE MOODY’S PARA OBTENER INFORMACIÓN SOBRE LOS TIPOS DE OBLIGACIONES FINANCIERAS CONTRACTUALES ENUNCIADAS POR LAS 
+CALIFICACIONES CREDITICIAS DE MOODY'S.  LAS CALIFICACIONES CREDITICIAS NO HACEN REFERENCIA A NINGÚN OTRO RIESGO, INCLUIDOS A MODO ENUNCIATIVO Y NO 
+LIMITATIVO: RIESGO DE LIQUIDEZ, RIESGO RELATIVO AL VALOR DE MERCADO O VOLATILIDAD DE PRECIOS.  LAS CALIFICACIONES CREDITICIAS, EVALUACIONES NO CREDITICIAS 
+(“EVALUACIONES”) Y OTRAS OPINIONES INCLUIDAS EN LOS MATERIALES DE MOODY'S NO SON DECLARACIONES DE HECHOS ACTUALES O HISTÓRICOS.  LOS MATERIALES DE 
+MOODY'S PODRÁN INCLUIR ASIMISMO PREVISIONES BASADAS EN UN MODELO CUANTITATIVO DE RIESGO CREDITICIO Y OPINIONES O COMENTARIOS RELACIONADOS 
+PUBLICADOS POR MOODY'S ANALYTICS, INC. Y/O SUS FILIALES.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+POR NINGUNA PERSONA COMO 
+UN REFERENTE, SEGÚN SE DEFINE DICHO TÉRMINO A EFECTOS REGULATORIOS, Y NO DEBEN SER UTILIZADOS EN MODO ALGUNO QUE PUDIERA DAR LUGAR A QUE SE LOS CONSIDERE 
+COMO UN REFERENTE. 
+Toda la información incluida en el presente documento ha sido obtenida por MOODY'S a partir de fuentes que estima correctas y fiables. No obstante, debido a la posibilidad de error humano o 
+mecánico, así como de otros factores, toda la información aquí contenida se proporciona “TAL Y COMO ESTÁ”, sin garantía de ningún tipo. MOODY'S adopta todas las medidas necesarias para que 
+la información que utiliza al asignar una calificación crediticia sea de suficiente calidad y de fuentes que Moody's considera fiables, incluidos, en su caso, terceros independientes.  Sin embargo, 
+Moody's no es una firma de auditoría y no puede en todos los casos verificar o validar de manera independiente la información recibida en el proceso de calificación crediticia o en la elaboración 
+de los Materiales.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+ISIÓN, OPORTUNIDAD, EXHAUSTIVIDAD, COMERCIABILIDAD O IDONEIDAD PARA 
+UN FIN DETERMINADO SOBRE CALIFICACIONES CREDITICIAS, EVALUACIONES Y DEMÁS OPINIONES O INFORMACIÓN. 
+Moody's Investors Service, Inc., agencia de calificación crediticia, subsidiaria de propiedad total de Moody's Corporation (“MCO”), informa por la presente que la mayoría de los emisores de títulos 
+de deuda (incluidos bonos corporativos y municipales, obligaciones, notas y pagarés) y acciones preferentes calificados por Moody's Investors Service, Inc. han acordado, con anterioridad a la 
+asignación de cualquier calificación, abonar a Moody's Investors Service, Inc. por sus servicios de opinión y calificación. MCO y Moody’s Investors Service también mantienen políticas y 
+procedimientos para garantizar la independencia de las calificaciones y los procesos de asignación de calificaciones crediticias de Moody’s Investors Service,Inc. La información relativa a ciertas 
+afiliaciones que pudieran existir entre directores de MCO y entidades calificadas, y entre entidades que tienen asignadas calificaciones crediticias de Moody’s Investors Service y asimismo han 
+notificado públicamente a la SEC que poseen una participación en MCO superior al 5%, se publica anualmente en www.moodys.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+s en Australia de la filial de MOODY's, 
+Moody's Investors Service Pty Limited ABN 61 003 399 657AFSL 336969 y/o Moody's Analytics Australia Pty Ltd ABN 94 105 136 972 AFSL 383569 (según corresponda). Este documento está 
+destinado únicamente a “clientes mayoristas” según lo dispuesto en el artículo 761G de la Ley de Sociedades de 2001. Al acceder a este documento desde cualquier lugar dentro de Australia, usted 
+declara ante MOODY'S ser un "cliente mayorista" o estar accediendo al mismo como un representante de aquél, así como que ni usted ni la entidad a la que representa divulgarán, directa o 
+indirectamente, este documento ni su contenido a “clientes minoristas” según se desprende del artículo 761G de la Ley de Sociedades de 2001. Las calificaciones crediticias de MOODY'S son 
+opiniones sobre la calidad crediticia de una obligación de deuda del emisor y no sobre los valores de capital del emisor ni ninguna otra forma de instrumento que se encuentre a disposición de 
+clientes minoristas. 
+Términos adicionales solo para India: Las calificaciones crediticias, Evaluaciones, otras opiniones y Materiales de Moody's no están destinados a ser utilizados ni deben ser confiados por usuarios 
+ubicados en India en relación con valores cotizados o propuestos para su cotización en bolsas de valores de la India.
+
+[12/12/2024 02:00 p.m] TIPO: OTRO
+ón regulatoria de la RPC; y (3) no puede utilizarse en la RPC para 
+ningún propósito regulatorio ni para ningún otro propósito que no esté permitido por las leyes o regulaciones pertinentes de la RPC. Para los fines de este descargo de responsabilidad, "RPC" se 
+refiere a la parte continental de la República Popular China, excluyendo Hong Kong, Macao y Taiwán.
+---------------- END FULL CONTEXT ----------------
+{"severity":"INFO","message":"Snapshot saved for BDF period Mar_25 "}
+{"liquidez":{"activoCorriente":null,"pasivoCorriente":null,"ratioCirculante":null},"solvencia":{"activoTotal":null,"pasivoTotal":null,"patrimonio":null,"deudaPatrimonio":null},"rentabilidad":{"patrimonio":null,"pasivos":null},"calificacion":{"rating":"AA.ni","perspectiva":"Estable","fecha":"2025-03"},"metadata":{"periodo":"Mar-25","moneda":"USD","fuente":"Informe de Calificación"},"severity":"INFO","message":"Metrics extracted for BDF: "}
+AI RETURNED: {
+  "liquidez": {
+    "activoCorriente": null,
+    "pasivoCorriente": null,
+    "ratioCirculante": null
+  },
+  "solvencia": {
+    "activoTotal": null,
+    "pasivoTotal": null,
+    "patrimonio": null,
+    "deudaPatrimonio": null
+  },
+  "rentabilidad": {
+    "patrimonio": null,
+    "pasivos": null
+  },
+  "calificacion": {
+    "rating": "AA.ni",
+    "perspectiva": "Estable",
+    "fecha": "2025-03"
+  },
+  "metadata": {
+    "periodo": "Mar-25",
+    "moneda": "USD",
+    "fuente": "Informe de Calificación"
+  }
+}

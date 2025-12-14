@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "mvp-nic-market"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }

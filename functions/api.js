@@ -5,6 +5,7 @@ const express = require("express");
 const { getFirestore } = require("firebase-admin/firestore");
 const cors = require('cors');
 const { VertexAI } = require('@google-cloud/vertexai');
+const { compareIssuerMetrics, extractIssuerMetrics, getIssuerMetrics } = require('./src/services/metricsExtractor');
 
 // --- Initialization ---
 const app = express();
@@ -16,9 +17,9 @@ const WHITELIST = [
   "banpro",
   "bdf",
   "fama",
-  "fdl",
-  "fid",
-  "horizonte"
+  "financiera-fdl",
+  "fid-sociedad-an-nima",
+  "horizonte-fondo-de-inversi-n"
 ];
 
 const DISPLAY_NAMES = {
@@ -26,9 +27,9 @@ const DISPLAY_NAMES = {
   "banpro": "Banpro",
   "bdf": "BDF",
   "fama": "Financiera FAMA",
-  "fdl": "Financiera FDL",
-  "fid": "FID",
-  "horizonte": "Fondo de Inversión Horizonte"
+  "financiera-fdl": "Financiera FDL",
+  "fid-sociedad-an-nima": "FID",
+  "horizonte-fondo-de-inversi-n": "Fondo de Inversión Horizonte"
 };
 
 const ISSUER_METADATA = {
@@ -36,9 +37,9 @@ const ISSUER_METADATA = {
   "banpro": { acronym: "BANPRO", sector: "Banca" },
   "bdf": { acronym: "BDF", sector: "Banca" },
   "fama": { acronym: "FAMA", sector: "Microfinanzas" },
-  "fdl": { acronym: "FDL", sector: "Microfinanzas" },
-  "fid": { acronym: "FID", sector: "Servicios Financieros" },
-  "horizonte": { acronym: "HORIZONTE", sector: "Fondos de Inversión" }
+  "financiera-fdl": { acronym: "FDL", sector: "Microfinanzas" },
+  "fid-sociedad-an-nima": { acronym: "FID", sector: "Servicios Financieros" },
+  "horizonte-fondo-de-inversi-n": { acronym: "HORIZONTE", sector: "Fondos de Inversión" }
 };
 
 // --- Helper Functions ---
@@ -69,14 +70,14 @@ const getBaseName = (name) => {
     "banco de finanzas": "bdf",
     "fama": "fama",
     "financiera fama": "fama",
-    "fdl": "fdl",
-    "financiera fdl": "fdl",
-    "fid": "fid",
-    "fid sociedad anonima": "fid",
-    "horizonte": "horizonte",
-    "horizonte fondo de inversion": "horizonte",
-    "fondo inversion horizonte": "horizonte",
-    "fondo inversión horizonte": "horizonte"
+    "fdl": "financiera-fdl",
+    "financiera fdl": "financiera-fdl",
+    "fid": "fid-sociedad-an-nima",
+    "fid sociedad anonima": "fid-sociedad-an-nima",
+    "horizonte": "horizonte-fondo-de-inversi-n",
+    "horizonte fondo de inversion": "horizonte-fondo-de-inversi-n-financiero-de-crecimiento-d-lares-no-diversificado",
+    "fondo inversion horizonte": "horizonte-fondo-de-inversi-n-financiero-de-crecimiento-d-lares-no-diversificado",
+    "fondo inversión horizonte": "horizonte-fondo-de-inversi-n-financiero-de-crecimiento-d-lares-no-diversificado"
   };
 
   return aliases[normalized] || normalized;
@@ -86,25 +87,31 @@ const consolidateIssuers = (issuers) => {
   const issuerMap = new Map();
 
   issuers.forEach(issuer => {
+    // 1. TRUST THE DATABASE ID FIRST
+    // specific checking for legacy IDs vs new IDs can happen here if needed
+    const issuerId = issuer.id;
+
+    // We still use baseName only for display name/metadata lookup if needed, 
+    // but the ID is the key.
     const baseName = getBaseName(issuer.name);
 
-    // STRICT WHITELIST CHECK
-    if (!WHITELIST.includes(baseName)) {
-      return;
-    }
+    if (!issuerMap.has(issuerId)) {
+      // Auto-Discovery: If metadata exists, use it. If not, fallback to DB values.
+      const meta = ISSUER_METADATA[issuerId] || ISSUER_METADATA[baseName] || {};
+      const displayName = DISPLAY_NAMES[issuerId] || DISPLAY_NAMES[baseName] || issuer.name;
 
-    if (!issuerMap.has(baseName)) {
-      issuerMap.set(baseName, {
+      issuerMap.set(issuerId, {
         ...issuer,
-        id: baseName,
-        name: DISPLAY_NAMES[baseName] || issuer.name,
-        acronym: ISSUER_METADATA[baseName]?.acronym || issuer.acronym,
-        sector: ISSUER_METADATA[baseName]?.sector || issuer.sector,
-        isActive: true,
+        id: issuerId, // Ensure ID is preserved
+        name: displayName,
+        acronym: meta.acronym || issuer.acronym || issuerId.toUpperCase().substring(0, 4),
+        sector: meta.sector || issuer.sector || "General",
+        isActive: true, // If it's in the DB, it's active
         documents: issuer.documents || []
       });
     } else {
-      const existing = issuerMap.get(baseName);
+      // Merge duplicates if any (unlikely with DB IDs)
+      const existing = issuerMap.get(issuerId);
       const existingDocsUrls = new Set(existing.documents.map(d => d.url));
       if (issuer.documents) {
         issuer.documents.forEach(doc => {
@@ -128,12 +135,15 @@ app.use((req, res, next) => {
 
 // --- API Endpoints ---
 
+
+
 // 1. Get System Status
 app.get("/status", async (req, res) => {
   try {
     const db = getFirestore();
     const issuersSnapshot = await db.collection("issuers").get();
-    const allIssuers = issuersSnapshot.docs.map(doc => doc.data());
+    // PRESERVE THE ID from Firestore (Source of Truth)
+    const allIssuers = issuersSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
     const consolidated = consolidateIssuers(allIssuers);
 
     const totalDocs = consolidated.reduce((acc, i) => acc + (i.documents?.length || 0), 0);
@@ -167,7 +177,8 @@ app.get("/issuers", async (req, res) => {
   try {
     const db = getFirestore();
     const issuersSnapshot = await db.collection("issuers").get();
-    const allIssuers = issuersSnapshot.docs.map(doc => doc.data());
+    // PRESERVE THE ID from Firestore (Source of Truth)
+    const allIssuers = issuersSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
 
     const consolidated = consolidateIssuers(allIssuers);
     const sorted = consolidated.sort((a, b) => b.documents.length - a.documents.length);
@@ -187,7 +198,8 @@ app.get("/issuer/:id", async (req, res) => {
   try {
     const db = getFirestore();
     const issuersSnapshot = await db.collection("issuers").get();
-    const allIssuers = issuersSnapshot.docs.map(doc => doc.data());
+    // PRESERVE THE ID from Firestore (Source of Truth)
+    const allIssuers = issuersSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
     const consolidated = consolidateIssuers(allIssuers);
 
     const issuer = consolidated.find(i => i.id === id);
@@ -204,7 +216,6 @@ app.get("/issuer/:id", async (req, res) => {
 });
 
 // Import metrics service
-const { compareIssuerMetrics, extractIssuerMetrics, getIssuerMetrics } = require('./src/services/metricsExtractor');
 
 // 4. AI News Generation
 app.get("/ai/news", async (req, res) => {
@@ -327,6 +338,28 @@ app.get("/metrics/:issuerId", async (req, res) => {
   }
 });
 
+// 8.5 Get Issuer Snapshots (History list)
+app.get("/metrics/:issuerId/snapshots", async (req, res) => {
+  const { issuerId } = req.params;
+  try {
+    const db = getFirestore();
+    const snapshots = await db.collection('issuerMetrics')
+      .doc(issuerId)
+      .collection('snapshots')
+      .get();
+
+    const results = snapshots.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    res.json({ success: true, snapshots: results });
+  } catch (error) {
+    functions.logger.error(`Error fetching snapshots for ${issuerId}:`, error);
+    res.status(500).json({ error: "Failed to fetch snapshots" });
+  }
+});
+
 // 9. Get AI Insights (GET)
 const { generateIssuerInsights } = require('./src/services/aiNewsGenerator');
 
@@ -354,6 +387,7 @@ app.get("/ai/insights/:issuerId", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch insights" });
   }
 });
+
 
 // --- Main API function ---
 const api = functions.https.onRequest(app);

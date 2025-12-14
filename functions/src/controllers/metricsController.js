@@ -1,6 +1,6 @@
 const functions = require("firebase-functions");
 const { getFirestore } = require("firebase-admin/firestore");
-const { compareIssuerMetrics, extractIssuerMetrics, getIssuerMetrics } = require('../services/metricsExtractor');
+const { compareIssuerMetrics, extractIssuerMetrics, getIssuerMetrics, getIssuerHistory } = require('../services/metricsExtractor');
 const { scrapeBcnRates } = require("../scrapers/getBcnRates");
 
 const db = getFirestore();
@@ -19,7 +19,8 @@ exports.getBcnRates = async (req, res) => {
 exports.getIssuerHistory = async (req, res) => {
     try {
         const { issuerId } = req.params;
-        const history = await metricsExtractor.getIssuerHistory(issuerId);
+        functions.logger.info(`API request for history of ID: ${issuerId}`);
+        const history = await getIssuerHistory(issuerId);
         res.json(history);
     } catch (error) {
         functions.logger.error("Error getting issuer history:", error);
@@ -34,7 +35,7 @@ exports.compareMetrics = async (req, res) => {
             return res.status(400).json({ error: "issuerIds array is required" });
         }
 
-        const comparison = await metricsExtractor.compareIssuerMetrics(issuerIds);
+        const comparison = await compareIssuerMetrics(issuerIds);
         res.json(comparison);
     } catch (error) {
         functions.logger.error("Error comparing metrics:", error);

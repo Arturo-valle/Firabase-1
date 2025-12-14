@@ -12,28 +12,44 @@ const functions = require('firebase-functions');
 async function extractIssuerMetrics(issuerId, issuerName) {
     const db = getFirestore();
 
-    // ID Mapping for messy data
-    const ID_MAPPING = {
-        "corporaci-n-agricola": "agricorp",
-        "fid-sociedad-an-nima": "fid",
-        "financiera-fdl": "fdl",
-        "horizonte-fondo-de-inversion": "horizonte"
+    // Helper: Parse various date formats (ISO, DD/MM/YYYY, DD-MM-YYYY)
+    const parseDate = (dateStr) => {
+        if (!dateStr) return 0;
+        // Try standard Date first (ISO)
+        let d = new Date(dateStr);
+        if (!isNaN(d.getTime())) return d.getTime();
+
+        // Try DD/MM/YYYY or DD-MM-YYYY
+        const match = dateStr.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
+        if (match) {
+            const day = parseInt(match[1]);
+            const month = parseInt(match[2]) - 1; // JS months are 0-11
+            const year = parseInt(match[3]);
+            d = new Date(year, month, day);
+            if (!isNaN(d.getTime())) return d.getTime();
+        }
+        return 0; // Fallback
     };
 
-    // Determine IDs
-    // issuerId is the SOURCE (where chunks are)
-    // targetId is where we SAVE (clean ID)
-    const targetId = ID_MAPPING[issuerId] || issuerId;
+    // ID Mapping: input_id -> firestore_chunks_id
+    const ID_MAPPING = {
+        "agricorp": "corporaci-n-agricola",
+        "banpro": "banpro",
+        "bdf": "banco-de-finanzas",
+        "fama": "fama",
+        "fdl": "financiera-fdl",
+        "fid": "fid-sociedad-an-nima",
+        "horizonte": "horizonte-fondo-de-inversi-n-financiero-de-crecimiento-d-lares-no-diversificado"
+    };
 
-    // If we are passing the CLEAN ID but chunks are MESSY, we need to handle that too?
-    // Currently API logic passes whatever we request.
-    // If we request "agricorp", chunks are missing.
-    // So we must request "corporaci-n-agricola".
+    // issuerId is the input (clean ID e.g. 'bdf')
+    // targetId is the SOURCE (where chunks are e.g. 'banco-de-finanzas')
+    const sourceId = ID_MAPPING[issuerId] || issuerId;
 
     try {
         // Get recent chunks for this issuer (using SOURCE ID)
         const chunksSnapshot = await db.collection('documentChunks')
-            .where('issuerId', '==', issuerId)
+            .where('issuerId', '==', sourceId)
             .orderBy('createdAt', 'desc')
             .limit(5000)
             .get();
@@ -54,14 +70,21 @@ async function extractIssuerMetrics(issuerId, issuerName) {
             // Key Fix: Detect "Audited" status for priority boost
             // Many "Audited 2024" docs have date '2024-01-01', making them seem older than 'Dec 2024' rating reports.
             // We want to prioritize Audited (Full Year) over Rating Reports (Partial).
-            const isAudited = /auditado|estados financieros/i.test(md.title || md.documentTitle || '') ||
+            const isAudited = /auditado|estados financieros|informe de los auditores/i.test(md.title || md.documentTitle || '') ||
                 /informe de los auditores/i.test(data.text.substring(0, 1000));
+            // Also allow Rating Reports, Prospectuses, and Relevant Facts to be "Financial" candidates
+            const isRatingReport = /calificaci[oó]n|riesgo|rating/i.test(md.title || md.documentTitle || '');
+            const isProspectus = /prospecto|informativo/i.test(md.title || md.documentTitle || '') || md.docType === 'PROSPECTUS';
+            const isRelevantFact = /hecho relevante|relevante/i.test(md.title || md.documentTitle || '') || md.docType === 'RELEVANT_FACT';
 
             return {
                 text: data.text,
                 title: md.title || md.documentTitle, // Pass title for debugging
                 isFinancial,
                 isAudited,
+                isRatingReport,
+                isProspectus,
+                isRelevantFact,
                 date: md.documentDate || md.date,
                 chunkIndex: data.chunkIndex
             };
@@ -71,11 +94,11 @@ async function extractIssuerMetrics(issuerId, issuerName) {
         // Score = Time + Boost. 
         // Boost Audited docs by ~5 years (1.57e11 ms) to ensure they beat "Today's Date" garbage and Rating Reports.
         chunks.sort((a, b) => {
-            const timeA = a.date ? new Date(a.date).getTime() : 0;
-            const timeB = b.date ? new Date(b.date).getTime() : 0;
+            const timeA = parseDate(a.date);
+            const timeB = parseDate(b.date);
 
-            const boostA = a.isAudited ? 157700000000 : 0; // ~5 years
-            const boostB = b.isAudited ? 157700000000 : 0;
+            const boostA = a.isAudited ? 157700000000 : (a.isRatingReport ? 5000000000 : (a.isProspectus ? 2500000000 : 0));
+            const boostB = b.isAudited ? 157700000000 : (b.isRatingReport ? 5000000000 : (b.isProspectus ? 2500000000 : 0));
 
             const scoreA = (timeA || 0) + boostA;
             const scoreB = (timeB || 0) + boostB;
@@ -97,7 +120,27 @@ async function extractIssuerMetrics(issuerId, issuerName) {
 
         // Concatenate chunks for context
         // Increased limit to 500,000 to capture full financial statements
-        const context = chunks
+        // DIVERSITY LOGIC:
+        // We want to avoid filling the context with 50 chunks from the same "Summary Rating Report".
+        // Instead, we want to mix chunks from different relevant documents.
+        const TARGET_CONTEXT_SIZE = 120; // Increased from 40 to 120 chunks (~50k tokens, well within Flash 1M limit)
+        const MAX_CHUNKS_PER_DOC = 50;   // Increased from 10 to 50 to capture tables deep in Audit PDFs
+        const selectedChunks = [];
+        const chunksPerDoc = new Map();
+
+        for (const chunk of chunks) {
+            if (selectedChunks.length >= TARGET_CONTEXT_SIZE) break;
+
+            const docKey = chunk.title || 'unknown';
+            const currentCount = chunksPerDoc.get(docKey) || 0;
+
+            if (currentCount < MAX_CHUNKS_PER_DOC) {
+                selectedChunks.push(chunk);
+                chunksPerDoc.set(docKey, currentCount + 1);
+            }
+        }
+
+        const context = selectedChunks
             .map(c => {
                 let dateStr = c.date || 'Fecha desconocida';
 
@@ -140,8 +183,6 @@ async function extractIssuerMetrics(issuerId, issuerName) {
 
         functions.logger.info(`CONTEXT PREVIEW (${issuerName}): ${context.substring(0, 500)}`);
 
-
-
         const prompt = `
 Eres un analista financiero experto especializado en mercados emergentes(Nicaragua).
 Tu tarea es extraer métricas financieras clave de los documentos proporcionados para el emisor "${issuerId}".
@@ -156,12 +197,19 @@ CONTEXTO Y REGLAS CRÍTICAS DE PRIORIZACIÓN:
     - El campo "metadata.periodo" debe reflejar la fecha de CORTE de los estados financieros(ej. "Dic-2024"), NO la fecha del informe de calificación(ej. "Mar-2025").
 
 2. ** Manejo de Datos Faltantes(N / D):**
-            -   Si el documento más reciente no tiene tablas financieras detalladas, BUSCA EN EL CONTEXTO del documento anterior(si se proporciona) o infiere del texto si se mencionan explícitamente las cifras de cierre de año.
-    - Es preferible usar datos de "Dic 2024"(auditados) que devolver "N/D" porque un reporte de "Mar 2025" no tenía tablas.
+    - Es mejor devolver datos de "Dic 2024" (auditados) que "N/D".
+    - **EXCEPCIÓN CRÍTICA (SMART FALLBACK - Moodys / Fitch / SCR):**
+        - Si NO existen "Estados Financieros Auditados" (como para BDF), **DEBES** extraer información de los "Informes de Calificación".
+        - **IMPORTANTE:** Si no hay tablas claras, **BUSCA EN EL TEXTO NARRATIVO**.
+            - Ej: "El pasivo del Banco alcanzó C$19,469 millones". -> Extrae 19469.
+            - Ej: "El patrimonio fue de C$2,000 millones". -> Extrae 2000.
+            - **CÁLCULO PERMITIDO:** Si tienes Pasivos y Patrimonio, CALCULA Activos Totales (Activos = Pasivos + Patrimonio).
+        - En este caso, "metadata.fuente" debe indicar "Informe de Calificación".
 
 3. ** Moneda:**
             -   Todas las cifras deben normalizarse a Millones(Córdobas o Dólares según la moneda funcional reportada).
     - Detecta la moneda: "Nio", "C$", "Córdobas" -> NIO. "Usd", "$", "Dólares" -> USD.
+    - PREFERENCIA: Si el reporte menciona USD, extrae en USD.
 
 EXTRAE EL SIGUIENTE OBJETO JSON(Sin markdown):
         {
@@ -170,6 +218,10 @@ EXTRAE EL SIGUIENTE OBJETO JSON(Sin markdown):
                     "pasivoCorriente": number | null,
                         "ratioCirculante": number | null(Calculado: Activo C. / Pasivo C.)
             },
+            "eficiencia": {
+                "rotacionActivos": number | null,
+                "rotacionCartera": number | null
+            },
             "solvencia": {
                 "activoTotal": number | null,
                     "pasivoTotal": number | null,
@@ -177,8 +229,11 @@ EXTRAE EL SIGUIENTE OBJETO JSON(Sin markdown):
                             "deudaPatrimonio": number | null(Calculado: Pasivo Total / Patrimonio)
             },
             "rentabilidad": {
-                "patrimonio": número(Millones USD) o null,
-                    "pasivos": número(Millones USD) o null
+                "ingresosTotales": number | null,
+                "gastosFinancieros": number | null,
+                "utilidadNeta": number | null,
+                "roe": number | null,
+                "roa": number | null
             },
             "calificacion": {
                 "rating": "string" o null,
@@ -187,10 +242,18 @@ EXTRAE EL SIGUIENTE OBJETO JSON(Sin markdown):
             },
             "metadata": {
                 "periodo": "YYYY" o "Sept 2024",
-                    "moneda": "USD",
-                        "fuente": "Nombre del archivo o reporte utilizado"
+                "moneda": "USD" | "NIO",
+                "simbolo_encontrado": "C$" | "$" | "US$" | "Córdobas" | "Dólares",
+                "fuente": "Nombre del archivo o reporte utilizado"
             }
         }
+
+REGLAS CRÍTICAS DE MONEDA:
+- BUSCA EL SÍMBOLO EN LA TABLA: Si la tabla dice "Cifras en Miles de Córdobas", la moneda es "NIO". Si dice "Cifras en Miles de Dólares", es "USD".
+- NO ASUMAS: Si ves "$", verifica si el reporte es local (a veces usan $ para córdobas en contextos informales, pero en estados financieros $ suele ser USD y C$ es NIO).
+- ANTE LA DUDA entre 3,000 Millones de C$ o 3,000 Millones de $:
+    - Bancos Grandes (Banpro, Lafise, BAC) -> Usualmente reportan en USD o C$ pero con cifras gigantes.
+    - Revisa el encabezado de la columna.
 
 REGLAS FINALES:
         - Si no encuentras un dato, usa null.NO inventes.
@@ -206,39 +269,99 @@ REGLAS FINALES:
         if (match) {
             const metrics = JSON.parse(match[0]);
 
-            // Heuristic Correction for NIO scale issues (AI failing to convert to USD)
-            // If Total Assets is > 2000, it's likely NIO (Millions), not USD (Millions).
-            // Largest Nicaraguan banks are around $1B - $1.5B USD (~36k - 55k NIO).
-            // Agricorp is ~6.3k NIO.
-            if (metrics.capital && metrics.capital.activosTotales > 2000) {
-                const RATE = 36.6243;
-                functions.logger.info(`Applying heuristic NIO -> USD conversion for ${issuerName}.Assets ${metrics.capital.activosTotales} seem large(NIO scale).`);
+            // --- NORMALIZATION: Enforce Standard Structure ---
+            // The prompt asks for 'solvencia', but logic expects 'capital'. Map them.
+            if (!metrics.capital && metrics.solvencia) {
+                metrics.capital = {
+                    activosTotales: metrics.solvencia.activoTotal,
+                    pasivos: metrics.solvencia.pasivoTotal,
+                    patrimonio: metrics.solvencia.patrimonio
+                };
+            }
+            // Ensure capital object exists
+            if (!metrics.capital) metrics.capital = {};
 
-                // Convert absolute monetary fields (Divide by Rate)
-                if (metrics.capital.activosTotales) metrics.capital.activosTotales = Number((metrics.capital.activosTotales / RATE).toFixed(2));
-                if (metrics.capital.pasivos) metrics.capital.pasivos = Number((metrics.capital.pasivos / RATE).toFixed(2));
-                if (metrics.capital.patrimonio) metrics.capital.patrimonio = Number((metrics.capital.patrimonio / RATE).toFixed(2));
+            // --- HEURISTIC RECOVERY: Find misplaced metrics ---
+            // Sometimes AI puts pasivos/patrimonio in 'rentabilidad' or 'solvencia' instead of 'capital'
+            if (!metrics.capital.pasivos) {
+                metrics.capital.pasivos = metrics.solvencia?.pasivoTotal || metrics.rentabilidad?.pasivos || null;
+            }
+            if (!metrics.capital.patrimonio) {
+                metrics.capital.patrimonio = metrics.solvencia?.patrimonio || metrics.rentabilidad?.patrimonio || null;
+            }
+            if (!metrics.capital.activosTotales) {
+                metrics.capital.activosTotales = metrics.solvencia?.activoTotal || metrics.rentabilidad?.activosTotales || null;
+            }
 
+            // --- CURRENCY NORMALIZATION LOGIC (Robust) ---
+            const detectedCurrency = (metrics.metadata.moneda || '').toUpperCase();
+            const symbol = (metrics.metadata.simbolo_encontrado || '').toUpperCase();
+
+            // Default to USD if explicitly stated or inferred
+            let isNIO = detectedCurrency === 'NIO' ||
+                detectedCurrency === 'C$' ||
+                detectedCurrency === 'CORDOBAS' ||
+                symbol === 'C$' ||
+                symbol.includes('CÓRDOBA');
+
+            // Safety Net: Magnitude Check for Ambiguity
+            // If AI says "USD" but assets are > 50,000 (Impossible for NI banks in USD Millions), force NIO.
+            // Largest bank is ~4,000 M USD.
+            if (metrics.capital && metrics.capital.activosTotales > 20000) {
+                functions.logger.warn(`[Currency Guard] Value ${metrics.capital.activosTotales} is too high for USD. Forcing NIO interpretation.`);
+                isNIO = true;
+            }
+
+            if (isNIO) {
+                const RATE = 36.6243; // Standardize rate or fetch dynamic if possible
+                functions.logger.info(`Converting NIO to USD for ${issuerName}. detected=${detectedCurrency}, symbol=${symbol}`);
+
+                const convert = (val) => val ? Number((val / RATE).toFixed(2)) : null;
+
+                if (metrics.capital) {
+                    metrics.capital.activosTotales = convert(metrics.capital.activosTotales);
+                    metrics.capital.pasivos = convert(metrics.capital.pasivos);
+                    metrics.capital.patrimonio = convert(metrics.capital.patrimonio);
+                }
                 if (metrics.rentabilidad) {
-                    if (metrics.rentabilidad.utilidadNeta) metrics.rentabilidad.utilidadNeta = Number((metrics.rentabilidad.utilidadNeta / RATE).toFixed(2));
+                    metrics.rentabilidad.utilidadNeta = convert(metrics.rentabilidad.utilidadNeta);
                 }
-
                 if (metrics.liquidez) {
-                    if (metrics.liquidez.capitalTrabajo) metrics.liquidez.capitalTrabajo = Number((metrics.liquidez.capitalTrabajo / RATE).toFixed(2));
+                    // Capital de trabajo is absolute
+                    metrics.liquidez.capitalTrabajo = convert(metrics.liquidez.capitalTrabajo);
+                    metrics.liquidez.activoCorriente = convert(metrics.liquidez.activoCorriente);
+                    metrics.liquidez.pasivoCorriente = convert(metrics.liquidez.pasivoCorriente);
+                }
+                if (metrics.solvencia) {
+                    metrics.solvencia.activoTotal = convert(metrics.solvencia.activoTotal);
+                    metrics.solvencia.pasivoTotal = convert(metrics.solvencia.pasivoTotal);
+                    metrics.solvencia.patrimonio = convert(metrics.solvencia.patrimonio);
+                }
+                if (metrics.rentabilidad) {
+                    metrics.rentabilidad.ingresosTotales = convert(metrics.rentabilidad.ingresosTotales);
+                    metrics.rentabilidad.gastosFinancieros = convert(metrics.rentabilidad.gastosFinancieros);
                 }
 
-                metrics.metadata = { ...metrics.metadata, moneda: 'USD', nota: 'Auto-converted from NIO scale' };
+                metrics.metadata.moneda = 'USD';
+                metrics.metadata.nota = 'Converted from NIO (Rate 36.62)';
             } else {
-                // Ensure metadata says USD
-                metrics.metadata = { ...metrics.metadata, moneda: 'USD' };
+                metrics.metadata.moneda = 'USD';
             }
 
             // Post-Processing: Calculate Missing Ratios using Absolute Values
             if (metrics.capital) {
                 // Deuda Total = Pasivos
                 const pasivos = metrics.capital.pasivos;
-                const activos = metrics.capital.activosTotales;
+                let activos = metrics.capital.activosTotales;
                 const patrimonio = metrics.capital.patrimonio;
+
+                // Derived: Assets = Liabilities + Equity
+                if ((!activos || activos === 0) && pasivos && patrimonio) {
+                    activos = Number((pasivos + patrimonio).toFixed(2));
+                    metrics.capital.activosTotales = activos;
+                    if (metrics.solvencia) metrics.solvencia.activoTotal = activos;
+                    functions.logger.info(`Derived Activos Totales from Pasivos + Patrimonio: ${activos}`);
+                }
 
                 if (pasivos && activos && activos > 0) {
                     // Calculate Debt/Assets if missing or weird (e.g. < 1 which implies 0.XX%)
@@ -295,17 +418,66 @@ REGLAS FINALES:
                             const newRoa = (utilidad / activos) * 100;
                             metrics.rentabilidad.roa = Number(newRoa.toFixed(2));
                         }
+
+                        // --- NEW: Calculate Missing Efficiency / Margin Ratios ---
+                        if (metrics.rentabilidad) {
+                            const utilidad = metrics.rentabilidad.utilidadNeta;
+                            const ingresos = metrics.rentabilidad.ingresosTotales;
+                            const activos = metrics.capital.activosTotales;
+
+                            // Margen Neto (Utilidad / Ingresos)
+                            if (utilidad && ingresos && ingresos > 0) {
+                                if (!metrics.rentabilidad.margenNeto) { // Only if not extracted
+                                    metrics.rentabilidad.margenNeto = Number(((utilidad / ingresos) * 100).toFixed(2));
+                                    functions.logger.info(`Calculated Margen Neto for ${issuerName}: ${metrics.rentabilidad.margenNeto}%`);
+                                }
+                            }
+
+                            // Rotación Activos (Ingresos / Activos)
+                            if (ingresos && activos && activos > 0) {
+                                // Assuming this belongs in 'eficiencia' or similar, but structure uses flattened rentabilidad/liquidez
+                                // We will add it to rentabilidad or a new efficiency block if schema allows.
+                                // Existing schema seems loose. Let's put it in rentabilidad (or solvencia implies efficiency sometimes).
+                                // Actually, let's keep it simple. If the frontend expects 'eficiencia', we need to add that object.
+                                // Prompt didn't ask for 'eficiencia', so we'll store it in rentabilidad for now or just calculated fields.
+
+                                // Let's assume frontend checks 'metrics.eficiencia' or just expects these ratios.
+                                // Looking at frontend code (ComparisonTable), it likely maps generic fields.
+                                // Let's check where 'rotacionActivos' usually lives. 
+                                // It usually lives in 'eficiencia'. Let's create it.
+                                if (!metrics.eficiencia) metrics.eficiencia = {};
+                                metrics.eficiencia.rotacionActivos = Number((ingresos / activos).toFixed(2));
+                                functions.logger.info(`Calculated Rotación Activos for ${issuerName}: ${metrics.eficiencia.rotacionActivos}x`);
+                            }
+                        }
+
+                        // --- NEW: Calculate Missing Liquidity Ratios ---
+                        if (metrics.liquidez) {
+                            const activeC = metrics.liquidez.activoCorriente;
+                            const pasivoC = metrics.liquidez.pasivoCorriente;
+
+                            if (activeC && pasivoC && pasivoC > 0) {
+                                // Ratio Circulante
+                                if (!metrics.liquidez.ratioCirculante) {
+                                    metrics.liquidez.ratioCirculante = Number((activeC / pasivoC).toFixed(2));
+                                }
+                                // Capital Trabajo (Absolute)
+                                if (!metrics.liquidez.capitalTrabajo) {
+                                    metrics.liquidez.capitalTrabajo = Number((activeC - pasivoC).toFixed(2));
+                                }
+                            }
+                        }
                     }
                 }
             }
 
-            // Store in Firestore using TARGET ID (Latest Snapshot)
-            const docRef = db.collection('issuerMetrics').doc(targetId);
+            // Store in Firestore using ISSUER ID (Clean ID)
+            const docRef = db.collection('issuerMetrics').doc(issuerId);
 
             await docRef.set({
                 ...metrics,
-                issuerId: targetId, // Save as CLEAN ID
-                sourceId: issuerId, // Track source
+                issuerId: issuerId, // Save as CLEAN ID
+                sourceId: sourceId, // Track source chunks ID
                 issuerName,
                 extractedAt: new Date(),
                 chunksAnalyzed: chunksSnapshot.size,
@@ -319,7 +491,7 @@ REGLAS FINALES:
                 // effectively keeping the "latest version" of that period.
                 await docRef.collection('snapshots').doc(periodKey).set({
                     ...metrics,
-                    issuerId: targetId,
+                    issuerId: issuerId,
                     savedAt: new Date()
                 });
                 functions.logger.info(`Snapshot saved for ${issuerName} period ${periodKey} `);
@@ -492,7 +664,7 @@ async function extractHistoricalMetrics(issuerId, issuerName) {
         functions.logger.info(`AI Response for ${issuerName} history: ${response.substring(0, 500)}...`);
 
         // Clean response of markdown
-        let cleanResponse = response.replace(/```json / g, '').replace(/```/g, '').trim();
+        let cleanResponse = response.replace(/```json/g, '').replace(/```/g, '').trim();
 
         // Handle "history": [...] wrapper if AI adds it
         if (cleanResponse.startsWith('{') && cleanResponse.includes('"history"')) {

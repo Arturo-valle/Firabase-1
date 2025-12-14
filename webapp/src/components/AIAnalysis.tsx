@@ -149,7 +149,7 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ issuers, initialIssuerId }) => 
             const normalizedIds = selectedIssuers.map(normalizeIssuerId);
             const issuerIdParam = normalizedIds.length === 1 ? normalizedIds[0] : normalizedIds;
 
-            const res = await fetch('https://us-central1-mvp-nic-market.cloudfunctions.net/api/ai/query', {
+            const res = await fetch('https://api-os3qsxfz6q-uc.a.run.app/ai/query', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

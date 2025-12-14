@@ -1,4 +1,4 @@
-export const formatDate = (dateValue: any): string => {
+export const formatDate = (dateValue: Date | string | number | { _seconds: number; _nanoseconds?: number } | null | undefined): string => {
     if (!dateValue) return 'Fecha desconocida';
 
     try {
