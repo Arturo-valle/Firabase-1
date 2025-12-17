@@ -1,235 +1,119 @@
 import React from 'react';
 import type { IssuerMetrics } from '../types';
-import { formatCurrency, formatPercentage, formatRatio, formatNumber } from '../utils/formatters';
+import { formatCurrency, formatPercentage, formatRatio } from '../utils/formatters';
 
 interface ComparisonTableProps {
     issuers: IssuerMetrics[];
     highlightBest?: boolean;
 }
 
-const ComparisonTable: React.FC<ComparisonTableProps> = ({ issuers, highlightBest = true }) => {
-    if (issuers.length === 0) {
+const ComparisonTable: React.FC<ComparisonTableProps> = ({ issuers, highlightBest = false }) => {
+    if (!issuers || issuers.length === 0) return null;
+
+    // Helper to find best value (max or min depending on metric)
+    const isBest = (val: number | undefined, metricKey: string, section: string) => {
+        if (!highlightBest || val === undefined) return false;
+
+        const values = issuers.map(i => {
+            // @ts-ignore
+            return i[section]?.[metricKey];
+        }).filter(v => v !== undefined) as number[];
+
+        if (values.length < 2) return false;
+
+        const max = Math.max(...values);
+        const min = Math.min(...values);
+
+        // Lower is better for Debt/Equity
+        if (metricKey === 'deudaPatrimonio') return val === min;
+
+        // Higher is better for others (Assets, Income, ROE, Liquidity)
+        return val === max;
+    };
+
+    const renderCell = (issuer: IssuerMetrics, section: keyof IssuerMetrics, key: string, formatter: (v: any) => string) => {
+        // @ts-ignore
+        const value = issuer[section]?.[key];
+        // @ts-ignore
+        const isWinner = isBest(value, key, section);
+
         return (
-            <div className="card p-8 text-center border-dashed border-2 border-border-subtle bg-transparent">
-                <p className="text-text-secondary">No hay emisores para comparar</p>
-            </div>
+            <td className={`p-4 text-right font-mono text-sm border-b border-white/5 ${isWinner ? 'text-accent-primary font-bold bg-accent-primary/5' : 'text-text-secondary'}`}>
+                {value !== undefined ? formatter(value) : '-'}
+            </td>
         );
-    }
-
-    // Helper to find best/worst values
-    const findBestWorst = (values: (number | null)[], higherIsBetter: boolean = true) => {
-        const validValues = values.filter(v => v !== null) as number[];
-        if (validValues.length === 0) return { best: null, worst: null };
-
-        const best = higherIsBetter ? Math.max(...validValues) : Math.min(...validValues);
-        const worst = higherIsBetter ? Math.min(...validValues) : Math.max(...validValues);
-
-        return { best, worst };
     };
-
-    const formatValue = (value: number | null, unit: string = ''): string => {
-        if (value === null) return 'N/D';
-
-        if (unit === '%') return formatPercentage(value);
-        if (unit === 'M') return formatCurrency(value); // Assumes USD millions by default
-        if (unit === 'x') return formatRatio(value);
-
-        return formatNumber(value);
-    };
-
-    const getCellClass = (value: number | null, bestValue: number | null, worstValue: number | null): string => {
-        if (!highlightBest || value === null) return 'text-text-secondary';
-
-        if (value === bestValue) {
-            return 'bg-green-900/20 font-semibold text-green-400';
-        } else if (value === worstValue && bestValue !== worstValue) {
-            return 'bg-red-900/20 text-red-400';
-        }
-
-        return 'text-text-secondary';
-    };
-
-    // Metrics rows configuration
-    const metrics = [
-        {
-            category: 'Liquidez', items: [
-                { label: 'Ratio Circulante', key: 'liquidez.ratioCirculante', unit: 'x', higherIsBetter: true },
-                { label: 'Prueba Ácida', key: 'liquidez.pruebaAcida', unit: 'x', higherIsBetter: true },
-                { label: 'Capital de Trabajo', key: 'liquidez.capitalTrabajo', unit: 'M', higherIsBetter: true },
-            ]
-        },
-        {
-            category: 'Solvencia', items: [
-                { label: 'Deuda / Activos', key: 'solvencia.deudaActivos', unit: '%', higherIsBetter: false },
-                { label: 'Deuda / Patrimonio', key: 'solvencia.deudaPatrimonio', unit: 'x', higherIsBetter: false },
-                { label: 'Cobertura de Intereses', key: 'solvencia.coberturIntereses', unit: 'x', higherIsBetter: true },
-            ]
-        },
-        {
-            category: 'Rentabilidad', items: [
-                { label: 'ROE', key: 'rentabilidad.roe', unit: '%', higherIsBetter: true },
-                { label: 'ROA', key: 'rentabilidad.roa', unit: '%', higherIsBetter: true },
-                { label: 'Margen Neto', key: 'rentabilidad.margenNeto', unit: '%', higherIsBetter: true },
-                { label: 'Utilidad Neta', key: 'rentabilidad.utilidadNeta', unit: 'M', higherIsBetter: true },
-            ]
-        },
-        {
-            category: 'Eficiencia', items: [
-                { label: 'Rotación de Activos', key: 'eficiencia.rotacionActivos', unit: 'x', higherIsBetter: true },
-                { label: 'Rotación de Cartera', key: 'eficiencia.rotacionCartera', unit: 'x', higherIsBetter: true },
-                { label: 'Morosidad', key: 'eficiencia.morosidad', unit: '%', higherIsBetter: false },
-            ]
-        },
-        {
-            category: 'Capital', items: [
-                { label: 'Activos Totales', key: 'capital.activosTotales', unit: 'M', higherIsBetter: true },
-                { label: 'Patrimonio', key: 'capital.patrimonio', unit: 'M', higherIsBetter: true },
-                { label: 'Pasivos', key: 'capital.pasivos', unit: 'M', higherIsBetter: false },
-            ]
-        },
-    ];
-
-    // Get nested value from object
-    // Get nested value from object
-    const getValue = (obj: Record<string, unknown>, path: string): number | null => {
-        const keys = path.split('.');
-        let value: unknown = obj;
-        for (const key of keys) {
-            if (value && typeof value === 'object' && key in value) {
-                value = (value as Record<string, unknown>)[key];
-            } else {
-                return null;
-            }
-        }
-        return typeof value === 'number' ? value : null;
-    };
-
-    // Check for period mismatch
-    const periods = issuers.map(i => i.metadata?.periodo || 'N/D');
-    const uniquePeriods = Array.from(new Set(periods));
-    const hasMismatch = uniquePeriods.length > 1;
 
     return (
-        <div className="card overflow-hidden border border-border-subtle">
-            {hasMismatch && (
-                <div className="bg-yellow-900/20 border-b border-yellow-700/30 px-6 py-3 flex items-start gap-3">
-                    <span className="text-xl">⚠️</span>
-                    <div>
-                        <p className="text-yellow-200 font-bold text-sm">
-                            Atención: Diferencia de Periodos Detectada
-                        </p>
-                        <p className="text-yellow-200/80 text-xs mt-1">
-                            Estás comparando métricas de diferentes fechas de corte ({uniquePeriods.join(' vs ')}).
-                            Esto puede afectar la precisión de la comparación (ej: anual vs semestral).
-                        </p>
-                    </div>
-                </div>
-            )}
-            <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-border-subtle">
-                    <thead className="bg-bg-tertiary sticky top-0">
-                        <tr>
-                            <th className="px-6 py-4 text-left text-xs font-bold text-text-secondary uppercase tracking-wider">
-                                Métrica
+        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+            <table className="w-full border-collapse">
+                <thead>
+                    <tr>
+                        <th className="p-4 text-left bg-black/80 backdrop-blur-md sticky left-0 z-20 min-w-[200px] border-b border-accent-primary/30 text-white font-bold">
+                            Métrica Financiera
+                        </th>
+                        {issuers.map((issuer, idx) => (
+                            <th key={idx} className="p-4 text-right bg-black/60 backdrop-blur-md min-w-[150px] border-b border-accent-primary/30 text-accent-primary font-mono text-sm tracking-wider">
+                                {issuer.issuerName.split(' ')[0]} {/* Short name */}
                             </th>
-                            {issuers.map((issuer, idx) => (
-                                <th key={idx} className="px-6 py-4 text-center text-xs font-bold text-text-secondary uppercase tracking-wider">
-                                    <div className="flex flex-col">
-                                        <span className="text-text-primary text-sm">{issuer.issuerName}</span>
-                                        <div className="flex items-center justify-center gap-1 mt-1 bg-bg-primary/50 py-1 px-2 rounded-md border border-border-subtle">
-                                            <span className="text-xs text-text-secondary font-medium uppercase">Corte:</span>
-                                            <span className="text-accent-primary font-bold text-sm">
-                                                {issuer.metadata?.periodo || 'N/D'}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody className="bg-bg-primary divide-y divide-border-subtle">
-                        {metrics.map((category, catIdx) => (
-                            <React.Fragment key={catIdx}>
-                                {/* Category Header */}
-                                <tr className="bg-bg-tertiary/50">
-                                    <td colSpan={issuers.length + 1} className="px-6 py-3 text-sm font-bold text-text-primary">
-                                        {category.category}
-                                    </td>
-                                </tr>
-                                {/* Metric Rows */}
-                                {category.items.map((metric, metricIdx) => {
-                                    const values = issuers.map(issuer => getValue(issuer as unknown as Record<string, unknown>, metric.key));
-                                    const { best, worst } = findBestWorst(values, metric.higherIsBetter);
-
-                                    return (
-                                        <tr key={metricIdx} className="hover:bg-bg-tertiary/30 transition-colors">
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-secondary">
-                                                {metric.label}
-                                            </td>
-                                            {issuers.map((issuer, issuerIdx) => {
-                                                const value = getValue(issuer as unknown as Record<string, unknown>, metric.key);
-                                                const cellClass = getCellClass(value, best, worst);
-
-                                                return (
-                                                    <td
-                                                        key={issuerIdx}
-                                                        className={`px-6 py-4 whitespace-nowrap text-sm text-center ${cellClass}`}
-                                                    >
-                                                        {formatValue(value, metric.unit)}
-                                                    </td>
-                                                );
-                                            })}
-                                        </tr>
-                                    );
-                                })}
-                            </React.Fragment>
                         ))}
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                    {/* Capital Section */}
+                    <tr className="bg-white/5">
+                        <td colSpan={issuers.length + 1} className="p-2 pl-4 text-xs font-bold text-text-tertiary uppercase tracking-wider">
+                            Capital & Activos
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">Activos Totales</td>
+                        {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'capital', 'activosTotales', formatCurrency)}</React.Fragment>)}
+                    </tr>
+                    <tr>
+                        <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">Pasivos Totales</td>
+                        {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'capital', 'pasivosTotales', formatCurrency)}</React.Fragment>)}
+                    </tr>
+                    <tr>
+                        <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">Patrimonio</td>
+                        {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'capital', 'patrimonio', formatCurrency)}</React.Fragment>)}
+                    </tr>
 
-                        {/* Calificación Row */}
-                        <tr className="bg-bg-tertiary/50">
-                            <td colSpan={issuers.length + 1} className="px-6 py-3 text-sm font-bold text-text-primary">
-                                Calificación de Riesgo
-                            </td>
-                        </tr>
-                        <tr className="hover:bg-bg-tertiary/30 transition-colors">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-secondary">
-                                Rating
-                            </td>
-                            {issuers.map((issuer, idx) => (
-                                <td key={idx} className="px-6 py-4 whitespace-nowrap text-sm text-center font-semibold text-accent-secondary">
-                                    {issuer.calificacion.rating || 'N/D'}
-                                </td>
-                            ))}
-                        </tr>
-                        <tr className="hover:bg-bg-tertiary/30 transition-colors">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-secondary">
-                                Perspectiva
-                            </td>
-                            {issuers.map((issuer, idx) => (
-                                <td key={idx} className="px-6 py-4 whitespace-nowrap text-sm text-center capitalize text-text-primary">
-                                    {issuer.calificacion.perspectiva || 'N/D'}
-                                </td>
-                            ))}
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                    {/* Profitability Section */}
+                    <tr className="bg-white/5">
+                        <td colSpan={issuers.length + 1} className="p-2 pl-4 text-xs font-bold text-text-tertiary uppercase tracking-wider">
+                            Rentabilidad
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">Utilidad Neta</td>
+                        {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'rentabilidad', 'utilidadNeta', formatCurrency)}</React.Fragment>)}
+                    </tr>
+                    <tr>
+                        <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">ROE</td>
+                        {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'rentabilidad', 'roe', formatPercentage)}</React.Fragment>)}
+                    </tr>
+                    <tr>
+                        <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">ROA</td>
+                        {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'rentabilidad', 'roa', formatPercentage)}</React.Fragment>)}
+                    </tr>
 
-            {/* Legend */}
-            {highlightBest && (
-                <div className="bg-bg-tertiary px-6 py-4 border-t border-border-subtle">
-                    <div className="flex items-center gap-6 text-xs text-text-secondary">
-                        <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 bg-green-900/20 border border-green-800/50 rounded"></div>
-                            <span>Mejor valor</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 bg-red-900/20 border border-red-800/50 rounded"></div>
-                            <span>Valor menos favorable</span>
-                        </div>
-                    </div>
-                </div>
-            )}
+                    {/* Liquidity & Solvency */}
+                    <tr className="bg-white/5">
+                        <td colSpan={issuers.length + 1} className="p-2 pl-4 text-xs font-bold text-text-tertiary uppercase tracking-wider">
+                            Liquidez & Solvencia
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">Ratio Circulante</td>
+                        {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'liquidez', 'ratioCirculante', formatRatio)}</React.Fragment>)}
+                    </tr>
+                    <tr>
+                        <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">Deuda / Patrimonio</td>
+                        {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'solvencia', 'deudaPatrimonio', formatRatio)}</React.Fragment>)}
+                    </tr>
+                </tbody>
+            </table>
         </div>
     );
 };

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchIssuerDetail, DISPLAY_NAMES, ISSUER_METADATA } from '../utils/marketDataApi';
+import { fetchIssuerDetail } from '../utils/marketDataApi';
+import { transformIssuers } from '../utils/dataTransforms';
 import type { Issuer } from '../types';
 import IssuerDetailView from '../components/IssuerDetailView';
 
@@ -19,14 +20,12 @@ export default function IssuerDetail() {
             try {
                 const data = await fetchIssuerDetail(issuerId!);
                 // Transform to Issuer type
-                const issuerObj: Issuer = {
-                    id: data.id,
-                    name: DISPLAY_NAMES[data.id] || data.name,
-                    acronym: ISSUER_METADATA[data.id]?.acronym || '',
-                    sector: ISSUER_METADATA[data.id]?.sector || data.sector || 'Privado',
-                    documents: data.documents || [],
-                    logoUrl: '',
-                    error: undefined
+                // Transform to Issuer type using shared utility
+                const transformed = transformIssuers([data]);
+                const issuerObj = transformed[0] || {
+                    // Fallback if transform fails (shouldn't happen for valid data)
+                    ...data,
+                    documents: data.documents || []
                 };
                 setIssuer(issuerObj);
             } catch (err: any) {

@@ -1,18 +1,17 @@
 import type { MetricsData, ComparisonData } from '../types';
 
-const API_BASE = 'https://api-os3qsxfz6q-uc.a.run.app';
+import { API_BASE_URL } from '../config';
+
+const API_BASE = API_BASE_URL;
 
 /**
  * Normalize issuer ID for backend compatibility
- * Frontend uses underscores, backend expects spaces without diacritics
+ * IDs from Firestore should be used directly (already slugified)
  */
 export function normalizeIssuerId(id: string): string {
-    return id
-        .replace(/_/g, ' ')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase()
-        .trim();
+    // Simply lowercase - don't transform the ID format
+    // Firestore IDs are already in the correct format (e.g., 'fama', 'bdf')
+    return id.toLowerCase().trim();
 }
 
 // Mock Data Generator Removed for Production

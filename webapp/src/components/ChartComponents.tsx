@@ -36,10 +36,74 @@ ChartJS.register(
     Filler
 );
 
+// NicaBloomberg Theme Config
+const theme = {
+    colors: {
+        primary: '#00F0FF',   // Cyan
+        secondary: '#7000FF', // Purple
+        accent: '#00FF94',    // Green
+        danger: '#FF003C',    // Red
+        warn: '#FFE600',      // Yellow
+        text: '#94a3b8',      // Slate 400
+        grid: 'rgba(255, 255, 255, 0.1)',
+        tooltipBg: 'rgba(11, 14, 20, 0.95)',
+        tooltipBorder: 'rgba(0, 240, 255, 0.3)',
+    },
+    fonts: {
+        family: "'JetBrains Mono', monospace",
+    }
+};
+
 // Common chart options for dark theme
 const commonOptions = {
-    color: '#94a3b8', // text-slate-400
-    borderColor: '#334155', // border-slate-700
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            display: false,
+            labels: {
+                color: theme.colors.text,
+                font: { family: theme.fonts.family, size: 10 }
+            }
+        },
+        title: {
+            display: true,
+            color: '#ffffff',
+            font: { family: theme.fonts.family, size: 14, weight: 'bold' as const },
+            padding: { bottom: 20 }
+        },
+        tooltip: {
+            backgroundColor: theme.colors.tooltipBg,
+            titleColor: theme.colors.primary,
+            bodyColor: '#ffffff',
+            borderColor: theme.colors.tooltipBorder,
+            borderWidth: 1,
+            titleFont: { family: theme.fonts.family, size: 12 },
+            bodyFont: { family: theme.fonts.family, size: 11 },
+            padding: 10,
+            cornerRadius: 8,
+            displayColors: true,
+            boxWidth: 8,
+            boxHeight: 8,
+            callbacks: {
+                labelColor: (context: any) => ({
+                    borderColor: 'transparent',
+                    backgroundColor: context.dataset.borderColor,
+                    borderWidth: 0,
+                })
+            }
+        },
+    },
+    scales: {
+        x: {
+            ticks: { color: theme.colors.text, font: { family: theme.fonts.family, size: 10 } },
+            grid: { display: false }
+        },
+        y: {
+            ticks: { color: theme.colors.text, font: { family: theme.fonts.family, size: 10 } },
+            grid: { color: theme.colors.grid, drawBorder: false }
+        }
+    }
 };
 
 interface CreditRatingChartProps {
@@ -52,75 +116,51 @@ export const CreditRatingChart: React.FC<CreditRatingChartProps> = ({ data, issu
         labels: data.map(d => d.date),
         datasets: [
             {
-                label: 'Calificación Crediticia',
+                label: 'Calificación',
                 data: data.map(d => d.numericValue),
-                borderColor: '#22bfa5', // accent-primary
-                backgroundColor: 'rgba(34, 191, 165, 0.1)',
+                borderColor: theme.colors.primary,
+                backgroundColor: 'rgba(0, 240, 255, 0.1)',
                 fill: true,
                 tension: 0.4,
-                pointRadius: 6,
-                pointHoverRadius: 8,
-                pointBackgroundColor: '#22bfa5',
-                pointBorderColor: '#1e293b', // bg-secondary
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                pointBackgroundColor: '#000',
+                pointBorderColor: theme.colors.primary,
                 pointBorderWidth: 2,
             },
         ],
     };
 
     const options = {
-        responsive: true,
-        maintainAspectRatio: false,
+        ...commonOptions,
         plugins: {
-            legend: {
-                display: false,
-                labels: { color: commonOptions.color }
-            },
-            title: {
-                display: true,
-                text: `Tendencia de Calificación Crediticia${issuerName ? ` - ${issuerName}` : ''}`,
-                font: {
-                    size: 16,
-                    weight: 'bold' as const,
-                },
-                color: '#e2e8f0', // text-primary
-            },
+            ...commonOptions.plugins,
+            title: { ...commonOptions.plugins.title, text: `TENDENCIA_CREDITICIA // ${issuerName || 'GENERAL'}` },
             tooltip: {
-                backgroundColor: '#1e293b',
-                titleColor: '#e2e8f0',
-                bodyColor: '#94a3b8',
-                borderColor: '#334155',
-                borderWidth: 1,
+                ...commonOptions.plugins.tooltip,
                 callbacks: {
                     label: (context: any) => {
                         const dataPoint = data[context.dataIndex];
-                        return `Calificación: ${dataPoint.rating}`;
+                        return `RATING: ${dataPoint.rating}`;
                     },
                 },
-            },
+            }
         },
         scales: {
+            ...commonOptions.scales,
             y: {
-                beginAtZero: false,
+                ...commonOptions.scales.y,
                 min: 0,
                 max: 10,
                 ticks: {
-                    color: commonOptions.color,
+                    ...commonOptions.scales.y.ticks,
                     callback: (value: any) => {
                         const ratings = ['D', 'C', 'B-', 'B', 'BB-', 'BB', 'BBB-', 'BBB', 'A-', 'A', 'AA'];
                         return ratings[Math.floor(value)] || '';
                     },
                 },
-                grid: {
-                    color: 'rgba(255, 255, 255, 0.05)',
-                },
-            },
-            x: {
-                ticks: { color: commonOptions.color },
-                grid: {
-                    display: false,
-                },
-            },
-        },
+            }
+        }
     };
 
     return (
@@ -145,18 +185,18 @@ export const FinancialRatiosChart: React.FC<FinancialRatiosChartProps> = ({ data
                 label: 'Valor',
                 data: data.map(d => d.value),
                 backgroundColor: [
-                    'rgba(34, 191, 165, 0.8)', // accent-primary
-                    'rgba(59, 130, 246, 0.8)', // blue
-                    'rgba(168, 85, 247, 0.8)', // purple
-                    'rgba(245, 158, 11, 0.8)', // orange
-                    'rgba(239, 68, 68, 0.8)', // red
+                    'rgba(0, 240, 255, 0.6)', // Cyan
+                    'rgba(112, 0, 255, 0.6)', // Purple
+                    'rgba(0, 255, 148, 0.6)', // Green
+                    'rgba(255, 230, 0, 0.6)', // Yellow
+                    'rgba(255, 0, 60, 0.6)',  // Red
                 ],
                 borderColor: [
-                    '#22bfa5',
-                    '#3b82f6',
-                    '#a855f7',
-                    '#f59e0b',
-                    '#ef4444',
+                    theme.colors.primary,
+                    theme.colors.secondary,
+                    theme.colors.accent,
+                    theme.colors.warn,
+                    theme.colors.danger,
                 ],
                 borderWidth: 1,
             },
@@ -164,27 +204,12 @@ export const FinancialRatiosChart: React.FC<FinancialRatiosChartProps> = ({ data
     };
 
     const options = {
-        responsive: true,
-        maintainAspectRatio: false,
+        ...commonOptions,
         plugins: {
-            legend: {
-                display: false,
-            },
-            title: {
-                display: true,
-                text: `Ratios Financieros${issuerName ? ` - ${issuerName}` : ''}`,
-                font: {
-                    size: 16,
-                    weight: 'bold' as const,
-                },
-                color: '#e2e8f0',
-            },
+            ...commonOptions.plugins,
+            title: { ...commonOptions.plugins.title, text: `MÉTRICAS_CLAVE // ${issuerName || 'GENERAL'}` },
             tooltip: {
-                backgroundColor: '#1e293b',
-                titleColor: '#e2e8f0',
-                bodyColor: '#94a3b8',
-                borderColor: '#334155',
-                borderWidth: 1,
+                ...commonOptions.plugins.tooltip,
                 callbacks: {
                     label: (context: any) => {
                         const value = context.parsed.y;
@@ -196,22 +221,7 @@ export const FinancialRatiosChart: React.FC<FinancialRatiosChartProps> = ({ data
                     },
                 },
             },
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: { color: commonOptions.color },
-                grid: {
-                    color: 'rgba(255, 255, 255, 0.05)',
-                },
-            },
-            x: {
-                ticks: { color: commonOptions.color },
-                grid: {
-                    display: false,
-                },
-            },
-        },
+        }
     };
 
     return (
@@ -233,42 +243,24 @@ export const RiskAssessmentChart: React.FC<RiskAssessmentChartProps> = ({ data, 
         labels: data.map(d => d.category),
         datasets: [
             {
-                label: 'Score de Riesgo',
+                label: 'Score',
                 data: data.map(d => d.score),
-                backgroundColor: 'rgba(239, 68, 68, 0.2)',
-                borderColor: '#ef4444',
+                backgroundColor: 'rgba(255, 0, 60, 0.2)', // Red glow
+                borderColor: theme.colors.danger,
                 borderWidth: 2,
-                pointBackgroundColor: '#ef4444',
-                pointBorderColor: '#1e293b',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: '#ef4444',
+                pointBackgroundColor: '#000',
+                pointBorderColor: theme.colors.danger,
+                pointHoverBackgroundColor: theme.colors.danger,
+                pointHoverBorderColor: '#fff',
             },
         ],
     };
 
     const options = {
-        responsive: true,
-        maintainAspectRatio: false,
+        ...commonOptions,
         plugins: {
-            legend: {
-                display: false,
-            },
-            title: {
-                display: true,
-                text: `Perfil de Riesgo${issuerName ? ` - ${issuerName}` : ''}`,
-                font: {
-                    size: 16,
-                    weight: 'bold' as const,
-                },
-                color: '#e2e8f0',
-            },
-            tooltip: {
-                backgroundColor: '#1e293b',
-                titleColor: '#e2e8f0',
-                bodyColor: '#94a3b8',
-                borderColor: '#334155',
-                borderWidth: 1,
-            },
+            ...commonOptions.plugins,
+            title: { ...commonOptions.plugins.title, text: `PERFIL_RIESGO // ${issuerName || 'GENERAL'}` },
         },
         scales: {
             r: {
@@ -277,15 +269,20 @@ export const RiskAssessmentChart: React.FC<RiskAssessmentChartProps> = ({ data, 
                 max: 10,
                 ticks: {
                     stepSize: 2,
-                    color: commonOptions.color,
+                    color: theme.colors.text,
                     backdropColor: 'transparent',
+                    font: { family: theme.fonts.family, size: 9 }
                 },
                 grid: {
-                    color: 'rgba(255, 255, 255, 0.1)',
+                    color: theme.colors.grid,
                 },
                 pointLabels: {
-                    color: commonOptions.color,
+                    color: '#fff',
+                    font: { family: theme.fonts.family, size: 10 }
                 },
+                angleLines: {
+                    color: theme.colors.grid
+                }
             },
         },
     };
@@ -306,17 +303,16 @@ interface ComparativeChartProps {
 export const ComparativeChart: React.FC<ComparativeChartProps> = ({ data }) => {
     if (data.length === 0) return null;
 
-    // Get all unique metric names
     const metricNames = Array.from(
         new Set(data.flatMap(issuer => Object.keys(issuer.metrics)))
     );
 
     const colors = [
-        'rgb(34, 191, 165)', // accent-primary
-        'rgb(59, 130, 246)', // blue
-        'rgb(168, 85, 247)', // purple
-        'rgb(245, 158, 11)', // orange
-        'rgb(236, 72, 153)', // pink
+        theme.colors.primary,
+        theme.colors.secondary,
+        theme.colors.accent,
+        theme.colors.warn,
+        theme.colors.danger,
     ];
 
     const chartData = {
@@ -324,52 +320,32 @@ export const ComparativeChart: React.FC<ComparativeChartProps> = ({ data }) => {
         datasets: data.map((issuer, index) => ({
             label: issuer.issuerName,
             data: metricNames.map(metric => issuer.metrics[metric] || 0),
-            backgroundColor: colors[index % colors.length].replace('rgb', 'rgba').replace(')', ', 0.8)'),
+            backgroundColor: [
+                'rgba(0, 240, 255, 0.8)',
+                'rgba(112, 0, 255, 0.8)',
+                'rgba(0, 255, 148, 0.8)',
+                'rgba(255, 230, 0, 0.8)',
+                'rgba(255, 0, 60, 0.8)'
+            ][index % 5],
             borderColor: colors[index % colors.length],
             borderWidth: 1,
         })),
     };
 
     const options = {
-        responsive: true,
-        maintainAspectRatio: false,
+        ...commonOptions,
         plugins: {
+            ...commonOptions.plugins,
+            title: { ...commonOptions.plugins.title, text: 'MATRIZ_COMPARATIVA' },
             legend: {
-                position: 'top' as const,
-                labels: { color: commonOptions.color }
-            },
-            title: {
                 display: true,
-                text: 'Comparación entre Emisores',
-                font: {
-                    size: 16,
-                    weight: 'bold' as const,
-                },
-                color: '#e2e8f0',
-            },
-            tooltip: {
-                backgroundColor: '#1e293b',
-                titleColor: '#e2e8f0',
-                bodyColor: '#94a3b8',
-                borderColor: '#334155',
-                borderWidth: 1,
-            },
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: { color: commonOptions.color },
-                grid: {
-                    color: 'rgba(255, 255, 255, 0.05)',
-                },
-            },
-            x: {
-                ticks: { color: commonOptions.color },
-                grid: {
-                    display: false,
-                },
-            },
-        },
+                labels: {
+                    color: theme.colors.text,
+                    font: { family: theme.fonts.family, size: 10 },
+                    boxWidth: 10
+                }
+            }
+        }
     };
 
     return (

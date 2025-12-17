@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import AIAnalysis from '../components/AIAnalysis';
 import { fetchIssuers } from '../utils/marketDataApi';
+import { transformIssuers } from '../utils/dataTransforms';
 
 export default function AIAssistant() {
     const [searchParams] = useSearchParams();
@@ -18,13 +19,7 @@ export default function AIAssistant() {
                 console.log('[AIAssistant] Issuers data:', data);
 
                 // Transform issuers to match expected format
-                const issuersList = data.issuers?.map((issuer: any) => ({
-                    id: issuer.id,
-                    name: issuer.name,
-                    sector: issuer.sector || 'Privado',
-                    documents: issuer.documents || []
-                }))
-                    .filter((issuer: any) => issuer.documents?.length > 0) || [];
+                const issuersList = transformIssuers(data.issuers);
 
                 console.log('[AIAssistant] Transformed issuers list:', issuersList);
                 console.log('[AIAssistant] Issuer count:', issuersList.length);

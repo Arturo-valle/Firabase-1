@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { MagnifyingGlassIcon, SparklesIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { API_BASE_URL } from '../../config';
 
 interface SearchResult {
     answer: string;
@@ -22,7 +23,6 @@ interface SearchResult {
     };
 }
 
-const API_BASE_URL = 'https://us-central1-mvp-nic-market.cloudfunctions.net/api';
 
 export default function SmartSearch() {
     const [query, setQuery] = useState('');

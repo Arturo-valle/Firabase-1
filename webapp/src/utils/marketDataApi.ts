@@ -1,6 +1,6 @@
 import type { Issuer, Document } from '../types';
 
-const API_BASE_URL = 'https://us-central1-mvp-nic-market.cloudfunctions.net/api';
+import { API_BASE_URL } from '../config';
 
 export interface SystemStatus {
     systemHealth: string;

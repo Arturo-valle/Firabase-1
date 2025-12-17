@@ -5,7 +5,7 @@ const express = require("express");
 const { getFirestore } = require("firebase-admin/firestore");
 const cors = require('cors');
 const { VertexAI } = require('@google-cloud/vertexai');
-const { compareIssuerMetrics, extractIssuerMetrics, getIssuerMetrics } = require('./src/services/metricsExtractor');
+const { compareIssuerMetrics, extractIssuerMetrics, getIssuerMetrics, getIssuerHistory, extractHistoricalMetrics } = require('./src/services/metricsExtractor');
 
 // --- Initialization ---
 const app = express();
@@ -215,7 +215,37 @@ app.get("/issuer/:id", async (req, res) => {
   }
 });
 
-// Import metrics service
+const { generateNews, generateIssuerInsights, handleAIQuery, enhanceSearchQuery } = require('./src/services/aiNewsGenerator');
+
+// 3.5 Get Issuer History (New Endpoint for Charts)
+app.get("/metrics/history/:issuerId", async (req, res) => {
+  const { issuerId } = req.params;
+  try {
+    const history = await getIssuerHistory(issuerId);
+    // If no history, return empty array but success=true so frontend doesn't crash
+    res.json(history || []);
+  } catch (error) {
+    functions.logger.error(`Error fetching history for ${issuerId}:`, error);
+    res.status(500).json({ error: "Failed to fetch issuer history" });
+  }
+});
+
+// 3.6 Trigger History Extraction (New Helper)
+app.post("/metrics/history/extract/:issuerId", async (req, res) => {
+  const { issuerId } = req.params;
+  try {
+    // Get issuer name for context
+    const db = getFirestore();
+    const issuerDoc = await db.collection("issuers").doc(issuerId).get();
+    const issuerName = issuerDoc.exists ? issuerDoc.data().name : issuerId;
+
+    const history = await extractHistoricalMetrics(issuerId, issuerName);
+    res.json({ success: true, count: history ? history.length : 0, history });
+  } catch (error) {
+    functions.logger.error(`Error extracting history for ${issuerId}:`, error);
+    res.status(500).json({ error: "Failed to extract history" });
+  }
+});
 
 // 4. AI News Generation
 app.get("/ai/news", async (req, res) => {
@@ -385,6 +415,52 @@ app.get("/ai/insights/:issuerId", async (req, res) => {
   } catch (error) {
     functions.logger.error(`Error fetching insights for ${issuerId}:`, error);
     res.status(500).json({ error: "Failed to fetch insights" });
+  }
+});
+
+// 10. AI Chat Query (New Endpoint)
+app.post("/ai/query", async (req, res) => {
+  const { query, issuerId, analysisType } = req.body;
+
+  if (!query) {
+    return res.status(400).json({ error: "Query is required" });
+  }
+
+  try {
+    const result = await handleAIQuery(query, issuerId, analysisType);
+    res.json(result);
+  } catch (error) {
+    functions.logger.error("Error processing AI query:", error);
+    res.status(500).json({ error: "Failed to process query" });
+  }
+});
+
+// 11. AI Smart Search (New Endpoint for enhanced search)
+app.post("/ai/smart-search", async (req, res) => {
+  const { query } = req.body;
+
+  if (!query) {
+    return res.status(400).json({ error: "Query is required" });
+  }
+
+  try {
+    // 1. Enhance the query with AI understanding
+    const queryUnderstanding = await enhanceSearchQuery(query);
+
+    // 2. Perform the actual search using the enhanced query
+    const results = await handleAIQuery(
+      queryUnderstanding.enhancedQuery || query,
+      queryUnderstanding.issuers || null,
+      queryUnderstanding.intent === 'compare_issuers' ? 'comparative' : 'general'
+    );
+
+    res.json({
+      queryUnderstanding,
+      results
+    });
+  } catch (error) {
+    functions.logger.error("Error processing smart search:", error);
+    res.status(500).json({ error: "Failed to process smart search" });
   }
 });
 

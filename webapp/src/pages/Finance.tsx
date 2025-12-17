@@ -75,7 +75,7 @@ export default function Finance() {
                     <span className="text-accent-secondary text-sm font-medium">Chunks en DB</span>
                     <p className="text-3xl font-bold text-text-primary mt-2">
                         {issuers.length > 0
-                            ? `${(issuers.length * 150 / 1000).toFixed(1)}K`
+                            ? `${(issuers.reduce((acc, i: any) => acc + (i.documents?.length || 0), 0) * 15 / 1000).toFixed(1)}K`
                             : '0'
                         }
                     </p>
@@ -83,7 +83,7 @@ export default function Finance() {
                 <div className="card bg-accent-tertiary/10 border border-accent-tertiary/20">
                     <span className="text-accent-tertiary text-sm font-medium">Cobertura</span>
                     <p className="text-3xl font-bold text-text-primary mt-2">
-                        {issuers.length > 0 ? '92%' : '0%'}
+                        {issuers.length > 0 ? `${Math.round(issuers.filter((i: any) => i.documents?.length > 0).length / issuers.length * 100)}%` : '0%'}
                     </p>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { fetchIssuers, DISPLAY_NAMES, ISSUER_METADATA } from '../utils/marketDataApi';
+import { fetchIssuers } from '../utils/marketDataApi';
+import { transformIssuers } from '../utils/dataTransforms';
 import type { Issuer } from '../types';
 import FinancialDashboard from '../components/FinancialDashboard';
 
@@ -12,17 +13,7 @@ export default function Home() {
         async function loadData() {
             try {
                 const issuersData = await fetchIssuers();
-                const issuersList = issuersData.issuers?.map((issuer: any) => ({
-                    id: issuer.id,
-                    name: DISPLAY_NAMES[issuer.id] || issuer.name,
-                    sector: ISSUER_METADATA[issuer.id]?.sector || issuer.sector || 'Privado',
-                    acronym: ISSUER_METADATA[issuer.id]?.acronym || issuer.acronym || '',
-                    documents: issuer.documents || [],
-                    logoUrl: issuer.logoUrl || '',
-                    processed: issuer.documents?.length || 0,
-                    total: issuer.documents?.length || 0
-                }))
-                    .filter((issuer: any) => issuer.documents?.length > 0) || [];
+                const issuersList = transformIssuers(issuersData.issuers);
 
                 setIssuers(issuersList);
             } catch (error) {

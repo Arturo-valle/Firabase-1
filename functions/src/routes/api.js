@@ -26,6 +26,7 @@ router.post('/metrics/compare', metricsController.compareMetrics);
 router.post('/metrics/extract/:issuerId', metricsController.extractMetrics);
 router.get('/metrics/:issuerId', metricsController.getMetrics);
 router.get('/metrics/history/:issuerId', metricsController.getIssuerHistory);
+router.post('/metrics/history/extract/:issuerId', metricsController.extractHistory);
 
 // --- System Endpoints ---
 router.get('/status', systemController.getSystemStatus);

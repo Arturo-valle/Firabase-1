@@ -1,6 +1,6 @@
 const functions = require("firebase-functions");
 const { getFirestore } = require("firebase-admin/firestore");
-const { compareIssuerMetrics, extractIssuerMetrics, getIssuerMetrics, getIssuerHistory } = require('../services/metricsExtractor');
+const { compareIssuerMetrics, extractIssuerMetrics, getIssuerMetrics, getIssuerHistory, extractHistoricalMetrics } = require('../services/metricsExtractor');
 const { scrapeBcnRates } = require("../scrapers/getBcnRates");
 
 const db = getFirestore();
@@ -69,5 +69,23 @@ exports.getMetrics = async (req, res) => {
     } catch (error) {
         functions.logger.error(`Error fetching metrics for ${issuerId}:`, error);
         res.status(500).json({ error: "Failed to fetch metrics" });
+    }
+};
+
+exports.extractHistory = async (req, res) => {
+    const { issuerId } = req.params;
+    try {
+        const issuerDoc = await db.collection("issuers").doc(issuerId).get();
+        if (!issuerDoc.exists) return res.status(404).json({ error: "Issuer not found" });
+
+        const issuerName = issuerDoc.data().name;
+
+        functions.logger.info(`Extracting history for ${issuerId} (${issuerName})`);
+        const history = await extractHistoricalMetrics(issuerId, issuerName);
+
+        res.json({ success: true, count: history ? history.length : 0, history });
+    } catch (error) {
+        functions.logger.error(`Error extracting history for ${issuerId}:`, error);
+        res.status(500).json({ error: error.message });
     }
 };

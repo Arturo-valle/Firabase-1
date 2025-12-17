@@ -70,7 +70,7 @@ async function generateNews(daysBack = 7) {
  * Generate a single news item from a document using Gemini
  */
 async function generateNewsForDocument(doc) {
-    const { callVertexAI } = require('../services/vertexAI');
+    const { generateFinancialAnalysis: callVertexAI } = require('../services/vertexAI');
 
     const prompt = `Eres un analista financiero experto escribiendo para Bloomberg en español.
 
@@ -149,7 +149,7 @@ async function generateIssuerInsights(issuerId, issuerName) {
             .join('\n\n')
             .slice(0, 4000); // Limit context size
 
-        const { callVertexAI } = require('../services/vertexAI');
+        const { generateFinancialAnalysis: callVertexAI } = require('../services/vertexAI');
 
         const prompt = `Eres un analista financiero experto analizando ${issuerName} en Nicaragua.
 
@@ -194,7 +194,7 @@ Enfócate en tendencias, ratios financieros, o cambios significativos.`;
  * Analyze search query and enhance with AI understanding
  */
 async function enhanceSearchQuery(query) {
-    const { callVertexAI } = require('../services/vertexAI');
+    const { generateFinancialAnalysis: callVertexAI } = require('../services/vertexAI');
 
     const prompt = `Eres un asistente de búsqueda financiera para el mercado nicaragüense.
 
@@ -232,9 +232,158 @@ Extrae y estructura la intención:
     };
 }
 
+/**
+ * Handle AI Query with RAG (Retrieval Augmented Generation)
+ * @param {string} query - User's natural language query
+ * @param {string|Array} issuerId - Specific issuer ID(s) to focus on (optional)
+ * @param {string} analysisType - Type of analysis (general, financial, creditRating, comparative)
+ */
+async function handleAIQuery(query, issuerId = null, analysisType = 'general') {
+    const db = getFirestore();
+    const { generateFinancialAnalysis: callVertexAI } = require('../services/vertexAI');
+    const { generateEmbeddings, cosineSimilarity } = require('../services/vertexAI');
+
+    try {
+        // 1. Generate embedding for the user's query
+        let queryEmbedding = null;
+        try {
+            queryEmbedding = await generateEmbeddings(query);
+        } catch (embError) {
+            functions.logger.warn('Could not generate query embedding, falling back to timestamp-based retrieval:', embError.message);
+        }
+
+        // 2. Fetch candidate chunks
+        let chunks = [];
+        let issuerNames = [];
+
+        // Handle single or multiple issuer IDs
+        const issuerIds = Array.isArray(issuerId) ? issuerId : (issuerId ? [issuerId] : []);
+
+        if (issuerIds.length > 0) {
+            // Fetch chunks for specific issuers
+            for (const id of issuerIds) {
+                // Get issuer name for context
+                const issuerDoc = await db.collection('issuers').doc(id).get();
+                if (issuerDoc.exists) issuerNames.push(issuerDoc.data().name);
+
+                // Get more chunks for vector search (we'll rank them)
+                const snapshot = await db.collection('documentChunks')
+                    .where('issuerId', '==', id)
+                    .limit(50) // Get more candidates for ranking
+                    .get();
+
+                snapshot.forEach(doc => chunks.push({ ...doc.data(), issuerId: id, docId: doc.id }));
+            }
+        } else {
+            // Broad search across all issuers - get recent chunks
+            const snapshot = await db.collection('documentChunks')
+                .limit(100) // Get candidates for ranking
+                .get();
+
+            snapshot.forEach(doc => chunks.push({ ...doc.data(), docId: doc.id }));
+        }
+
+        // 3. Rank chunks by semantic similarity (if embedding available)
+        if (queryEmbedding && chunks.length > 0) {
+            // Calculate similarity scores
+            const scoredChunks = chunks
+                .filter(chunk => chunk.embedding && Array.isArray(chunk.embedding))
+                .map(chunk => {
+                    try {
+                        const similarity = cosineSimilarity(queryEmbedding, chunk.embedding);
+                        return { ...chunk, similarity };
+                    } catch (e) {
+                        return { ...chunk, similarity: 0 };
+                    }
+                });
+
+            // Sort by similarity (highest first) and take top results
+            scoredChunks.sort((a, b) => b.similarity - a.similarity);
+            chunks = scoredChunks.slice(0, 15); // Top 15 most relevant chunks
+
+            functions.logger.info(`Vector search: Selected top ${chunks.length} chunks by semantic similarity (max score: ${chunks[0]?.similarity?.toFixed(3) || 'N/A'})`);
+        } else if (chunks.length > 0) {
+            // Fallback: sort by date if available, limit to 10
+            chunks = chunks.slice(0, 10);
+            functions.logger.info('Fallback: Using recent chunks without semantic ranking');
+        }
+
+        // 3. Format Context with more text per chunk
+        const contextText = chunks.map((c, i) =>
+            `--- DOCUMENTO ${i + 1} ---
+Fuente: ${c.metadata?.documentTitle || c.source || 'Documento'}
+Fecha: ${c.metadata?.documentDate || c.date || 'S/F'}
+Emisor: ${c.metadata?.issuerName || c.issuerId || 'N/A'}
+Contenido:
+${c.text.slice(0, 1200)}
+---`
+        ).join('\n\n');
+
+        // 4. Construct Prompt with better guidance
+        const basePrompt = `Eres un analista financiero senior del mercado de valores de Nicaragua.
+Tu tarea es EXTRAER Y REPORTAR datos específicos del contexto proporcionado.
+
+CONTEXTO (Documentos Financieros Oficiales):
+${contextText || "No hay documentos específicos disponibles."}
+
+CONSULTA DEL USUARIO: "${query}"
+
+DICCIONARIO DE SINÓNIMOS FINANCIEROS NICARAGÜENSES:
+(Usa estos equivalentes al buscar en el contexto)
+- "Utilidad Neta" = "Resultado del Ejercicio" = "Ganancia Neta" = "Utilidad del Periodo"
+- "Ingresos" = "Ingresos Operativos" = "Ingresos Financieros"
+- "ROE" = "Rentabilidad sobre Patrimonio"
+- "ROA" = "Rentabilidad sobre Activos"  
+- "Activos Totales" = "Total Activo"
+- "Patrimonio" = "Capital Contable" = "Patrimonio Neto"
+
+PROCESO DE ANÁLISIS OBLIGATORIO:
+1. PRIMERO: Identifica los sinónimos aplicables a la consulta del usuario.
+2. SEGUNDO: Busca en el contexto usando TODOS los sinónimos posibles.
+3. TERCERO: Extrae cifras exactas con formato C$ y fechas.
+4. CUARTO: Presenta los datos en formato estructurado (tabla preferible).
+
+REGLAS ESTRICTAS:
+- USA SOLO datos del contexto. NO inventes cifras.
+- SIEMPRE incluye el monto exacto cuando exista (ej: C$ 175,127,432).
+- SIEMPRE cita la fuente del documento y fecha.
+- Si encuentras el dato (usando sinónimos), repórtalo directamente.
+- Si NO encuentras el dato específico, indica: "Los documentos no contienen [dato específico]."
+- NO te auto-identifiques como IA.
+
+RESPUESTA (Markdown):`;
+
+        // 5. Call Vertex AI with lower temperature for consistency
+        const answer = await callVertexAI(basePrompt, {
+            temperature: 0.1, // Much lower for consistent, precise extraction
+            maxOutputTokens: 1500 // More space for detailed response
+        });
+
+        // 5. Structure Response
+        return {
+            answer: answer,
+            sources: chunks.map(c => ({
+                title: c.source || 'Documento',
+                date: c.date,
+                issuer: c.issuerId
+            })),
+            metadata: {
+                totalChunksAnalyzed: chunks.length,
+                uniqueDocumentCount: new Set(chunks.map(c => c.source)).size,
+                yearsFound: [...new Set(chunks.map(c => c.date ? c.date.substring(0, 4) : 'N/A'))]
+            }
+        };
+
+    } catch (error) {
+        functions.logger.error('Error in handleAIQuery:', error);
+        throw new Error("Failed to process AI query");
+    }
+}
+
 module.exports = {
     generateNews,
     generateNewsForDocument,
     generateIssuerInsights,
     enhanceSearchQuery,
+    handleAIQuery
 };

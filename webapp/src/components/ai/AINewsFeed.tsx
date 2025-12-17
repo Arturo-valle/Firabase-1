@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { SparklesIcon, NewspaperIcon } from '@heroicons/react/24/outline';
+import { API_BASE_URL } from '../../config';
 
 interface NewsItem {
     id: string;
@@ -12,7 +13,6 @@ interface NewsItem {
     isAIGenerated: boolean;
 }
 
-const API_BASE_URL = 'https://us-central1-mvp-nic-market.cloudfunctions.net/api';
 
 export default function AINewsFeed() {
     const [news, setNews] = useState<NewsItem[]>([]);
@@ -31,13 +31,22 @@ export default function AINewsFeed() {
 
             const response = await fetch(`${API_BASE_URL}/ai/news?days=${daysBack}`);
             if (!response.ok) {
-                throw new Error('Failed to fetch AI news');
+                // If backend fails (common in dev without Vertex AI creds), show fallback
+                throw new Error('El servicio de noticias AI no está disponible en este momento');
             }
 
             const data = await response.json();
-            setNews(data.newsItems || []);
+            if (data.newsItems && data.newsItems.length > 0) {
+                setNews(data.newsItems);
+            } else {
+                // No news from API, show placeholder
+                setNews([]);
+            }
         } catch (err: any) {
-            setError(err.message);
+            console.warn('AI News fetch failed:', err);
+            setError(err.message || 'Error al cargar noticias');
+            // Fallback: show placeholder news in development
+            setNews([]);
         } finally {
             setLoading(false);
         }

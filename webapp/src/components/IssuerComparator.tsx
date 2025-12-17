@@ -4,6 +4,7 @@ import ComparisonTable from './ComparisonTable';
 import ComparisonCharts from './ComparisonCharts';
 import { fetchIssuerMetrics } from '../utils/metricsApi';
 import { formatDate } from '../utils/formatters';
+import { ChartBarIcon, XMarkIcon, CheckIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 
 interface IssuerComparatorProps {
     issuers: Issuer[];
@@ -19,7 +20,7 @@ const IssuerComparator: React.FC<IssuerComparatorProps> = ({ issuers }) => {
 
     const handleCompare = async () => {
         if (selectedIssuerIds.length < 2) {
-            setError('Por favor selecciona al menos 2 emisores para comparar');
+            setError('Selecciona al menos 2 emisores para comparar');
             return;
         }
 
@@ -27,25 +28,23 @@ const IssuerComparator: React.FC<IssuerComparatorProps> = ({ issuers }) => {
         setError(null);
 
         try {
-            // Fetch metrics for all selected issuers in parallel
+            // Fetch metrics for all selected issuers
             const metricsPromises = selectedIssuerIds.map(id => fetchIssuerMetrics(id));
             const results = await Promise.all(metricsPromises);
-
-            // Filter out null results (issuers without metrics)
             const validMetrics = results.filter(m => m !== null) as IssuerMetrics[];
 
             if (validMetrics.length === 0) {
-                setError('Ninguno de los emisores seleccionados tiene métricas disponibles. Por favor extrae las métricas primero en el Módulo Estandarizador.');
+                setError('No hay métricas disponibles para los emisores seleccionados.');
                 setComparisonData([]);
-            } else if (validMetrics.length < selectedIssuerIds.length) {
-                setError(`Solo ${validMetrics.length} de ${selectedIssuerIds.length} emisores tienen métricas disponibles.`);
-                setComparisonData(validMetrics);
             } else {
+                if (validMetrics.length < selectedIssuerIds.length) {
+                    setError(`Solo ${validMetrics.length} de ${selectedIssuerIds.length} emisores tienen datos.`);
+                }
                 setComparisonData(validMetrics);
             }
         } catch (err) {
             console.error('Error comparing issuers:', err);
-            setError(err instanceof Error ? err.message : 'Error al comparar emisores');
+            setError(err instanceof Error ? err.message : 'Error de conexión');
             setComparisonData([]);
         } finally {
             setLoading(false);
@@ -58,7 +57,7 @@ const IssuerComparator: React.FC<IssuerComparatorProps> = ({ issuers }) => {
                 return prev.filter(id => id !== issuerId);
             } else {
                 if (prev.length >= 4) {
-                    setError('Máximo 4 emisores para comparar');
+                    setError('Máximo 4 emisores permitidos');
                     return prev;
                 }
                 setError(null);
@@ -74,172 +73,139 @@ const IssuerComparator: React.FC<IssuerComparatorProps> = ({ issuers }) => {
     };
 
     return (
-        <div className="p-6 max-w-7xl mx-auto">
+        <div className="p-6 max-w-7xl mx-auto animate-fade-in space-y-8">
             {/* Header */}
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-text-primary mb-2">
-                    📈 Módulo Comparador
-                </h1>
-                <p className="text-lg text-text-secondary">
-                    Comparación lado a lado de métricas financieras
-                </p>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+                        <ChartBarIcon className="w-8 h-8 text-accent-primary" />
+                        Matrix Comparativo
+                    </h1>
+                    <p className="text-text-secondary font-mono text-sm mt-1">
+                        Análisis cruzado de rendimiento y solvencia.
+                    </p>
+                </div>
+                {selectedIssuerIds.length > 0 && (
+                    <button
+                        onClick={handleClear}
+                        className="text-xs font-mono text-status-danger hover:text-red-400 border border-status-danger/30 hover:bg-status-danger/10 px-3 py-1.5 rounded transition-all"
+                    >
+                        LIMPIAR SELECCIÓN
+                    </button>
+                )}
             </div>
 
-            {/* Issuer Selection */}
-            <div className="card mb-6">
-                <h2 className="text-lg font-semibold text-text-primary mb-4">
-                    Selecciona Emisores (2-4)
+            {/* Selection Panel */}
+            <div className="glass-panel p-6 rounded-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                    <ChartBarIcon className="w-64 h-64 text-accent-secondary transform rotate-12" />
+                </div>
+
+                <h2 className="text-sm font-bold text-text-tertiary uppercase tracking-wider mb-4 font-mono">
+                    Seleccionar Emisores ({selectedIssuerIds.length}/4)
                 </h2>
 
-                {/* Grid of issuer chips */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 relative z-10">
                     {activeIssuers.map(issuer => {
                         const isSelected = selectedIssuerIds.includes(issuer.id);
-
                         return (
                             <button
                                 key={issuer.id}
                                 onClick={() => handleToggleIssuer(issuer.id)}
-                                className={`p-3 rounded-lg border transition-all text-sm font-medium ${isSelected
-                                    ? 'border-accent-primary bg-accent-primary/10 text-accent-primary shadow-glow'
-                                    : 'border-border-subtle bg-bg-tertiary text-text-secondary hover:border-accent-primary/50 hover:text-text-primary'
-                                    }`}
+                                className={`
+                                    relative overflow-hidden group p-3 rounded-lg border text-sm font-medium transition-all duration-300 text-left
+                                    ${isSelected
+                                        ? 'bg-accent-primary/10 border-accent-primary text-white shadow-glow-cyan'
+                                        : 'bg-black/40 border-white/10 text-text-secondary hover:border-white/30 hover:bg-white/5'
+                                    }
+                                `}
                             >
-                                <div className="flex items-center justify-between">
-                                    <span className="truncate">
-                                        {issuer.acronym || issuer.name}
-                                    </span>
-                                    {isSelected && <span className="ml-2 text-accent-primary">✓</span>}
+                                <div className="flex items-center justify-between relative z-10">
+                                    <span className="truncate font-mono text-xs">{issuer.acronym || issuer.name.substring(0, 10)}</span>
+                                    {isSelected && <CheckIcon className="w-4 h-4 text-accent-primary" />}
+                                </div>
+                                <div className="text-[10px] text-text-tertiary mt-1 truncate group-hover:text-text-secondary transition-colors">
+                                    {issuer.name}
                                 </div>
                             </button>
                         );
                     })}
                 </div>
 
-                {/* Selected issuers display */}
-                {selectedIssuerIds.length > 0 && (
-                    <div className="bg-bg-tertiary border border-border-subtle rounded-lg p-4 mb-4">
-                        <div className="flex items-center justify-between mb-2">
-                            <p className="text-sm text-text-primary font-medium">
-                                Seleccionados ({selectedIssuerIds.length}/4):
-                            </p>
-                            <button
-                                onClick={handleClear}
-                                className="text-sm text-accent-primary hover:text-accent-hover font-medium"
-                            >
-                                Limpiar
-                            </button>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                            {selectedIssuerIds.map(id => {
-                                const issuer = activeIssuers.find(i => i.id === id);
-                                return issuer ? (
-                                    <span key={id} className="inline-flex items-center gap-1 bg-accent-primary/20 text-accent-primary border border-accent-primary/30 px-3 py-1 rounded-full text-sm">
-                                        {issuer.name}
-                                        <button
-                                            onClick={() => handleToggleIssuer(id)}
-                                            className="hover:bg-accent-primary/20 rounded-full px-1 transition-colors"
-                                        >
-                                            ×
-                                        </button>
-                                    </span>
-                                ) : null;
-                            })}
-                        </div>
-                    </div>
-                )}
-
-                {/* Compare Button */}
-                <button
-                    onClick={handleCompare}
-                    disabled={selectedIssuerIds.length < 2 || loading}
-                    className={`w-full py-3 px-6 rounded-lg font-bold text-bg-primary transition-all ${selectedIssuerIds.length < 2 || loading
-                        ? 'bg-text-disabled cursor-not-allowed'
-                        : 'bg-accent-primary hover:bg-accent-hover shadow-lg hover:shadow-glow'
-                        }`}
-                >
-                    {loading ? '⏳ Comparando...' : '🔍 Comparar Emisores'}
-                </button>
+                {/* Main Action */}
+                <div className="mt-6 flex justify-end">
+                    <button
+                        onClick={handleCompare}
+                        disabled={selectedIssuerIds.length < 2 || loading}
+                        className={`
+                            px-8 py-3 rounded-lg font-bold font-mono tracking-wider text-sm transition-all
+                            ${selectedIssuerIds.length < 2 || loading
+                                ? 'bg-white/5 text-text-disabled cursor-not-allowed border border-white/5'
+                                : 'bg-accent-primary text-black hover:bg-accent-hover shadow-glow-cyan hover:scale-105'
+                            }
+                        `}
+                    >
+                        {loading ? (
+                            <span className="flex items-center gap-2">
+                                <ArrowPathIcon className="w-4 h-4 animate-spin" />
+                                PROCESANDO...
+                            </span>
+                        ) : (
+                            'COMPARAR DATOS'
+                        )}
+                    </button>
+                </div>
             </div>
 
             {/* Error Display */}
             {error && (
-                <div className="bg-red-900/20 border border-status-danger/50 rounded-xl p-4 mb-6">
-                    <p className="text-status-danger text-sm">⚠️ {error}</p>
+                <div className="bg-status-danger/10 border border-status-danger/30 p-4 rounded-xl flex items-center gap-3">
+                    <XMarkIcon className="w-5 h-5 text-status-danger" />
+                    <p className="text-status-danger text-sm font-mono">{error}</p>
                 </div>
             )}
 
-            {/* Loading State */}
-            {loading && (
-                <div className="card p-12 text-center">
-                    <div className="animate-spin w-12 h-12 border-4 border-accent-primary border-t-transparent rounded-full mx-auto mb-4" />
-                    <p className="text-text-secondary">Cargando métricas para comparación...</p>
-                </div>
-            )}
-
-            {/* No Comparison Yet */}
+            {/* No Data State */}
             {!loading && comparisonData.length === 0 && !error && (
-                <div className="card p-12 text-center border-dashed border-2 border-border-subtle bg-transparent">
-                    <div className="text-6xl mb-4 grayscale opacity-50">📊</div>
-                    <h3 className="text-xl font-semibold text-text-primary mb-2">
-                        Selecciona Emisores para Comparar
-                    </h3>
-                    <p className="text-text-secondary">
-                        Elige entre 2 y 4 emisores y haz clic en "Comparar Emisores" para ver el análisis comparativo
-                    </p>
+                <div className="border border-dashed border-white/10 rounded-2xl p-12 text-center bg-white/5">
+                    <ChartBarIcon className="w-16 h-16 text-text-tertiary mx-auto mb-4 opacity-20" />
+                    <p className="text-text-secondary font-mono text-sm">ESPERANDO DATOS...</p>
                 </div>
             )}
 
             {/* Comparison Results */}
             {!loading && comparisonData.length > 0 && (
-                <div className="space-y-6">
-                    {/* Summary Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="bg-bg-secondary border border-border-subtle rounded-xl p-6 text-text-primary shadow-sm hover:border-accent-primary/50 transition-colors">
-                            <p className="text-sm text-text-secondary mb-1">Emisores Comparados</p>
-                            <p className="text-4xl font-bold text-text-primary">{comparisonData.length}</p>
-                        </div>
-                        <div className="bg-bg-secondary border border-border-subtle rounded-xl p-6 text-text-primary shadow-sm hover:border-accent-secondary/50 transition-colors">
-                            <p className="text-sm text-text-secondary mb-1">Métricas Analizadas</p>
-                            <p className="text-4xl font-bold text-text-primary">20+</p>
-                        </div>
-                        <div className="bg-bg-secondary border border-border-subtle rounded-xl p-6 text-text-primary shadow-sm hover:border-purple-500/50 transition-colors">
-                            <p className="text-sm text-text-secondary mb-1">Categorías</p>
-                            <p className="text-4xl font-bold text-text-primary">6</p>
-                        </div>
-                    </div>
-
-                    {/* Charts */}
-                    <div>
-                        <h2 className="text-2xl font-bold text-text-primary mb-4">
-                            Visualizaciones Comparativas
-                        </h2>
+                <div className="space-y-8 animate-slide-up">
+                    {/* Charts Section */}
+                    <div className="glass-panel p-6 rounded-2xl">
+                        <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                            <span className="w-1 h-6 bg-accent-secondary rounded-full"></span>
+                            Análisis Visual
+                        </h3>
                         <ComparisonCharts issuers={comparisonData} />
                     </div>
 
-                    {/* Table */}
-                    <div>
-                        <h2 className="text-2xl font-bold text-text-primary mb-4">
-                            Tabla Comparativa Detallada
-                        </h2>
-                        <ComparisonTable issuers={comparisonData} highlightBest={true} />
+                    {/* Table Section */}
+                    <div className="glass-panel p-6 rounded-2xl overflow-hidden">
+                        <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                            <span className="w-1 h-6 bg-accent-primary rounded-full"></span>
+                            Datos Fundamentales
+                        </h3>
+                        <div className="overflow-x-auto">
+                            <ComparisonTable issuers={comparisonData} highlightBest={true} />
+                        </div>
                     </div>
 
                     {/* Metadata Footer */}
-                    <div className="bg-bg-tertiary border border-border-subtle rounded-xl p-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
-                            {comparisonData.map((issuer, idx) => (
-                                <div key={idx} className="text-center">
-                                    <p className="text-text-primary font-medium">{issuer.issuerName}</p>
-                                    <p className="text-text-tertiary text-xs mt-1">
-                                        Período: {issuer.metadata?.periodo || 'N/D'}
-                                    </p>
-                                    <p className="text-text-tertiary text-xs">
-                                        Actualizado: {formatDate(issuer.extractedAt)}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {comparisonData.map((item, idx) => (
+                            <div key={idx} className="bg-black/40 border border-white/10 p-3 rounded-lg text-center">
+                                <p className="text-xs font-bold text-white">{item.issuerName}</p>
+                                <p className="text-[10px] text-text-tertiary font-mono mt-1">
+                                    {formatDate(item.extractedAt)}
+                                </p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             )}

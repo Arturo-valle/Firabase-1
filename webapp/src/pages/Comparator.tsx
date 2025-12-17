@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import IssuerComparator from '../components/IssuerComparator';
-import { fetchIssuers, DISPLAY_NAMES, ISSUER_METADATA } from '../utils/marketDataApi';
+import { fetchIssuers } from '../utils/marketDataApi';
+import { transformIssuers } from '../utils/dataTransforms';
 import type { Issuer } from '../types';
 
 export default function Comparator() {
@@ -11,15 +12,7 @@ export default function Comparator() {
         async function loadIssuers() {
             try {
                 const data = await fetchIssuers();
-                const issuersList = data.issuers?.map((issuer: any) => ({
-                    id: issuer.id,
-                    name: DISPLAY_NAMES[issuer.id] || issuer.name, // Force clean name
-                    sector: ISSUER_METADATA[issuer.id]?.sector || issuer.sector || 'Privado', // Force clean sector
-                    acronym: ISSUER_METADATA[issuer.id]?.acronym || issuer.acronym || '', // Force clean acronym
-                    documents: issuer.documents || [],
-                    logoUrl: issuer.logoUrl || '',
-                }))
-                    || [];
+                const issuersList = transformIssuers(data.issuers);
                 setIssuers(issuersList);
             } catch (error) {
                 console.error('Failed to load issuers for comparator:', error);

@@ -8,40 +8,49 @@ export default {
     extend: {
       colors: {
         bg: {
-          primary: '#0B0E14',   // Deep dark blue/black
-          secondary: '#151A23', // Slightly lighter
-          tertiary: '#1E2430',  // Card background
-          elevated: '#2A3241',  // Hover states
+          primary: '#050505',   // Deep OLED Black
+          secondary: '#0A0A0A', // Slightly lighter black
+          tertiary: '#111111',  // Card background
+          elevated: '#1A1A1A',  // Hover states
         },
         text: {
-          primary: '#F3F4F6',
-          secondary: '#9CA3AF',
-          tertiary: '#6B7280',
+          primary: '#EDEDED',   // High contrast white
+          secondary: '#A1A1A1', // Neutral gray
+          tertiary: '#525252',  // Subtle gray
+          muted: '#262626',     // Very subtle
         },
         accent: {
-          primary: '#06B6D4',   // Cyan
-          secondary: '#10B981', // Emerald
-          tertiary: '#8B5CF6',  // Violet
+          primary: '#00D8FF',   // Electric Cyan
+          secondary: '#00F090', // Neon Green
+          tertiary: '#7F00FF',  // Electric Violet
         },
         status: {
-          success: '#10B981',
-          warning: '#F59E0B',
-          danger: '#EF4444',
-          info: '#3B82F6',
+          success: '#00F090',   // Neon Green (Financial Up)
+          warning: '#FFB020',   // Amber
+          danger: '#FF2D55',    // Neon Red (Financial Down)
+          info: '#2E95FF',      // Bright Blue
         },
         border: {
-          DEFAULT: '#1F2937',
-          emphasis: '#374151',
+          DEFAULT: '#1F1F1F',
+          subtle: '#141414',
+          emphasis: '#333333',
         }
       },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Menlo', 'Consolas', 'monospace'], // For financial data
+      },
       boxShadow: {
-        'glow-cyan': '0 0 20px -5px rgba(6, 182, 212, 0.3)',
-        'elevated': '0 10px 30px -10px rgba(0, 0, 0, 0.5)',
+        'glow-cyan': '0 0 15px -3px rgba(0, 216, 255, 0.4)',
+        'glow-green': '0 0 15px -3px rgba(0, 240, 144, 0.4)',
+        'glow-red': '0 0 15px -3px rgba(255, 45, 85, 0.4)',
+        'elevated': '0 20px 40px -20px rgba(0, 0, 0, 0.8)',
       },
       animation: {
-        marquee: 'marquee 25s linear infinite',
+        marquee: 'marquee 30s linear infinite',
         'fade-in': 'fadeIn 0.5s ease-out',
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'shimmer': 'shimmer 2s infinite',
       },
       keyframes: {
         marquee: {
@@ -51,8 +60,15 @@ export default {
         fadeIn: {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-1000px 0' },
+          '100%': { backgroundPosition: '1000px 0' }
         }
       },
+      backgroundImage: {
+        'grid-pattern': "linear-gradient(to right, #1f1f1f 1px, transparent 1px), linear-gradient(to bottom, #1f1f1f 1px, transparent 1px)",
+      }
     },
   },
   plugins: [],

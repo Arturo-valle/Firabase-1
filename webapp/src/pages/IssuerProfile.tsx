@@ -10,30 +10,11 @@ interface IssuerProfileProps {
 export const IssuerProfile: React.FC<IssuerProfileProps> = ({ issuer, onBack }) => {
     const [activeTab, setActiveTab] = useState<'overview' | 'documents' | 'ai'>('overview');
     const [documents, setDocuments] = useState<Document[]>([]);
-    const [loadingDocs, setLoadingDocs] = useState(false);
 
     useEffect(() => {
-        const fetchDocs = async () => {
-            if (!issuer.name) return;
-            setLoadingDocs(true);
-            try {
-                // Fetch documents from API
-                const response = await fetch(`https://us-central1-mvp-nic-market.cloudfunctions.net/api/issuer-documents?issuerName=${encodeURIComponent(issuer.name)}`);
-                const data = await response.json();
-                if (data.documents) {
-                    setDocuments(data.documents);
-                } else {
-                    // Fallback to issuer object if API fails or returns empty (and we have local data)
-                    setDocuments(issuer.documents || []);
-                }
-            } catch (e) {
-                console.error("Error fetching docs", e);
-                setDocuments(issuer.documents || []);
-            } finally {
-                setLoadingDocs(false);
-            }
-        };
-        fetchDocs();
+        if (issuer.documents) {
+            setDocuments(issuer.documents);
+        }
     }, [issuer]);
 
     const groupDocuments = (docs: Document[]) => {
@@ -89,8 +70,8 @@ export const IssuerProfile: React.FC<IssuerProfileProps> = ({ issuer, onBack }) 
                             key={tab}
                             onClick={() => setActiveTab(tab as any)}
                             className={`pb-3 text-sm font-medium transition-all border-b-2 ${activeTab === tab
-                                    ? 'border-blue-500 text-white'
-                                    : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-700'
+                                ? 'border-blue-500 text-white'
+                                : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-700'
                                 }`}
                         >
                             {tab === 'overview' && 'Resumen Financiero'}
@@ -146,9 +127,7 @@ export const IssuerProfile: React.FC<IssuerProfileProps> = ({ issuer, onBack }) 
 
                 {activeTab === 'documents' && (
                     <div className="animate-fade-in">
-                        {loadingDocs ? (
-                            <div className="text-center py-12 text-gray-500">Cargando biblioteca de documentos...</div>
-                        ) : documents.length > 0 ? (
+                        {documents.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {Object.entries(groupedDocs).map(([category, docs]) => (
                                     <div key={category} className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">

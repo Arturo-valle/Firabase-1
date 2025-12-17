@@ -31,7 +31,7 @@ function App() {
           <TopBar />
 
           {/* Main Content - Center */}
-          <main className="ml-16 mr-80 mt-16 p-6 min-h-screen">
+          <main className="ml-24 mr-80 mt-16 p-4 min-h-screen">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/discover" element={<Discover />} />
