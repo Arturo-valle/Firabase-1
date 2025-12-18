@@ -67,7 +67,7 @@ async function generateFinancialAnalysis(prompt, options = {}) {
             location: 'us-central1',
         });
 
-        const MODEL_NAME = 'gemini-2.5-flash-lite';
+        const MODEL_NAME = options.model || 'gemini-2.5-flash-lite';
         const generativeModel = vertexAI.preview.getGenerativeModel({
             model: MODEL_NAME,
             generationConfig: {

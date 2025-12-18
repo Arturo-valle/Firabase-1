@@ -308,6 +308,25 @@ async function handleAIQuery(query, issuerId = null, analysisType = 'general') {
             functions.logger.info('Fallback: Using recent chunks without semantic ranking');
         }
 
+        // new step: Try to fetch verified metrics from structured collection (Rec 3)
+        let verifiedMetricsText = "";
+        try {
+            const yearMatch = query.match(/20\d\d/);
+            if (yearMatch && issuerIds.length === 1) {
+                const year = yearMatch[0];
+                const metricsDocId = `${issuerIds[0]}_${year}`;
+                const metricDoc = await db.collection('financialMetrics').doc(metricsDocId).get();
+
+                if (metricDoc.exists) {
+                    const data = metricDoc.data();
+                    verifiedMetricsText = `\nDATOS FINANCIEROS VERIFICADOS (ALTA PRIORIDAD - ÚSALOS PREFERENTEMENTE):\nEmisor: ${data.issuerName} Año: ${data.year}\n${JSON.stringify(data.metrics, null, 2)}\nFuente: ${data.sourceDocument || 'Base de Datos Verificada'}\n`;
+                    functions.logger.info(`Injecting verified metrics for ${issuerIds[0]} ${year}`);
+                }
+            }
+        } catch (e) {
+            functions.logger.warn('Error fetching verified metrics:', e);
+        }
+
         // 3. Format Context with more text per chunk
         const contextText = chunks.map((c, i) =>
             `--- DOCUMENTO ${i + 1} ---
@@ -323,6 +342,10 @@ ${c.text.slice(0, 1200)}
         const basePrompt = `Eres un analista financiero senior del mercado de valores de Nicaragua.
 Tu tarea es EXTRAER Y REPORTAR datos específicos del contexto proporcionado.
 
+HECHOS VERIFICADOS (Prioridad Máxima):
+${verifiedMetricsText || "No hay datos verificados disponibles."}
+
+CONTEXTO (Documentos Financieros Oficiales):
 CONTEXTO (Documentos Financieros Oficiales):
 ${contextText || "No hay documentos específicos disponibles."}
 

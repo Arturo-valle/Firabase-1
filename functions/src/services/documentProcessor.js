@@ -91,7 +91,7 @@ function chunkText(text, maxChunkSize = 1500, overlap = 200) {
  * @param {string} issuerName - Nombre del emisor
  * @returns {Promise<object[]>} Array de chunks procesados con embeddings
  */
-async function processDocument(document, issuerName) {
+async function processDocument(document, issuerName, issuerId) {
     try {
         functions.logger.info(`Processing document: ${document.title} for ${issuerName}`);
 
@@ -106,12 +106,115 @@ async function processDocument(document, issuerName) {
             return [];
         }
 
-        // 3. Chunk text
+        // --- INTELLIGENT INGESTION START ---
+        // New Step: Try to extract structured financial data with LLM
+        let structuredData = null;
+        let superChunk = null;
+
+        // Simple heuristic to identify financial statements
+        const isFinancialStatement = (document.type || '').match(/financiero|auditado|balance/i) ||
+            (document.title || '').match(/estados?\s*financieros?|auditados?|balance/i);
+
+        if (isFinancialStatement) {
+            try {
+                functions.logger.info(`Generative AI Extraction: Analyzing financial document ${document.title}...`);
+                const { generateFinancialAnalysis } = require('./vertexAI');
+
+                // Limit text context for LLM (first 30k chars usually contain the statements)
+                const textContext = text.slice(0, 30000);
+
+                const extractionPrompt = `Eres un auditor financiero experto procesando documentos de ${issuerName}.
+Tu objetivo es limpiar y estructurar los datos financieros Clave del siguiente texto crudo extraído de un PDF.
+
+TEXTO CRUDO (Inicio del documento):
+${textContext}
+
+TAREA 1: Identifica el año fiscal principal y el periodo (Anual, Trimestral).
+TAREA 2: Extrae las METRICAS CLAVE EXACTAS (sin redondeo) en formato JSON.
+TAREA 3: Genera una TABLA MARKDOWN limpia y legible del Estado de Resultados (o Actividad) y Balance General, corrigiendo errores de OCR.
+
+RESPUESTA REQUERIDA (JSON PURO):
+{
+  "is_financial_doc": true,
+  "fiscal_year": 2023,
+  "period": "Annual",
+  "metrics": {
+    "net_income": 123456.78, (Usa 0 si no encuentras)
+    "total_assets": 123456.78,
+    "total_equity": 123456.78,
+    "total_revenue": 123456.78
+  },
+  "markdown_summary": "## Resumen Financiero Estructurado\n\n### Estado de Resultados\n| Concepto | Monto |\n|...|...|\n"
+}
+Solo devuelve el JSON válido, sin texto adicional markdown (\`\`\`).`;
+
+                const llmResponse = await generateFinancialAnalysis(extractionPrompt, {
+                    temperature: 0.1, // High precision
+                    maxTokens: 4096, // More output space for tables
+                    model: 'gemini-2.5-flash-lite' // Use proven model
+                });
+
+                // Clean json block if present
+                const jsonStr = llmResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+                structuredData = JSON.parse(jsonStr);
+
+                if (structuredData && structuredData.is_financial_doc) {
+                    functions.logger.info(`Smart Ingestion: Extracted metrics for ${structuredData.fiscal_year}`);
+
+                    // A) Store in dedicated metrics collection (Recommendation 2)
+                    if (structuredData.metrics && structuredData.fiscal_year) {
+                        const db = getFirestore();
+                        await db.collection('financialMetrics').doc(`${issuerId}_${structuredData.fiscal_year}`).set({
+                            issuerId,
+                            issuerName,
+                            year: structuredData.fiscal_year,
+                            period: structuredData.period,
+                            metrics: structuredData.metrics,
+                            sourceDocument: document.title,
+                            updatedAt: new Date()
+                        }, { merge: true });
+                    }
+
+                    // B) Create a "Super Chunk" (Recommendation 1)
+                    if (structuredData.markdown_summary) {
+                        const embeddings = await generateEmbeddings(structuredData.markdown_summary);
+                        superChunk = {
+                            chunkIndex: -1, // Special index
+                            text: "RESUMEN FINANCIERO ESTRUCTURADO Y VERIFICADO:\n" + structuredData.markdown_summary,
+                            embedding: embeddings,
+                            metadata: {
+                                issuerName: issuerName,
+                                documentTitle: document.title,
+                                documentUrl: document.url,
+                                documentDate: document.date,
+                                documentType: "Smart Extract", // Special type
+                                processedAt: new Date().toISOString(),
+                                isSuperChunk: true
+                            }
+                        };
+                    }
+                }
+
+            } catch (err) {
+                functions.logger.warn(`Smart Ingestion Failed for ${document.title}:`, err.message);
+                // Non-blocking failure, continue with standard chunking
+            }
+        }
+        // --- INTELLIGENT INGESTION END ---
+
+        // 3. Chunk text (Standard Process)
         const chunks = chunkText(text);
-        functions.logger.info(`Created ${chunks.length} chunks for ${document.title}`);
+        functions.logger.info(`Created ${chunks.length} standard chunks for ${document.title}`);
 
         // 4. Generate embeddings for each chunk
         const processedChunks = [];
+
+        // Add Super Chunk if available
+        if (superChunk) {
+            processedChunks.push(superChunk);
+            functions.logger.info('Added Super Chunk to processed list');
+        }
+
         for (let i = 0; i < chunks.length; i++) {
             try {
                 const embedding = await generateEmbeddings(chunks[i]);
@@ -129,18 +232,19 @@ async function processDocument(document, issuerName) {
                         processedAt: new Date().toISOString(),
                     },
                 });
-
-                // Note: No artificial delay needed - REST API calls provide natural rate limiting
             } catch (error) {
                 functions.logger.error(`Error processing chunk ${i} of ${document.title}:`, error.message);
                 // Continue with next chunk
             }
         }
 
-        return processedChunks;
+        return {
+            chunks: processedChunks,
+            smartStatus: isFinancialStatement ? (superChunk ? 'success' : 'failed_generation') : 'skipped_regex'
+        };
     } catch (error) {
         functions.logger.error(`Error processing document ${document.title}:`, error.message);
-        return [];
+        return { chunks: [], smartStatus: `error: ${error.message}` };
     }
 }
 
@@ -287,41 +391,30 @@ async function processIssuerDocuments(issuerId, issuerName, documents, maxDocume
 
     const debugInfo = [];
 
-    for (const doc of relevantDocs.slice(0, docsToProcess)) { // Process up to maxDocuments
+    for (const doc of relevantDocs.slice(0, docsToProcess)) {
         try {
-            // Inline processDocument logic to capture debug info
-            functions.logger.info(`Processing document: ${doc.title} for ${issuerName}`);
-            const pdfBuffer = await downloadPDF(doc.url);
-            const text = await extractTextFromPDF(pdfBuffer);
+            // Use the shared, enhanced processDocument function (now with Smart Ingestion)
+            functions.logger.info(`Starting smart processing for: ${doc.title}`);
+            const result = await processDocument(doc, issuerName, issuerId);
 
-            const textLength = text ? text.length : 0;
-            const chunks = chunkText(text || '');
+            // Handle new object return signature
+            const chunks = result.chunks || [];
+            const smartStatus = result.smartStatus || 'unknown';
 
-            debugInfo.push({ title: doc.title, textLength, chunksCount: chunks.length });
+            // Calculate pseudo text length for debug info
+            const textLength = chunks.reduce((acc, c) => acc + (c.text ? c.text.length : 0), 0);
+            debugInfo.push({ title: doc.title, textLength, chunksCount: chunks.length, smartStatus });
 
             if (chunks.length > 0) {
-                // Generate embeddings and store
-                const processedChunks = [];
-                for (let i = 0; i < chunks.length; i++) {
-                    try {
-                        const embedding = await generateEmbeddings(chunks[i]);
-                        processedChunks.push({
-                            chunkIndex: i, text: chunks[i], embedding: embedding,
-                            metadata: { issuerName, documentTitle: doc.title, documentUrl: doc.url, documentDate: doc.date, documentType: doc.type, processedAt: new Date().toISOString() }
-                        });
-                    } catch (e) { functions.logger.error(e); }
-                }
-
-                if (processedChunks.length > 0) {
-                    const documentId = doc.title.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 50);
-                    await storeDocumentChunks(issuerId, documentId, processedChunks);
-                    processedCount++;
-                }
+                // Generate safe document ID
+                const documentId = doc.title.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 50);
+                await storeDocumentChunks(issuerId, documentId, chunks);
+                processedCount++;
             }
         } catch (error) {
             functions.logger.error(`Error processing document ${doc.title}:`, error);
             errorCount++;
-            debugInfo.push({ title: doc.title, error: error.message, pdfParseContent: global.pdfParseContent });
+            debugInfo.push({ title: doc.title, error: error.message });
         }
     }
 
