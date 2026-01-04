@@ -1,33 +1,16 @@
 import { useState, useEffect } from 'react';
 import { SparklesIcon, LightBulbIcon } from '@heroicons/react/24/outline';
 import Citations from './Citations';
+import { useAIResearch, Insight } from '../../hooks/useAIResearch';
 
 interface InsightCardProps {
     issuerId: string;
     issuerName: string;
 }
 
-interface Citation {
-    text: string;
-    source: string;
-    relevance?: string;
-}
-
-interface Insight {
-    insight: string;
-    sentiment: 'positive' | 'negative' | 'neutral';
-    confidence: number;
-    metrics: string[];
-    citations?: Citation[];
-    generatedAt: string;
-}
-
-const API_BASE_URL = 'https://us-central1-mvp-nic-market.cloudfunctions.net/api';
-
 export default function InsightCard({ issuerId, issuerName }: InsightCardProps) {
     const [insight, setInsight] = useState<Insight | null>(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const { loading, error, getInsight } = useAIResearch();
 
     useEffect(() => {
         loadInsight();
@@ -35,25 +18,10 @@ export default function InsightCard({ issuerId, issuerName }: InsightCardProps) 
 
     async function loadInsight() {
         try {
-            setLoading(true);
-            setError(null);
-
-            const response = await fetch(`${API_BASE_URL}/ai/insights/${encodeURIComponent(issuerId)}`);
-            if (!response.ok) {
-                throw new Error('Failed to load insights');
-            }
-
-            const data = await response.json();
-
-            if (data.success && data.insights) {
-                setInsight(data.insights);
-            } else {
-                setError(data.message || 'No insights available');
-            }
-        } catch (err: any) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
+            const data = await getInsight(issuerId);
+            setInsight(data);
+        } catch (err) {
+            console.error('Failed to load insight:', err);
         }
     }
 

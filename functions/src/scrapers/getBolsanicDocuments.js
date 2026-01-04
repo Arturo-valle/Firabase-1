@@ -21,6 +21,51 @@ const scrapeBolsanicDocuments = async (detailUrl) => {
         const $ = cheerio.load(data);
         const documents = [];
 
+        // --- HANDLER: INVERCA SAFI (Wordpress) ---
+        if (detailUrl.includes('invercasasafi.com')) {
+            $("a[href*='.pdf']").each((i, element) => {
+                const url = $(element).attr('href');
+                const title = $(element).text().trim() || url.split('/').pop();
+
+                // Filter: Only Horizonte related docs if strictly needed, or all docs on page 
+                // Since URL is specifically /fondos-de-inversion/, it might have multiple funds.
+                // We should check if the section header or title mentions "Horizonte" if strict filtering needed.
+                // For now, accept all PDFs and let extraction filter by content relevance.
+
+                // Infer Data directly from WordPress URL structure: .../2025/07/...
+                let date = new Date().toISOString();
+                const urlMatch = url.match(/\/(\d{4})\/(\d{2})\//);
+                if (urlMatch) {
+                    const year = urlMatch[1];
+                    const month = urlMatch[2];
+                    date = new Date(`${year}-${month}-01`).toISOString();
+                } else {
+                    // Fallback to title date extraction
+                    const yearMatch = title.match(/20\d{2}/);
+                    if (yearMatch) date = new Date(`${yearMatch[0]}-01-01`).toISOString();
+                }
+
+                let type = "Documento";
+                if (/prospecto/i.test(title)) type = "Prospecto";
+                else if (/financiero|auditado|informe/i.test(title)) type = "Estados Financieros";
+                else if (/riesgo|calificaci/i.test(title)) type = "Calificación de Riesgo";
+                else if (/hecho relevante/i.test(title)) type = "Hecho Relevante";
+                else if (/trimestral/i.test(title)) type = "Informe Trimestral";
+
+                if (url) {
+                    documents.push({
+                        title: title.replace(/\s+/g, ' '),
+                        url,
+                        date,
+                        type
+                    });
+                }
+            });
+
+            return documents;
+        }
+
+        // --- HANDLER: BOLSANIC (Legacy & New) ---
         // Method 1: Look for .lsa-open links (New structure)
         $(".lsa-open").each((i, element) => {
             const title = $(element).text().trim();

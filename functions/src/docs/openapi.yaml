@@ -1,0 +1,248 @@
+openapi: 3.0.0
+info:
+  title: Boletín BVN AI API
+  description: API backend for the Nicaraguan Stock Market AI analysis platform.
+  version: 1.0.0
+servers:
+  - url: https://mvp-nic-market.web.app/api
+    description: Production Server
+  - url: http://127.0.0.1:5001/mvp-nic-market/us-central1/api
+    description: Local Development
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Issuer:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "banco-de-la-produccion"
+        name:
+          type: string
+          example: "Banco de la Producción, S.A."
+        type:
+          type: string
+          enum: [banco, financiera, agricola, fondo]
+    MetricSet:
+      type: object
+      properties:
+        liquidity: 
+          type: object
+          properties:
+            currentRatio: { type: number }
+        solvency:
+          type: object
+          properties:
+            debtEquity: { type: number }
+        profitability:
+          type: object
+          properties:
+            roe: { type: number }
+            roa: { type: number }
+    MarketNews:
+      type: object
+      properties:
+        title: { type: string }
+        summary: { type: string }
+        date: { type: string, format: date-time }
+        sentiment: { type: string, enum: [positive, neutral, negative] }
+
+paths:
+  # Public Endpoints
+  /issuers:
+    get:
+      summary: List all issuers
+      tags: [Issuers]
+      responses:
+        '200':
+          description: A list of issuers
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Issuer'
+  
+  /issuer/{id}:
+    get:
+      summary: Get issuer details
+      tags: [Issuers]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Issuer details
+        '404':
+          description: Issuer not found
+
+  /issuer-documents:
+    get:
+      summary: Search issuer documents
+      tags: [Documents]
+      parameters:
+        - in: query
+          name: issuerId
+          schema: { type: string }
+        - in: query
+          name: type
+          schema: { type: string }
+      responses:
+        '200':
+          description: List of documents
+
+  /ai/news:
+    get:
+      summary: Get generated market news
+      tags: [AI]
+      responses:
+        '200':
+          description: AI-generated news and insights
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  news: 
+                    type: array
+                    items: { $ref: '#/components/schemas/MarketNews' }
+                  marketSummary: { type: string }
+
+  /metrics/{issuerId}:
+    get:
+      summary: Get latest financial metrics for an issuer
+      tags: [Metrics]
+      parameters:
+        - in: path
+          name: issuerId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Financial metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  metrics: { $ref: '#/components/schemas/MetricSet' }
+
+  /metrics/history/{issuerId}:
+    get:
+      summary: Get historical financial metrics
+      tags: [Metrics]
+      parameters:
+        - in: path
+          name: issuerId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Historical metrics array
+  
+  /bcn:
+    get:
+      summary: Get official BCN exchange rates
+      tags: [Market Data]
+      responses:
+        '200':
+          description: Current exchange rates
+  
+  /status:
+    get:
+      summary: System status
+      tags: [System]
+      responses:
+        '200':
+          description: System health and stats
+
+  /metrics/compare:
+    post:
+      summary: Compare metrics between issuers
+      tags: [Metrics]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                issuerIds: 
+                  type: array
+                  items: { type: string }
+      responses:
+        '200':
+          description: Comparative analysis
+
+  # Protected Endpoints (User)
+  /ai/query:
+    post:
+      summary: RAG-based AI Query
+      tags: [AI]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query: { type: string }
+                issuerId: { type: string }
+      responses:
+        '200':
+          description: AI Answer
+
+  /ai/insights/{issuerId}:
+    get:
+      summary: Get strategic insights
+      tags: [AI]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: issuerId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Strategic insights
+
+  # Admin Endpoints
+  /metrics/extract/{issuerId}:
+    post:
+      summary: Trigger metric extraction
+      tags: [Admin]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: issuerId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Extraction started
+
+  /metrics/history/extract/{issuerId}:
+    post:
+      summary: Trigger historical extraction
+      tags: [Admin]
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: History extraction started
+
+  /process/{issuerId}:
+    post:
+      summary: Trigger document processing
+      tags: [Admin]
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Processing triggered

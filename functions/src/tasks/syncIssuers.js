@@ -5,6 +5,13 @@ const { scrapeBolsanicDocuments } = require("../scrapers/getBolsanicDocuments");
 const { scrapeBolsanicFacts } = require("../scrapers/getBolsanicFacts");
 const { processAllDocuments } = require("./processDocuments");
 
+const {
+    WHITELIST,
+    ALIASES,
+    EXTRACTION_MAPPING,
+    ISSUER_METADATA
+} = require("../utils/issuerConfig");
+
 /**
  * Scheduled task to sync issuers and their documents/facts.
  * Runs every 24 hours.
@@ -13,132 +20,139 @@ async function syncIssuers() {
     functions.logger.info("Starting syncIssuers task...");
     const db = admin.firestore();
 
+    // 0. SELF-HEALING CONFIGURATION UPDATE (Now from centralized utility)
+    const CONFIG_UPDATE = {
+        whitelist: WHITELIST,
+        aliases: ALIASES,
+        extractionMapping: EXTRACTION_MAPPING,
+        metadata: ISSUER_METADATA
+    };
+
     try {
-        // 1. Scrape Active Issuers (this already saves to Firestore 'issuers' and 'system/market_metadata')
+        await db.collection('system_config').doc('issuers').set(CONFIG_UPDATE, { merge: true });
+        functions.logger.info("System Config (WhiteList/Aliases) updated.");
+    } catch (e) {
+        functions.logger.error("Failed to update system config:", e);
+    }
+
+    try {
+        await db.collection('system_config').doc('issuers').set(CONFIG_UPDATE, { merge: true });
+        functions.logger.info("System Config (WhiteList/Aliases) updated.");
+    } catch (e) {
+        functions.logger.error("Failed to update system config:", e);
+    }
+
+    const { downloadAndStore, findBestIssuerMatch } = require("../utils/syncUtils");
+    const path = require("path");
+
+    try {
         const issuers = await scrapeIssuers();
-        const activeIssuers = issuers.filter(i => i.active);
-        functions.logger.info(`Found ${activeIssuers.length} active issuers.`);
+        const rawFacts = await scrapeBolsanicFacts();
 
-        // 2. Scrape Facts (Hechos Relevantes)
-        const facts = await scrapeBolsanicFacts();
-        functions.logger.info(`Found ${facts.length} relevant events.`);
-
-        // MANUAL OVERRIDES to ensure critical issuers are scraped
         const MANUAL_URL_OVERRIDES = {
-            'agri-corp': 'https://www.bolsanic.com/emisor-corporacionesagricolas/',
             'agricorp': 'https://www.bolsanic.com/emisor-corporacionesagricolas/',
-            'banpro': 'https://www.bolsanic.com/emisor-bancodelaproduccion/',
-            'banco de la producción': 'https://www.bolsanic.com/emisor-bancodelaproduccion/',
-            'bdf': 'https://www.bolsanic.com/emisor-bancodefinanzas/',
-            'banco de finanzas': 'https://www.bolsanic.com/emisor-bancodefinanzas/',
-            'fama': 'https://www.bolsanic.com/emisor-financierafama/',
-            'financiera fama': 'https://www.bolsanic.com/emisor-financierafama/',
-            'fdl': 'https://www.bolsanic.com/emisor-fdl/',
-            'financiera fdl': 'https://www.bolsanic.com/emisor-fdl/',
-            'fid': 'https://www.bolsanic.com/emisor-fid/',
-            'horizonte': 'https://www.bolsanic.com/emisor-horizontefondodeinversion/'
+            'horizonte': 'https://invercasasafi.com/fondos-de-inversion/'
         };
 
-        // FORCE INCLUDE HORIZONTE (Phantom Issuer Fix)
-        const hasHorizonte = activeIssuers.some(i => i.name.toLowerCase().includes('horizonte'));
-        functions.logger.info(`Phantom Check: hasHorizonte=${hasHorizonte}. Active activeIssuers count: ${activeIssuers.length}`);
-        activeIssuers.forEach(i => functions.logger.info(` - Active Issuer: ${i.name} (${i.detailUrl})`));
+        const { normalizeIssuerName } = require("../utils/normalization");
 
-        if (!hasHorizonte) {
-            functions.logger.info("Forcing inclusion of 'Horizonte' (Phantom Issuer)...");
-            activeIssuers.push({
-                name: "Horizonte Fondo de Inversión",
-                acronym: "HORIZONTE",
-                sector: "Fondos de Inversión",
-                active: true,
-                detailUrl: MANUAL_URL_OVERRIDES['horizonte']
-            });
-        }
+        // 1. Map Facts to Issuers more accurately
+        const factsByIssuer = new Map();
+        rawFacts.forEach(fact => {
+            const matchedIssuer = findBestIssuerMatch(fact, issuers);
+            if (matchedIssuer) {
+                const normalized = normalizeIssuerName(matchedIssuer.name);
+                const issuerId = ALIASES[normalized] || normalized;
+                if (!factsByIssuer.has(issuerId)) factsByIssuer.set(issuerId, []);
+                factsByIssuer.get(issuerId).push({
+                    title: fact.title,
+                    url: fact.url,
+                    date: fact.date,
+                    type: 'Hecho Relevante',
+                    source: 'Hechos Relevantes Page'
+                });
+            }
+        });
 
-        // 3. Process each active issuer to get their documents and match facts
-        for (const issuer of activeIssuers) {
-            const issuerId = issuer.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-            functions.logger.info(`Syncing documents for ${issuer.name} (${issuerId})...`);
+        for (const issuer of issuers) {
+            const normalized = normalizeIssuerName(issuer.name);
+            const issuerId = ALIASES[normalized] || normalized;
 
-            // Apply URL override if name matches loose pattern
-            const lowerName = issuer.name.toLowerCase();
-            const lowerAcronym = (issuer.acronym || '').toLowerCase();
+            if (!WHITELIST.includes(issuerId)) continue;
 
-            for (const [key, url] of Object.entries(MANUAL_URL_OVERRIDES)) {
-                if (lowerName.includes(key) || lowerAcronym === key || issuerId.includes(key)) {
-                    functions.logger.info(`Applying manual URL override for ${issuer.name}: ${url}`);
-                    issuer.detailUrl = url;
-                    break;
-                }
+            functions.logger.info(`Syncing documents for ${issuerId}...`);
+
+            if (MANUAL_URL_OVERRIDES[issuerId]) {
+                issuer.detailUrl = MANUAL_URL_OVERRIDES[issuerId];
             }
 
-            let documents = [];
-
-            // A. Scrape Documents from detail page
+            let documentsToProcess = [];
             if (issuer.detailUrl) {
                 try {
                     const scrapedDocs = await scrapeBolsanicDocuments(issuer.detailUrl);
-                    documents = scrapedDocs.map(d => ({ ...d, type: d.type || 'Informe', source: 'Detail Page' }));
+                    documentsToProcess = scrapedDocs.map(d => ({ ...d, source: 'Detail Page' }));
                 } catch (e) {
-                    functions.logger.error(`Error scraping docs for ${issuer.name}:`, e);
+                    functions.logger.error(`Error scraping docs for ${issuerId}:`, e);
                 }
             }
 
-            // B. Match Facts to this issuer
-            // B. Match Facts to this issuer
-            const issuerFacts = facts.filter(f => {
-                const normFactIssuer = f.issuerName.toLowerCase();
-                const normFactTitle = f.title.toLowerCase();
-                const normName = issuer.name.toLowerCase();
+            // Append matched facts
+            const relatedFacts = factsByIssuer.get(issuerId) || [];
+            documentsToProcess.push(...relatedFacts);
 
-                // 1. Direct Name Match (Issuer Name)
-                if (normFactIssuer.includes(normName) || normName.includes(normFactIssuer)) return true;
-
-                // 2. Title Match (Crucial for "Desconocido" or "Calificadora")
-                if (normFactTitle.includes(normName)) return true;
-
-                // 3. Smart Keyword Match (for known tricky issuers)
-                if (issuerId.includes('horizonte') && (normFactIssuer.includes('horizonte') || normFactTitle.includes('horizonte'))) return true;
-                if (issuerId.includes('fid') && (normFactIssuer.includes('fid') || normFactTitle.includes('fid'))) return true;
-                if (issuerId.includes('fama') && (normFactIssuer.includes('fama') || normFactTitle.includes('fama'))) return true;
-
-                return false;
-            });
-
-            documents.push(...issuerFacts.map(f => ({
-                title: f.title,
-                url: f.url,
-                date: f.date,
-                type: 'Hecho Relevante',
-                source: 'Hechos Relevantes Page'
-            })));
-
-            // C. Update Firestore
-            // We use a map to deduplicate by URL
             const uniqueDocs = new Map();
-            documents.forEach(d => uniqueDocs.set(d.url, d));
+            documentsToProcess.forEach(d => uniqueDocs.set(d.url, d));
+            const distinctDocs = Array.from(uniqueDocs.values());
 
-            const scrapedCount = documents.length - issuerFacts.length;
-            functions.logger.info(`Issuer ${issuerId}: Scraped ${scrapedCount} docs from page, matched ${issuerFacts.length} facts.`);
+            // 2. Download and Store in Firebase Storage (only if not already there or local testing)
+            const finalStoredDocuments = [];
 
-            // Also update the detailUrl in Firestore so future runs/frontend have it
+            // Limit to most recent 20 docs per issuer to avoid function timeout
+            const limitedDocs = distinctDocs.slice(0, 25);
+
+            for (const doc of limitedDocs) {
+                try {
+                    // Si ya es una URL de storage, no re-descargar
+                    if (doc.url.includes('firebasestorage.app') || doc.url.includes('storage.googleapis.com')) {
+                        finalStoredDocuments.push(doc);
+                        continue;
+                    }
+
+                    const fileName = path.basename(new URL(doc.url, "https://www.bolsanic.com").pathname) || `doc_${Date.now()}.pdf`;
+                    const destination = `documents/${issuerId}/${fileName}`;
+
+                    const publicUrl = await downloadAndStore(doc.url, destination);
+
+                    finalStoredDocuments.push({
+                        ...doc,
+                        url: publicUrl || doc.url, // Fallback to original if download fails
+                        originalUrl: doc.url,
+                        storedInStorage: !!publicUrl
+                    });
+                } catch (e) {
+                    finalStoredDocuments.push(doc);
+                }
+            }
+
             await db.collection('issuers').doc(issuerId).set({
-                documents: Array.from(uniqueDocs.values()),
+                name: ISSUER_METADATA[issuerId]?.name || issuer.name,
+                acronym: ISSUER_METADATA[issuerId]?.acronym || issuer.acronym || null,
+                sector: ISSUER_METADATA[issuerId]?.sector || issuer.sector || null,
+                documents: finalStoredDocuments,
                 detailUrl: issuer.detailUrl || null,
+                active: true,
                 lastSync: admin.firestore.FieldValue.serverTimestamp()
             }, { merge: true });
         }
 
-        functions.logger.info("Sync complete. Triggering document processing...");
+        // We don't trigger full processing here to avoid extreme timeouts
+        // instead, the next phase will pick it up or it can be manually triggered.
+        // await processAllDocuments(); 
 
-        // 4. Trigger Processing (Embedding)
-        // We call the internal function directly
-        await processAllDocuments();
-
-        functions.logger.info("syncIssuers task finished successfully.");
-
+        functions.logger.info("syncIssuers finished.");
     } catch (error) {
         functions.logger.error("Error in syncIssuers:", error);
+        throw error;
     }
 }
 

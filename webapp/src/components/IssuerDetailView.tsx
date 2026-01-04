@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import type { Issuer, Document, IssuerMetrics } from '../types';
+import React from 'react';
+import type { Issuer, Document, IssuerMetrics, HistoricalPoint } from '../types';
 import { formatDate, formatCurrency, formatPercentage, formatRatio, formatNumber } from '../utils/formatters';
-import { fetchMetricsComparison, fetchIssuerHistory } from '../utils/marketDataApi';
 import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer
 } from 'recharts';
@@ -19,18 +18,13 @@ import {
 // --- Types ---
 interface IssuerDetailViewProps {
     issuer: Issuer;
+    metrics: IssuerMetrics | null;
+    history: HistoricalPoint[];
     onBack: () => void;
 }
 
-interface HistoricalPoint {
-    period: string;
-    date: string;
-    activosTotales?: number;
-    utilidadNeta?: number;
-    roe?: number;
-}
-
 // --- Components ---
+// ... (MetricCard and DocumentRow remain unchanged unless types need refinement)
 
 interface MetricCardProps {
     label: string;
@@ -122,42 +116,8 @@ const DocumentRow = ({ doc }: { doc: Document }) => {
 
 // --- Main View ---
 
-const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) => {
-    const [metrics, setMetrics] = useState<IssuerMetrics | null>(null);
-    const [history, setHistory] = useState<HistoricalPoint[]>([]);
-    const [loading, setLoading] = useState(true);
-
-
+const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, metrics, history, onBack }) => {
     const FALLBACK_LOGO_URL = 'https://www.bolsanic.com/wp-content/uploads/2016/12/logo.png';
-
-    useEffect(() => {
-        let isMounted = true;
-        const loadData = async () => {
-            setLoading(true);
-            try {
-                // 1. Fetch Latest Metrics
-                const metricsData = await fetchMetricsComparison([issuer.id]);
-                if (isMounted && metricsData && metricsData.length > 0) {
-                    setMetrics(metricsData[0].metrics);
-                }
-
-                // 2. Fetch History
-                const historyData = await fetchIssuerHistory(issuer.id);
-                if (isMounted && Array.isArray(historyData)) {
-                    // Sort by date ascending
-                    const sorted = historyData.sort((a: HistoricalPoint, b: HistoricalPoint) => new Date(a.date).getTime() - new Date(b.date).getTime());
-                    setHistory(sorted);
-                }
-            } catch (err) {
-                console.error("Error loading issuer details:", err);
-            } finally {
-                if (isMounted) setLoading(false);
-            }
-        };
-
-        if (issuer.id) loadData();
-        return () => { isMounted = false; };
-    }, [issuer.id]);
 
     // Prepare chart data
     const chartData = history.map(h => ({
@@ -167,16 +127,8 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
         ROE: h.roe || 0
     }));
 
-    if (loading) {
-        return (
-            <div className="flex items-center justify-center h-full min-h-[400px]">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-4 border-accent-primary border-t-transparent rounded-full animate-spin"></div>
-                    <div className="text-text-secondary font-mono text-sm tracking-wider animate-pulse">CARGANDO DATOS...</div>
-                </div>
-            </div>
-        );
-    }
+    // The parent handles loading and error states, 
+    // but we can add a fallback for empty metrics if needed.
 
     return (
         <div className="flex flex-col h-full animate-fade-in gap-8">
@@ -317,7 +269,7 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
                                                 color: '#fff'
                                             }}
                                             itemStyle={{ fontSize: '12px', fontFamily: 'JetBrains Mono' }}
-                                            formatter={(value: number) => formatNumber(value)}
+                                            formatter={(value: number | undefined) => value != null ? formatNumber(value) : 'N/D'}
                                         />
                                         <Area type="monotone" dataKey="Activos" stroke="#00D8FF" strokeWidth={2} fillOpacity={1} fill="url(#colorActivos)" />
                                         <Area type="monotone" dataKey="Utilidad" stroke="#00F090" strokeWidth={2} fillOpacity={1} fill="url(#colorUtilidad)" />
@@ -326,7 +278,7 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
                             ) : (
                                 <div className="h-full flex flex-col items-center justify-center text-text-tertiary">
                                     <ChartBarIcon className="w-12 h-12 opacity-20 mb-4" />
-                                    <p className="font-mono text-sm">NO DATA SIGNAL</p>
+                                    <p className="font-mono text-sm">SIN SEÑAL DE DATOS</p>
                                 </div>
                             )}
                         </div>
@@ -340,19 +292,19 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
                         <div className="relative z-10">
                             <h3 className="text-sm font-bold text-accent-primary mb-3 flex items-center gap-2 font-mono uppercase tracking-widest">
                                 <span className="w-2 h-2 bg-accent-primary rounded-full animate-ping" />
-                                System Analysis Log
+                                Log de Análisis del Sistema
                             </h3>
                             <p className="text-gray-300 leading-relaxed text-sm font-mono border-l-2 border-accent-primary/50 pl-4 py-1">
                                 {metrics?.metadata?.nota
                                     ? metrics.metadata.nota
-                                    : `> INITIATING SEQUENCE...\n> ANALYZING ${issuer.documents?.length || 0} DOCUMENTS.\n> STATUS: ${issuer.name} presenta indicadores estables. Verifique reporte de riesgos.`}
+                                    : `> INICIANDO SECUENCIA...\n> ANALIZANDO ${issuer.documents?.length || 0} DOCUMENTOS.\n> ESTADO: ${issuer.name} presenta indicadores estables. Verifique reporte de riesgos.`}
                             </p>
                             <div className="mt-4 flex gap-2">
                                 <span className="text-[10px] bg-accent-primary/10 px-2 py-1 rounded text-accent-primary font-mono border border-accent-primary/20">
-                                    MODEL: GEMINI-PRO
+                                    MODELO: GEMINI-PRO
                                 </span>
                                 <span className="text-[10px] bg-accent-primary/10 px-2 py-1 rounded text-accent-primary font-mono border border-accent-primary/20">
-                                    LATENCY: 45ms
+                                    LATENCIA: 45ms
                                 </span>
                             </div>
                         </div>
@@ -364,10 +316,10 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
                     <div className="p-4 border-b border-white/5 bg-white/5 flex justify-between items-center">
                         <h3 className="font-semibold text-white flex items-center gap-2 font-mono text-sm uppercase tracking-wider">
                             <DocumentTextIcon className="w-4 h-4 text-accent-primary" />
-                            Data Vault
+                            Bóveda de Datos
                         </h3>
                         <span className="text-xs bg-black/50 border border-white/10 px-2 py-0.5 rounded text-text-secondary font-mono">
-                            {issuer.documents?.length || 0} FILES
+                            {issuer.documents?.length || 0} ARCHIVOS
                         </span>
                     </div>
 
@@ -380,7 +332,7 @@ const IssuerDetailView: React.FC<IssuerDetailViewProps> = ({ issuer, onBack }) =
                             ) : (
                                 <div className="text-center py-10 text-text-tertiary">
                                     <DocumentTextIcon className="w-12 h-12 mx-auto mb-2 opacity-10" />
-                                    <p className="text-xs font-mono uppercase">Vault Empty</p>
+                                    <p className="text-xs font-mono uppercase">Bóveda Vacía</p>
                                 </div>
                             )}
                         </div>

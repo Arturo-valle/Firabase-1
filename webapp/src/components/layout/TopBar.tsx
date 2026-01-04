@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { MagnifyingGlassIcon, BellIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { Link } from 'react-router-dom';
 
 export default function TopBar() {
     const [searchQuery, setSearchQuery] = useState('');
@@ -60,7 +61,7 @@ export default function TopBar() {
                     </button>
 
                     {/* User Profile */}
-                    <button className="flex items-center gap-3 pl-2 pr-1 py-1 hover:bg-white/5 rounded-full transition-colors border border-transparent hover:border-white/5">
+                    <Link to="/profile" className="flex items-center gap-3 pl-2 pr-1 py-1 hover:bg-white/5 rounded-full transition-colors border border-transparent hover:border-white/5">
                         <div className="text-right hidden sm:block">
                             <div className="text-xs font-bold text-text-primary">Admin User</div>
                             <div className="text-[10px] text-accent-primary font-mono">PRO TRADER</div>
@@ -70,7 +71,7 @@ export default function TopBar() {
                                 <UserCircleIcon className="w-5 h-5 text-gray-300" />
                             </div>
                         </div>
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>

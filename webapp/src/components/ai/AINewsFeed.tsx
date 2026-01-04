@@ -1,23 +1,10 @@
 import { useState, useEffect } from 'react';
 import { SparklesIcon, NewspaperIcon } from '@heroicons/react/24/outline';
-import { API_BASE_URL } from '../../config';
-
-interface NewsItem {
-    id: string;
-    headline: string;
-    summary: string;
-    category: 'rating' | 'financials' | 'market' | 'announcement';
-    issuers: string[];
-    documentSource: string;
-    timestamp: string;
-    isAIGenerated: boolean;
-}
-
+import { useAIResearch, NewsItem } from '../../hooks/useAIResearch';
 
 export default function AINewsFeed() {
     const [news, setNews] = useState<NewsItem[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const { loading, error, getNews } = useAIResearch();
     const [daysBack, setDaysBack] = useState(7);
 
     useEffect(() => {
@@ -26,29 +13,11 @@ export default function AINewsFeed() {
 
     async function loadNews() {
         try {
-            setLoading(true);
-            setError(null);
-
-            const response = await fetch(`${API_BASE_URL}/ai/news?days=${daysBack}`);
-            if (!response.ok) {
-                // If backend fails (common in dev without Vertex AI creds), show fallback
-                throw new Error('El servicio de noticias AI no está disponible en este momento');
-            }
-
-            const data = await response.json();
-            if (data.newsItems && data.newsItems.length > 0) {
-                setNews(data.newsItems);
-            } else {
-                // No news from API, show placeholder
-                setNews([]);
-            }
+            const newsItems = await getNews(daysBack);
+            setNews(newsItems);
         } catch (err: any) {
-            console.warn('AI News fetch failed:', err);
-            setError(err.message || 'Error al cargar noticias');
-            // Fallback: show placeholder news in development
+            // Error is handled by the hook, we can handle it specifically if needed
             setNews([]);
-        } finally {
-            setLoading(false);
         }
     }
 

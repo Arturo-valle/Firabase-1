@@ -1,8 +1,9 @@
 import type { MetricsData, ComparisonData } from '../types';
+import { metricsCache } from './metricsCache';
 
-import { API_BASE_URL } from '../config';
+import { apiClient } from './apiClient';
 
-const API_BASE = API_BASE_URL;
+// const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 /**
  * Normalize issuer ID for backend compatibility
@@ -20,23 +21,23 @@ export function normalizeIssuerId(id: string): string {
 /**
  * Fetch cached metrics for an issuer
  */
-export async function fetchIssuerMetrics(issuerId: string): Promise<MetricsData | null> {
-    try {
-        const normalizedId = normalizeIssuerId(issuerId);
-        // Try to fetch from API first
-        try {
-            const response = await fetch(`${API_BASE}/metrics/${normalizedId}`);
-            if (response.ok) {
-                const data = await response.json();
-                if (data.success) return data.metrics;
-            }
-        } catch (e) {
-            console.error('API fetch failed:', e);
-        }
+export async function fetchIssuerMetrics(issuerId: string, signal?: AbortSignal): Promise<MetricsData | null> {
+    const normalizedId = normalizeIssuerId(issuerId);
 
+    // 1. Try Cache first
+    const cached = metricsCache.getMetrics(normalizedId);
+    if (cached) return cached;
+
+    // 2. Fetch from API
+    try {
+        const data = await apiClient<any>(`/metrics/${normalizedId}`, { signal });
+        if (data.success && data.metrics) {
+            metricsCache.setMetrics(normalizedId, data.metrics);
+            return data.metrics;
+        }
         return null;
     } catch (error) {
-        console.error('Error fetching metrics:', error);
+        console.error(`Error fetching metrics for ${issuerId}:`, error);
         return null;
     }
 }
@@ -45,68 +46,49 @@ export async function fetchIssuerMetrics(issuerId: string): Promise<MetricsData 
  * Extract metrics from documents for an issuer
  */
 export async function extractIssuerMetrics(issuerId: string): Promise<MetricsData> {
-    try {
-        const normalizedId = normalizeIssuerId(issuerId);
-        const response = await fetch(`${API_BASE}/metrics/extract/${normalizedId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+    const normalizedId = normalizeIssuerId(issuerId);
+    const data = await apiClient<any>(`/metrics/extract/${normalizedId}`, {
+        method: 'POST'
+    });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data.success ? data.metrics : data;
-    } catch (error) {
-        console.error('Error extracting metrics:', error);
-        throw error;
+    if (data.success && data.metrics) {
+        metricsCache.setMetrics(normalizedId, data.metrics);
     }
+
+    return data.success ? data.metrics : data;
 }
 
 /**
  * Compare metrics across multiple issuers
  */
-export async function compareIssuers(issuerIds: string[]): Promise<ComparisonData> {
+export async function compareIssuers(issuerIds: string[], signal?: AbortSignal): Promise<ComparisonData> {
+    const normalizedIds = issuerIds.map(normalizeIssuerId);
+
+    // 1. Try Cache first
+    const cached = metricsCache.getComparison(normalizedIds);
+    if (cached) return cached;
+
+    // 2. Fetch comparison
     try {
-        const normalizedIds = issuerIds.map(normalizeIssuerId);
+        const data = await apiClient<any>('/metrics/compare', {
+            method: 'POST',
+            body: JSON.stringify({ issuerIds: normalizedIds }),
+            signal
+        });
 
-        try {
-            const response = await fetch(`${API_BASE}/metrics/compare`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ issuerIds: normalizedIds }),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                return {
-                    issuers: data.comparison || data.issuers || [],
-                    rankings: data.rankings,
-                };
-            }
-        } catch (e) {
-            console.error('API compare failed:', e);
-            throw e;
-        }
-
-        return {
-            issuers: [],
-            rankings: {
-                liquidez: [],
-                solvencia: [],
-                rentabilidad: [],
-                overall: []
-            }
+        const result = {
+            issuers: data.comparison || data.issuers || [],
+            rankings: data.rankings || {},
         };
 
+        metricsCache.setComparison(normalizedIds, result);
+        return result;
     } catch (error) {
         console.error('Error comparing issuers:', error);
-        throw error;
+        return {
+            issuers: [],
+            rankings: {},
+        };
     }
 }
 
@@ -114,24 +96,7 @@ export async function compareIssuers(issuerIds: string[]): Promise<ComparisonDat
  * Extract metrics for all active issuers (batch operation)
  */
 export async function extractAllMetrics(): Promise<Record<string, unknown>> {
-    try {
-        const response = await fetch(`${API_BASE}/metrics/extract-all`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error extracting all metrics:', error);
-        throw error;
-    }
+    return apiClient<any>('/metrics/extract-all', { method: 'POST' });
 }
 
 /**

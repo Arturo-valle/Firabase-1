@@ -14,11 +14,14 @@ const db = getFirestore();
  */
 const indexFinancials = async (reqOrContext, resOrNull) => {
     try {
-        let query = db.collection("issuers").where("active", "==", true);
+        // Check if triggered by HTTP with a query param or body
+        const issuerIdParam = (reqOrContext?.query?.issuerId) || (reqOrContext?.body?.issuerId);
 
-        // Check if trigged by HTTP with a query param
-        if (reqOrContext && reqOrContext.query && reqOrContext.query.issuerId) {
-            query = db.collection("issuers").where(admin.firestore.FieldPath.documentId(), "==", reqOrContext.query.issuerId);
+        if (issuerIdParam) {
+            query = db.collection("issuers").where(admin.firestore.FieldPath.documentId(), "==", issuerIdParam);
+        } else {
+            // Default scheduled behavior: only active issuers
+            query = db.collection("issuers").where("active", "==", true);
         }
 
         const issuersSnapshot = await query.get();
@@ -64,9 +67,9 @@ const indexFinancials = async (reqOrContext, resOrNull) => {
                     docMeta.docType = "FINANCIAL_REPORT";
 
                     try {
-                        // Correctly call processDocument(document, issuerName)
-                        const chunks = await processDocument(docMeta, issuer.name);
-
+                        // Correctly call processDocument(document, issuerName, issuerId)
+                        // processDocument returns { chunks: [...], smartStatus: '...' }
+                        const { chunks } = await processDocument(docMeta, issuer.name, issuerId);
                         if (chunks && chunks.length > 0) {
                             const docId = docMeta.title.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 50);
                             await storeDocumentChunks(issuerId, docId, chunks);

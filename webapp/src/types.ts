@@ -18,6 +18,7 @@ export interface Issuer {
   sector: string;
   logoUrl?: string;    // Optional: URL for the issuer's logo
   documents: Document[]; // An array of documents related to the issuer
+  isActive?: boolean;    // Optional: whether the issuer is active
   error?: string;       // An optional error message if data scraping failed for this issuer
   detailUrl?: string;   // Original URL, kept for reference but no longer used for fetching
 }
@@ -73,10 +74,38 @@ export interface IssuerMetrics extends MetricsData {
 
 export interface ComparisonData {
   issuers: IssuerMetrics[];
-  rankings?: {
+  rankings?: Partial<{
     liquidez: string[];
     solvencia: string[];
     rentabilidad: string[];
     overall: string[];
-  };
+  }>;
+}
+// Finance View Types
+export interface FinanceIssuerViewModel {
+  id: string;
+  name: string;
+  sector: string;
+  acronym: string;
+  logoUrl?: string;
+  processed: number;
+  total: number;
+  coverage: number;
+  lastProcessed: Date;
+  documents: Document[];
+}
+
+export interface MarketStats {
+  totalIssuers: number;
+  totalProcessedDocs: number;
+  totalChunks: number;
+  overallCoverage: number;
+}
+
+export interface HistoricalPoint {
+  period: string;
+  date: string;
+  activosTotales?: number;
+  utilidadNeta?: number;
+  roe?: number;
 }

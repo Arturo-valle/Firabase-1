@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { Issuer, IssuerMetrics } from '../types';
 import ComparisonTable from './ComparisonTable';
 import ComparisonCharts from './ComparisonCharts';
-import { fetchIssuerMetrics } from '../utils/metricsApi';
+import { compareIssuers } from '../utils/metricsApi';
 import { formatDate } from '../utils/formatters';
 import { ChartBarIcon, XMarkIcon, CheckIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 
@@ -16,7 +16,17 @@ const IssuerComparator: React.FC<IssuerComparatorProps> = ({ issuers }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const activeIssuers = issuers;
+    // AbortController for cancelling fetch
+    const abortControllerRef = useRef<AbortController | null>(null);
+
+    // Clean up on unmount
+    useEffect(() => {
+        return () => {
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+        };
+    }, []);
 
     const handleCompare = async () => {
         if (selectedIssuerIds.length < 2) {
@@ -24,30 +34,60 @@ const IssuerComparator: React.FC<IssuerComparatorProps> = ({ issuers }) => {
             return;
         }
 
+        // Cancel previous request if any
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort();
+        }
+
+        const controller = new AbortController();
+        abortControllerRef.current = controller;
+
         setLoading(true);
         setError(null);
 
         try {
-            // Fetch metrics for all selected issuers
-            const metricsPromises = selectedIssuerIds.map(id => fetchIssuerMetrics(id));
-            const results = await Promise.all(metricsPromises);
-            const validMetrics = results.filter(m => m !== null) as IssuerMetrics[];
+            // Batch fetch comparison data (N+1 optimization)
+            const result = await compareIssuers(selectedIssuerIds, controller.signal);
+
+            // The API might return issuers even if some failed, or empty array
+            const validMetrics = result.issuers || [];
 
             if (validMetrics.length === 0) {
                 setError('No hay métricas disponibles para los emisores seleccionados.');
                 setComparisonData([]);
             } else {
+                // Check if we got data for all selected issuers
                 if (validMetrics.length < selectedIssuerIds.length) {
-                    setError(`Solo ${validMetrics.length} de ${selectedIssuerIds.length} emisores tienen datos.`);
+                    const foundIds = validMetrics.map(m => m.issuerId);
+                    const missingIds = selectedIssuerIds.filter(id => !foundIds.includes(id) && !foundIds.includes(id.toLowerCase()));
+
+                    // Convert missing IDs to Names for better UX
+                    const missingNames = issuers
+                        .filter(i => missingIds.includes(i.id))
+                        .map(i => i.name)
+                        .join(', ');
+
+                    if (missingNames) {
+                        setError(`Datos parciales. Faltan: ${missingNames}`);
+                    } else {
+                        setError(`Solo ${validMetrics.length} de ${selectedIssuerIds.length} emisores tienen datos.`);
+                    }
                 }
                 setComparisonData(validMetrics);
             }
         } catch (err) {
+            if (err instanceof Error && err.name === 'AbortError') {
+                console.log('Comparación cancelada');
+                return;
+            }
             console.error('Error comparing issuers:', err);
             setError(err instanceof Error ? err.message : 'Error de conexión');
             setComparisonData([]);
         } finally {
-            setLoading(false);
+            if (abortControllerRef.current === controller) {
+                setLoading(false);
+                abortControllerRef.current = null;
+            }
         }
     };
 
@@ -106,7 +146,7 @@ const IssuerComparator: React.FC<IssuerComparatorProps> = ({ issuers }) => {
                 </h2>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 relative z-10">
-                    {activeIssuers.map(issuer => {
+                    {issuers.map(issuer => {
                         const isSelected = selectedIssuerIds.includes(issuer.id);
                         return (
                             <button

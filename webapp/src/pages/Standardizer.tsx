@@ -1,41 +1,27 @@
-import { useState, useEffect } from 'react';
 import MetricsStandardizer from '../components/MetricsStandardizer';
-import { fetchIssuers, DISPLAY_NAMES, ISSUER_METADATA } from '../utils/marketDataApi';
-import type { Issuer } from '../types';
+import { useIssuers } from '../hooks/useIssuers';
+import StandardizerSkeleton from '../components/StandardizerSkeleton';
 
 export default function Standardizer() {
-    const [issuers, setIssuers] = useState<Issuer[]>([]);
-    const [loading, setLoading] = useState(true);
+    const { issuers, loading, error } = useIssuers();
 
-    useEffect(() => {
-        async function loadIssuers() {
-            try {
-                const data = await fetchIssuers();
-                const issuersList = data.issuers?.map((issuer: any) => ({
-                    id: issuer.id,
-                    name: DISPLAY_NAMES[issuer.id] || issuer.name, // Force clean name
-                    sector: ISSUER_METADATA[issuer.id]?.sector || issuer.sector || 'Privado', // Force clean sector
-                    acronym: ISSUER_METADATA[issuer.id]?.acronym || issuer.acronym || '', // Force clean acronym
-                    documents: issuer.documents || [],
-                    logoUrl: issuer.logoUrl || '',
-                }))
-                    || [];
-                setIssuers(issuersList);
-            } catch (error) {
-                console.error('Failed to load issuers for standardizer:', error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        loadIssuers();
-    }, []);
+    if (loading && issuers.length === 0) {
+        return <StandardizerSkeleton />;
+    }
 
-    if (loading) {
+    if (error && issuers.length === 0) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
-                <div className="text-center">
-                    <div className="animate-spin w-12 h-12 border-4 border-accent-primary border-t-transparent rounded-full mx-auto mb-4" />
-                    <p className="text-text-secondary">Cargando métricas...</p>
+                <div className="text-center bg-red-900/10 p-8 rounded-2xl border border-red-900/20">
+                    <div className="text-4xl mb-4">⚠️</div>
+                    <h3 className="text-xl font-bold text-status-danger mb-2">Error de Conexión</h3>
+                    <p className="text-text-secondary mb-4">{error.message}</p>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="px-6 py-2 bg-status-danger text-white rounded-lg hover:bg-red-600 transition-colors"
+                    >
+                        Reintentar
+                    </button>
                 </div>
             </div>
         );

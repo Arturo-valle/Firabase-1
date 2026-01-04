@@ -29,13 +29,23 @@ const findBestIssuerMatch = (fact, issuers) => {
     let potentialMatches = [];
 
     for (const issuer of issuers) {
-        const terms = [issuer.name.toLowerCase(), ...(issuer.variations || [])];
-        if (issuer.acronym) terms.push(issuer.acronym.toLowerCase());
+        const terms = [
+            issuer.name.toLowerCase(),
+            ...(issuer.variations || []).map(v => v.toLowerCase()),
+            issuer.acronym?.toLowerCase()
+        ].filter(Boolean);
 
         for (const term of terms) {
             const index = normalizedText.indexOf(term);
             if (index !== -1) {
-                const score = term === issuer.acronym?.toLowerCase() ? 100 : 90;
+                // Prioridad: 
+                // 1. Acrónimo exacto (100)
+                // 2. Nombre o variación reconocida (90)
+                // 3. Emisores "Oficiales" (Privado/Público) vs "Otro" (le restamos 50 si es "Otro")
+                let score = term === issuer.acronym?.toLowerCase() ? 100 : 90;
+                if (issuer.sector === "Otro") score -= 50;
+
+                // Penalizar si aparece muy tarde en el texto, pero priorizar el score
                 potentialMatches.push({ issuer, score, index });
             }
         }
@@ -45,10 +55,12 @@ const findBestIssuerMatch = (fact, issuers) => {
         return null;
     }
 
-    // Ordenar por la posición en el texto (más bajo es mejor)
-    potentialMatches.sort((a, b) => a.index - b.index);
+    // Ordenar primero por score (calidad del match) y luego por posición
+    potentialMatches.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return a.index - b.index;
+    });
 
-    // Devolver el emisor que aparece primero en el texto
     return potentialMatches[0].issuer;
 };
 

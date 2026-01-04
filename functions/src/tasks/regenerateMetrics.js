@@ -23,7 +23,10 @@ const regenerateMetrics = async (req, res) => {
             "agricorp",
             "financiera-fdl",
             "fid-sociedad-an-nima",
-            "horizonte-fondo-de-inversi-n-financiero-de-crecimiento-d-lares-no-diversificado"
+            "fid-s-a",
+            "horizonte-fondo-de-inversi-n-financiero-de-crecimiento-d-lares-no-diversificado",
+            "horizonte-fondo-de-inversion",
+            "agri-corp"
         ];
 
         const results = [];

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import IssuerComparator from '../components/IssuerComparator';
 import { fetchIssuers } from '../utils/marketDataApi';
-import { transformIssuers } from '../utils/dataTransforms';
 import type { Issuer } from '../types';
 
 export default function Comparator() {
@@ -12,8 +11,7 @@ export default function Comparator() {
         async function loadIssuers() {
             try {
                 const data = await fetchIssuers();
-                const issuersList = transformIssuers(data.issuers);
-                setIssuers(issuersList);
+                setIssuers(data.issuers || []);
             } catch (error) {
                 console.error('Failed to load issuers for comparator:', error);
             } finally {

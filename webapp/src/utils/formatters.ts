@@ -32,12 +32,16 @@ export const formatDate = (dateValue: Date | string | number | { _seconds: numbe
 export const formatCurrency = (value: number | undefined | null, currency: 'USD' | 'NIO' = 'USD'): string => {
     if (value === undefined || value === null) return 'N/D';
 
+    // Determinar si debemos mostrar "M" basado en la magnitud (solo si es > 1 millón)
+    const isMillions = Math.abs(value) >= 1_000_000 && currency === 'USD';
+    const displayValue = isMillions ? value / 1_000_000 : value;
+
     return new Intl.NumberFormat('es-NI', {
         style: 'currency',
         currency: currency,
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
-    }).format(value) + (currency === 'USD' ? ' M' : ''); // Append 'M' for millions context if needed
+    }).format(displayValue) + (isMillions ? ' M' : '');
 };
 
 export const formatPercentage = (value: number | undefined | null): string => {

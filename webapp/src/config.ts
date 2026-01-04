@@ -1,1 +1,2 @@
-export const API_BASE_URL = 'https://us-central1-mvp-nic-market.cloudfunctions.net/api';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://us-central1-mvp-nic-market.cloudfunctions.net/api';
+export const AI_API_URL = import.meta.env.VITE_AI_API_URL || 'https://api-os3qsxfz6q-uc.a.run.app/ai/query';

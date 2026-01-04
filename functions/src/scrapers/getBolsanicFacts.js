@@ -5,12 +5,14 @@ const functions = require("firebase-functions");
 
 const BOLSANC_FACTS_URL = "https://www.bolsanic.com/hechos-relevantes/";
 
+const { findIssuerId } = require("../utils/issuerConfig");
+
 /**
  * Scrapes all "Hechos Relevantes" from BOLSANC, with improved logic to extract the issuer name.
  * @returns {Promise<Array<{title: string, url: string, date: string, issuerName: string, type: string}>>}
  */
 async function scrapeBolsanicFacts() {
-  functions.logger.info("Scraping Hechos Relevantes from BOLSANC with improved issuer parsing...");
+  functions.logger.info("Scraping Hechos Relevantes from BOLSANC with fuzzy issuer matching...");
   try {
     const { data } = await axios.get(BOLSANC_FACTS_URL, { headers: { 'User-Agent': 'Mozilla/5.0' } });
     const $ = cheerio.load(data);
@@ -26,10 +28,9 @@ async function scrapeBolsanicFacts() {
       const fullText = linkElement.text().trim();
 
       if (date && url && fullText) {
-        let issuerName = "";
+        let rawIssuerName = "";
         let title = "";
 
-        // Improved logic to find the issuer name by splitting on various delimiters.
         const delimiters = ["-", "–", ":"];
         let bestSeparatorIndex = -1;
 
@@ -42,27 +43,29 @@ async function scrapeBolsanicFacts() {
         }
 
         if (bestSeparatorIndex > 0) {
-          issuerName = fullText.substring(0, bestSeparatorIndex).trim();
+          rawIssuerName = fullText.substring(0, bestSeparatorIndex).trim();
           title = fullText.substring(bestSeparatorIndex + 1).trim();
         } else {
-          // If no clear delimiter is found, we can't reliably determine the issuer.
-          functions.logger.warn(`Could not determine issuer for fact: "${fullText}"`);
-          title = fullText; // Assign the whole text as title
-          issuerName = "Desconocido"; // Mark as unknown
+          title = fullText;
+          rawIssuerName = "Desconocido";
         }
 
-        // Further clean the extracted issuer name for better matching later.
-        issuerName = issuerName
+        // Clean extracted name
+        const cleanName = rawIssuerName
           .replace(/, S\.A\.?$/i, "")
           .replace(/\(EMISOR\)$/i, "")
-          .replace(/\/.*$/, "") // Remove text after a slash, e.g., "Fondo... / INVERCASA SAFI"
+          .replace(/\/.*$/, "")
           .trim();
+
+        // FUZZY MATCHING using centralized logic
+        const issuerId = findIssuerId(cleanName) || "desconocido";
 
         facts.push({
           title,
           url,
           date,
-          issuerName,
+          issuerName: cleanName,
+          issuerId, // NEW: Canonical ID
           fullText,
           type: "Hecho Relevante",
         });
@@ -70,9 +73,9 @@ async function scrapeBolsanicFacts() {
     });
 
     if (facts.length === 0) {
-      functions.logger.warn("Scraping Hechos Relevantes finished, but no facts were found. Layout may have changed.");
+      functions.logger.warn("Scraping Hechos Relevantes finished, but no facts were found.");
     } else {
-      functions.logger.info(`Scraped ${facts.length} Hechos Relevantes. Issuer parsing improved.`);
+      functions.logger.info(`Scraped ${facts.length} Hechos Relevantes with fuzzy IDs.`);
     }
 
     return facts;

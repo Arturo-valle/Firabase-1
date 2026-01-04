@@ -8,32 +8,32 @@ export default {
     extend: {
       colors: {
         bg: {
-          primary: '#050505',   // Deep OLED Black
-          secondary: '#0A0A0A', // Slightly lighter black
-          tertiary: '#111111',  // Card background
-          elevated: '#1A1A1A',  // Hover states
+          primary: 'rgb(var(--bg-primary) / <alpha-value>)',
+          secondary: 'rgb(var(--bg-secondary) / <alpha-value>)',
+          tertiary: 'rgb(var(--bg-tertiary) / <alpha-value>)',
+          elevated: 'rgb(var(--bg-elevated) / <alpha-value>)',
         },
         text: {
-          primary: '#EDEDED',   // High contrast white
-          secondary: '#A1A1A1', // Neutral gray
-          tertiary: '#525252',  // Subtle gray
-          muted: '#262626',     // Very subtle
+          primary: 'rgb(var(--text-primary) / <alpha-value>)',
+          secondary: 'rgb(var(--text-secondary) / <alpha-value>)',
+          tertiary: 'rgb(var(--text-tertiary) / <alpha-value>)',
+          muted: 'rgb(var(--text-muted) / <alpha-value>)',
         },
         accent: {
-          primary: '#00D8FF',   // Electric Cyan
-          secondary: '#00F090', // Neon Green
-          tertiary: '#7F00FF',  // Electric Violet
+          primary: 'rgb(var(--accent-primary) / <alpha-value>)',
+          secondary: 'rgb(var(--accent-secondary) / <alpha-value>)',
+          tertiary: 'rgb(var(--accent-tertiary) / <alpha-value>)',
         },
         status: {
-          success: '#00F090',   // Neon Green (Financial Up)
-          warning: '#FFB020',   // Amber
-          danger: '#FF2D55',    // Neon Red (Financial Down)
-          info: '#2E95FF',      // Bright Blue
+          success: 'rgb(var(--status-success) / <alpha-value>)',
+          warning: 'rgb(var(--status-warning) / <alpha-value>)',
+          danger: 'rgb(var(--status-danger) / <alpha-value>)',
+          info: 'rgb(var(--status-info) / <alpha-value>)',
         },
         border: {
-          DEFAULT: '#1F1F1F',
-          subtle: '#141414',
-          emphasis: '#333333',
+          DEFAULT: 'rgb(var(--border-default) / <alpha-value>)',
+          subtle: 'rgb(var(--border-subtle) / <alpha-value>)',
+          emphasis: 'rgb(var(--border-emphasis) / <alpha-value>)',
         }
       },
       fontFamily: {
@@ -41,10 +41,14 @@ export default {
         mono: ['JetBrains Mono', 'Menlo', 'Consolas', 'monospace'], // For financial data
       },
       boxShadow: {
-        'glow-cyan': '0 0 15px -3px rgba(0, 216, 255, 0.4)',
-        'glow-green': '0 0 15px -3px rgba(0, 240, 144, 0.4)',
-        'glow-red': '0 0 15px -3px rgba(255, 45, 85, 0.4)',
-        'elevated': '0 20px 40px -20px rgba(0, 0, 0, 0.8)',
+        'sm': '0 1px 2px 0 rgb(0 0 0 / 0.3)',
+        'md': '0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3)',
+        'lg': '0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.3)',
+        'elevated': '0 25px 50px -12px rgba(0, 0, 0, 0.6)',
+        'inner-glow': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05)',
+        'glow-cyan': '0 0 15px rgba(6, 182, 212, 0.5)',
+        'glow-blue': '0 0 15px rgba(59, 130, 246, 0.5)',
+        'glow-green': '0 0 15px rgba(34, 197, 94, 0.5)',
       },
       animation: {
         marquee: 'marquee 30s linear infinite',

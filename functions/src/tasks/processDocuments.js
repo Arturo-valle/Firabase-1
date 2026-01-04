@@ -1,5 +1,6 @@
 const { getFirestore } = require('firebase-admin/firestore');
 const { processIssuerDocuments } = require('../services/documentProcessor');
+const { extractIssuerMetrics, extractHistoricalMetrics } = require('../services/metricsExtractor');
 const functions = require('firebase-functions');
 
 /**
@@ -12,10 +13,10 @@ async function processAllDocuments() {
     try {
         functions.logger.info('Starting document processing task...');
 
-        // Get all issuers with sector "Privado" (active issuers only)
+        // Get all active issuers
         const issuersSnapshot = await db
             .collection('issuers')
-            .where('sector', '==', 'Privado')
+            .where('active', '==', true)
             .get();
 
         if (issuersSnapshot.empty) {
@@ -49,6 +50,13 @@ async function processAllDocuments() {
                     lastProcessed: new Date(),
                     documentsProcessed: processedCount,
                 });
+
+                // NEW: Automatically trigger metrics extraction for the dashboard
+                if (processedCount > 0) {
+                    functions.logger.info(`Triggering metrics extraction for ${issuer.name}...`);
+                    await extractIssuerMetrics(issuerDoc.id, issuer.name).catch(e => functions.logger.error('Metrics extraction failed:', e));
+                    await extractHistoricalMetrics(issuerDoc.id, issuer.name).catch(e => functions.logger.error('Historical extraction failed:', e));
+                }
 
                 // Delay between issuers to respect rate limits
                 await new Promise(resolve => setTimeout(resolve, 5000));
@@ -101,6 +109,13 @@ async function processIssuers(issuerIds) {
                 lastProcessed: new Date(),
                 documentsProcessed: processedCount,
             });
+
+            // NEW: Automatically trigger metrics extraction for the dashboard
+            if (processedCount > 0) {
+                functions.logger.info(`Triggering metrics extraction for ${issuer.name}...`);
+                await extractIssuerMetrics(issuerId, issuer.name).catch(e => functions.logger.error('Metrics extraction failed:', e));
+                await extractHistoricalMetrics(issuerId, issuer.name).catch(e => functions.logger.error('Historical extraction failed:', e));
+            }
 
         } catch (error) {
             functions.logger.error(`Error processing ${issuerId}:`, error);

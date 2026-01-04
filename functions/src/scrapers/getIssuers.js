@@ -91,20 +91,26 @@ async function scrapeIssuers() {
         const batch = db.batch();
         const timestamp = admin.firestore.FieldValue.serverTimestamp();
 
+        const { normalizeIssuerName } = require("../utils/normalization");
+
         // 1. Save individual issuer documents
         for (const issuer of issuers) {
-            // Create a safe ID from the name
-            const issuerId = issuer.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            // Create a safe ID using centralized normalization
+            const normalized = normalizeIssuerName(issuer.name);
+
+            const { ALIASES } = require("../utils/issuerConfig");
+            const issuerId = ALIASES[normalized] || normalized;
             const docRef = db.collection('issuers').doc(issuerId);
-            batch.set(docRef, { ...issuer, lastUpdated: timestamp }, { merge: true });
+            batch.set(docRef, { ...issuer, id: issuerId, lastUpdated: timestamp }, { merge: true });
         }
 
         // 2. Update a metadata document with the full list of active issuers
-        const activeIssuers = issuers.filter(i => i.active).map(i => ({
-            name: i.name,
-            id: i.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
-            acronym: i.acronym
-        }));
+        const activeIssuers = issuers.filter(i => i.active).map(i => {
+            const normalized = normalizeIssuerName(i.name);
+            const { ALIASES } = require("../utils/issuerConfig");
+            const id = ALIASES[normalized] || normalized;
+            return { name: i.name, id, acronym: i.acronym };
+        });
 
         const metadataRef = db.collection('system').doc('market_metadata');
         batch.set(metadataRef, {

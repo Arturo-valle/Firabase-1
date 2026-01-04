@@ -1,42 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useIssuers } from '../hooks/useIssuers';
 import VaultModule from '../components/VaultModule';
-import { fetchIssuers } from '../utils/marketDataApi';
-import type { Issuer } from '../types';
+import ErrorDisplay from '../components/ErrorDisplay';
+import LibrarySkeleton from '../components/LibrarySkeleton';
 
 export default function Library() {
-    const [issuers, setIssuers] = useState<Issuer[]>([]);
-    const [loading, setLoading] = useState(true);
+    const { issuers, loading, error, refresh } = useIssuers();
 
+    // SEO Dynamic Title
     useEffect(() => {
-        async function loadIssuers() {
-            try {
-                const data = await fetchIssuers();
-                // Transform processedIssuers to match Issuer type
-                const issuersList = data.issuers?.map((issuer: any) => ({
-                    id: issuer.id,
-                    name: issuer.name,
-                    sector: issuer.sector || 'Privado',
-                    acronym: issuer.acronym || '',
-                    documents: issuer.documents || [],
-                    logoUrl: issuer.logoUrl || '',
-                })) || [];
-                setIssuers(issuersList);
-            } catch (error) {
-                console.error('Failed to load issuers for library:', error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        loadIssuers();
+        document.title = "Biblioteca | Antigravity AI";
     }, []);
 
     if (loading) {
+        return <LibrarySkeleton />;
+    }
+
+    if (error) {
         return (
-            <div className="flex items-center justify-center min-h-[400px]">
-                <div className="text-center">
-                    <div className="animate-spin w-12 h-12 border-4 border-accent-primary border-t-transparent rounded-full mx-auto mb-4" />
-                    <p className="text-text-secondary">Cargando biblioteca...</p>
-                </div>
+            <div className="p-6">
+                <ErrorDisplay
+                    error={error}
+                    onRetry={refresh}
+                />
             </div>
         );
     }

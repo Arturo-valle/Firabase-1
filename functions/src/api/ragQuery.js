@@ -1,6 +1,9 @@
 const { getFirestore } = require('firebase-admin/firestore');
 const { generateEmbeddings, generateFinancialAnalysis, cosineSimilarity, FINANCIAL_PROMPTS } = require('../services/vertexAI');
+const { RAG_RESPONSE_SCHEMA } = require('../services/aiSchemas');
 const functions = require('firebase-functions');
+
+const { getAliasesForIssuer, loadRemoteConfig } = require('../utils/issuerConfig');
 
 /**
  * Busca documentos relevantes usando búsqueda vectorial
@@ -9,45 +12,106 @@ const functions = require('firebase-functions');
  * @param {number} topK - Número de resultados a retornar
  * @returns {Promise<object[]>} Chunks relevantes ordenados por similitud
  */
-async function searchRelevantDocuments(query, issuerId = null, topK = 20) {
+async function searchRelevantDocuments(query, issuerId = null, topK = 40) {
     try {
         // Generate embedding for the query
         const queryEmbedding = await generateEmbeddings(query);
 
         // Get all document chunks from Firestore
+        // Get document chunks from both documentChunks and fact_vectors
         const db = getFirestore();
-        let chunksQuery = db.collection('documentChunks');
+        const collections = ['documentChunks', 'fact_vectors'];
+        const allSnapshots = [];
 
-        if (issuerId) {
-            chunksQuery = chunksQuery.where('issuerId', '==', issuerId);
+        for (const collName of collections) {
+            let q = db.collection(collName);
+
+            if (issuerId) {
+                let targetIds = [issuerId];
+                const aliases = getAliasesForIssuer(issuerId);
+                targetIds = targetIds.concat(aliases);
+
+                if (targetIds.length > 1) {
+                    q = q.where('issuerId', 'in', targetIds);
+                } else {
+                    q = q.where('issuerId', '==', issuerId);
+                }
+            }
+
+            q = q.limit(collName === 'fact_vectors' ? 500 : 1000);
+            allSnapshots.push(await q.get());
         }
 
-        // Prioritize recent documents
-        chunksQuery = chunksQuery.orderBy('createdAt', 'desc').limit(500);
-
-        const snapshot = await chunksQuery.get();
-
-        if (snapshot.empty) {
+        if (allSnapshots.every(s => s.empty)) {
             return [];
         }
 
-        // Calculate similarity for each chunk
-        const results = [];
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            const similarity = cosineSimilarity(queryEmbedding, data.embedding);
+        // Group by year and calculate similarity
+        const groups = {};
+        const targetYears = ['2020', '2021', '2022', '2023', '2024'];
 
-            results.push({
-                id: doc.id,
-                similarity,
-                text: data.text,
-                metadata: data.metadata,
+        allSnapshots.forEach(snapshot => {
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                if (!data.embedding) return; // Skip if no embedding
+
+                const similarity = cosineSimilarity(queryEmbedding, data.embedding);
+                const date = data.metadata?.documentDate || data.createdAt || "";
+                let year = "Unknown";
+
+                const yearMatch = date.toString().match(/\d{4}/);
+                if (yearMatch) year = yearMatch[0];
+
+                if (!groups[year]) groups[year] = [];
+                groups[year].push({
+                    id: doc.id,
+                    similarity,
+                    text: data.text || data.fact || data.content || "",
+                    metadata: {
+                        issuerName: data.metadata?.issuerName || data.issuerId || "Unknown",
+                        documentTitle: data.metadata?.documentTitle || data.title || "Documento",
+                        documentType: data.metadata?.documentType || data.type || "Info",
+                        documentDate: data.metadata?.documentDate || date,
+                        ...data.metadata
+                    },
+                });
             });
         });
 
-        // Sort by similarity and return top K
-        results.sort((a, b) => b.similarity - a.similarity);
-        return results.slice(0, topK);
+        // Diversity Logic: Take top 5 per target year, then fill the rest with best overall
+        let finalSelection = [];
+        const usedIds = new Set();
+
+        targetYears.forEach(year => {
+            if (groups[year]) {
+                const bestInYear = groups[year]
+                    .sort((a, b) => b.similarity - a.similarity)
+                    .slice(0, 5);
+
+                bestInYear.forEach(item => {
+                    finalSelection.push(item);
+                    usedIds.add(item.id);
+                });
+            }
+        });
+
+        // Fill remaining slots (up to topK) with best remaining across all years
+        const allRemaining = [];
+        Object.values(groups).forEach(group => {
+            group.forEach(item => {
+                if (!usedIds.has(item.id)) {
+                    allRemaining.push(item);
+                }
+            });
+        });
+
+        allRemaining.sort((a, b) => b.similarity - a.similarity);
+
+        const leftoversNeeded = Math.max(0, topK - finalSelection.length);
+        finalSelection = [...finalSelection, ...allRemaining.slice(0, leftoversNeeded)];
+
+        // Final sort so the LLM sees the highly relevant ones first/last depending on positioning
+        return finalSelection.sort((a, b) => b.similarity - a.similarity);
     } catch (error) {
         functions.logger.error('Error in vector search:', error);
         throw new Error(`Search failed: ${error.message}`);
@@ -70,7 +134,7 @@ function buildContext(relevantChunks) {
 - Fecha: ${metadata.documentDate}
 
 Contenido:
-${text.substring(0, 800)}...
+${text.substring(0, 1500)}...
 `;
     }).join('\n---\n');
 }
@@ -82,6 +146,7 @@ ${text.substring(0, 800)}...
  */
 async function handleRAGQuery(req, res) {
     try {
+        await loadRemoteConfig();
         const { query, issuerId, analysisType } = req.body;
 
         if (!query) {
@@ -89,10 +154,14 @@ async function handleRAGQuery(req, res) {
         }
 
         // Check if document chunks exist
+        // Check if ANY vectors exist in both primary collections
         const db = getFirestore();
-        const testSnapshot = await db.collection('documentChunks').limit(1).get();
+        const [docSnap, factSnap] = await Promise.all([
+            db.collection('documentChunks').limit(1).get(),
+            db.collection('fact_vectors').limit(1).get()
+        ]);
 
-        if (testSnapshot.empty) {
+        if (docSnap.empty && factSnap.empty) {
             return res.status(503).json({
                 error: 'service_initializing',
                 message: 'El sistema de IA aún está procesando documentos. Los embeddings se están generando en este momento. Por favor intenta de nuevo en 20-30 minutos.',
@@ -105,15 +174,16 @@ async function handleRAGQuery(req, res) {
 
         if (analysisType === 'comparative' || (Array.isArray(issuerId) && issuerId.length > 1)) {
             // Comparative analysis logic
-            const targetIssuers = Array.isArray(issuerId) ? issuerId : ['fama', 'banco de la produccion', 'banco de finanzas']; // Default comparison set
+            const { WHITELIST } = require('../utils/issuerConfig');
+            const targetIssuers = Array.isArray(issuerId) ? issuerId : WHITELIST.slice(0, 3); // Use first 3 from whitelist as default comparison set
 
             for (const targetId of targetIssuers) {
-                const issuerChunks = await searchRelevantDocuments(query, targetId, 10); // 10 chunks per issuer
+                const issuerChunks = await searchRelevantDocuments(query, targetId, 20); // 20 chunks per issuer for comparison
                 relevantChunks = [...relevantChunks, ...issuerChunks];
             }
         } else {
-            // Single issuer logic
-            relevantChunks = await searchRelevantDocuments(query, issuerId, 20);
+            // Single issuer logic (increased to 40 for better historical coverage)
+            relevantChunks = await searchRelevantDocuments(query, issuerId, 40);
         }
 
         if (relevantChunks.length === 0) {
@@ -126,6 +196,26 @@ async function handleRAGQuery(req, res) {
 
         // 2. Build context
         const context = buildContext(relevantChunks);
+
+        // new step: Try to fetch verified metrics from structured collection
+        let verifiedMetricsText = "";
+        try {
+            const yearMatch = query.match(/20\d\d/);
+            const targetIssuerId = Array.isArray(issuerId) ? issuerId[0] : issuerId;
+            if (yearMatch && targetIssuerId) {
+                const year = yearMatch[0];
+                const metricsDocId = `${targetIssuerId}_${year}`;
+                const metricDoc = await db.collection('financialMetrics').doc(metricsDocId).get();
+
+                if (metricDoc.exists) {
+                    const data = metricDoc.data();
+                    verifiedMetricsText = `\nDATOS FINANCIEROS VERIFICADOS (ALTA PRIORIDAD - ÚSALOS PREFERENTEMENTE):\nEmisor: ${data.issuerName || targetIssuerId} Año: ${data.year}\n${JSON.stringify(data.metrics, null, 2)}\nFuente: ${data.sourceDocument || 'Base de Datos Verificada'}\n`;
+                    functions.logger.info(`Injecting verified metrics for ${targetIssuerId} ${year}`);
+                }
+            }
+        } catch (e) {
+            functions.logger.warn('Error fetching verified metrics:', e);
+        }
 
         // 3. Create prompt based on analysis type
         let prompt;
@@ -150,15 +240,58 @@ async function handleRAGQuery(req, res) {
 
             prompt = FINANCIAL_PROMPTS[analysisType](issuerName, documents);
         } else {
-            // General query prompt with CoT
-            prompt = FINANCIAL_PROMPTS.generalQuery(query, context);
+            // General query prompt with CoT and enhanced logic
+            prompt = `Eres un analista financiero senior del mercado de valores de Nicaragua.
+Tu tarea es EXTRAER Y REPORTAR datos específicos del contexto proporcionado.
+
+HECHOS VERIFICADOS (Prioridad Máxima):
+${verifiedMetricsText || "No hay datos verificados específicamente para el año mencionado en la base de datos estructurada."}
+
+CONTEXTO (Documentos Financieros Oficiales):
+${context}
+
+CONSULTA DEL USUARIO: "${query}"
+
+DICCIONARIO DE SINÓNIMOS FINANCIEROS NICARAGÜENSES:
+- "Utilidad Neta" = "Resultado del Ejercicio" = "Ganancia Neta"
+- "Activos Totales" = "Total Activo"
+- "Patrimonio" = "Capital Contable"
+
+INSTRUCCIONES PARA LA SALIDA ESTRUCTURADA:
+1. **answer**: Tu respuesta narrativa detallada en Markdown. Incluye tablas Markdown si es necesario. Cita fuentes [Documento Año].
+2. **structuredData**: Crucial para gráficas.
+   - **creditRating**: Si detectas calificaciones históricas (ej: AAA en 2023, AA+ en 2024), lístalas.
+   - **ratios**: Extrae ROE, ROA, Eficiencia, Liquidez, etc.
+   - **riskScores**: Evalúa de 1 a 10 las categorías de riesgo (Crediticio, Mercado, Operacional) basado exclusivamente en el contexto.
+   - **comparative**: Si la consulta es comparativa, agrupa métricas clave por emisor.
+3. **suggestedQueries**: 3 preguntas lógicas de seguimiento.
+
+REGLAS ESTRICTAS:
+- USA SOLO datos del contexto o de los HECHOS VERIFICADOS. NO inventes cifras.
+- SIEMPRE incluye el monto exacto cuando exista (ej: C$ 175,127,432).
+- SIEMPRE cita la fuente del documento y fecha.
+- Si NO encuentras el dato específico, indica: "Los documentos no contienen [dato específico]."
+- NO te auto-identifiques como IA.`;
         }
 
-        // 4. Generate response
-        const answer = await generateFinancialAnalysis(prompt, { maxTokens: 4096 });
+        // 4. Generate structured response
+        const aiResponse = await generateFinancialAnalysis(prompt, {
+            maxTokens: 4096,
+            responseSchema: RAG_RESPONSE_SCHEMA
+        });
+
+        const { answer, structuredData, suggestedQueries } = aiResponse;
+
+        // 4.1 Coverage Validation (Internal Audit)
+        const yearsFoundInText = [];
+        ['2020', '2021', '2022', '2023', '2024'].forEach(y => {
+            if (answer.includes(y)) yearsFoundInText.push(y);
+        });
 
         // 5. Extract unique documents and metadata
         const uniqueDocs = new Map();
+        const years = new Set();
+
         relevantChunks.forEach(chunk => {
             const docKey = chunk.metadata.documentTitle;
             if (!uniqueDocs.has(docKey)) {
@@ -172,11 +305,8 @@ async function handleRAGQuery(req, res) {
             } else {
                 uniqueDocs.get(docKey).chunkCount++;
             }
-        });
 
-        // Extract years from document dates
-        const years = new Set();
-        relevantChunks.forEach(chunk => {
+            // Extract years from document dates
             const date = chunk.metadata.documentDate;
             if (date) {
                 const yearMatch = date.match(/\d{4}/);
@@ -184,9 +314,20 @@ async function handleRAGQuery(req, res) {
             }
         });
 
+        functions.logger.info('RAG_AUDIT_LOG', {
+            issuerId,
+            query,
+            totalChunksAnalyzed: relevantChunks.length,
+            yearsInContext: Array.from(years).sort(),
+            yearsInAnswer: yearsFoundInText,
+            coverageRatio: (yearsFoundInText.length / 5).toFixed(2)
+        });
+
         // 6. Return enhanced response with sources and metadata
         res.json({
             answer,
+            structuredData, // NEW: Standardized charts data
+            suggestedQueries,
             sources: relevantChunks.map(chunk => ({
                 documentTitle: chunk.metadata.documentTitle,
                 issuerName: chunk.metadata.issuerName,
@@ -203,6 +344,10 @@ async function handleRAGQuery(req, res) {
                 analysisType: analysisType || 'general',
             },
             analysisType: analysisType || 'general',
+            coverage: {
+                detectedYears: yearsFoundInText,
+                missingTargetYears: ['2020', '2021', '2022', '2023', '2024'].filter(y => !yearsFoundInText.includes(y))
+            }
         });
 
     } catch (error) {
@@ -235,7 +380,7 @@ async function handleComparativeAnalysis(req, res) {
             const chunks = await searchRelevantDocuments(
                 `estados financieros calificación riesgo`,
                 issuerId,
-                15
+                20
             );
 
             if (chunks.length > 0) {
@@ -283,12 +428,11 @@ async function handleInsights(req, res) {
             return res.status(400).json({ error: 'Issuer ID is required' });
         }
 
-        // 1. Get most relevant/recent documents
         // We search for "resumen financiero hechos relevantes" to get a good mix
         const chunks = await searchRelevantDocuments(
             'estados financieros informe anual hechos relevantes',
             issuerId,
-            10
+            20
         );
 
         if (chunks.length === 0) {

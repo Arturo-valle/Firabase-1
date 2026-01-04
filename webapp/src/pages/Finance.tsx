@@ -1,174 +1,179 @@
-import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { BuildingOfficeIcon, ChartBarIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
-import { fetchIssuers } from '../utils/marketDataApi';
-import type { Issuer } from '../types';
+import {
+    BuildingOfficeIcon,
+    ChartBarIcon,
+    ArrowRightIcon
+} from '@heroicons/react/24/outline';
+import { useFinanceData } from '../hooks/useFinanceData';
+import ErrorDisplay from '../components/ErrorDisplay';
+
+// En un escenario real, estas constantes vendrían de un archivo centralizado
+const FINANCE_CONSTANTS = {
+    COVERAGE_THRESHOLDS: {
+        HIGH: 80,
+        MEDIUM: 50
+    }
+};
 
 export default function Finance() {
-    const [issuers, setIssuers] = useState<Issuer[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        async function loadData() {
-            try {
-                const data = await fetchIssuers();
-                const issuersList = data.issuers?.map((issuer: any) => ({
-                    id: issuer.id,
-                    name: issuer.name,
-                    sector: issuer.sector || 'Privado',
-                    acronym: issuer.acronym || '',
-                    documents: issuer.documents || [],
-                    logoUrl: issuer.logoUrl || '',
-                    processed: issuer.documents?.length || 0,
-                    total: issuer.documents?.length || 0,
-                    lastProcessed: new Date() // Mock date as Date object
-                }))
-                    .filter((issuer: any) => issuer.documents?.length > 0) || [];
-                setIssuers(issuersList);
-            } catch (error) {
-                console.error('Failed to fetch system status:', error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        loadData();
-    }, []);
+    const { issuers, stats, loading, error } = useFinanceData();
 
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
                 <div className="text-center">
-                    <div className="animate-spin w-12 h-12 border-4 border-accent-primary border-t-transparent rounded-full mx-auto mb-4" />
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                        className="w-12 h-12 border-4 border-accent-primary border-t-transparent rounded-full mx-auto mb-4"
+                    />
                     <p className="text-text-secondary">Cargando emisores...</p>
                 </div>
             </div>
         );
     }
 
+    if (error || !stats) {
+        return <ErrorDisplay error={error || new Error('Error al cargar datos del mercado')} onRetry={() => window.location.reload()} />;
+    }
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 }
+    };
+
     return (
-        <div className="space-y-6 animate-fade-in">
-            {/* Header */}
-            <div>
-                <h2 className="text-3xl font-bold text-text-primary mb-2">
-                    💹 Emisores Procesados
-                </h2>
-                <p className="text-text-secondary">
-                    Análisis financiero detallado de {issuers.length} emisores activos
-                </p>
-            </div>
+        <div className="space-y-6 pb-12">
+            <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="space-y-6"
+            >
+                {/* Header */}
+                <motion.div variants={itemVariants}>
+                    <h2 className="text-3xl font-bold text-text-primary mb-2">
+                        💹 Emisores Procesados
+                    </h2>
+                    <p className="text-text-secondary">
+                        Análisis financiero detallado de {issuers.length} emisores activos
+                    </p>
+                </motion.div>
 
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="card bg-accent-primary/10 border border-accent-primary/20">
-                    <span className="text-accent-primary text-sm font-medium">Emisores Activos</span>
-                    <p className="text-3xl font-bold text-text-primary mt-2">
-                        {issuers.length}
-                    </p>
-                </div>
-                <div className="card bg-status-success/10 border border-status-success/20">
-                    <span className="text-status-success text-sm font-medium">Docs Procesados</span>
-                    <p className="text-3xl font-bold text-text-primary mt-2">
-                        {issuers.reduce((acc, i: any) => acc + (i.documents?.length || 0), 0)}
-                    </p>
-                </div>
-                <div className="card bg-accent-secondary/10 border border-accent-secondary/20">
-                    <span className="text-accent-secondary text-sm font-medium">Chunks en DB</span>
-                    <p className="text-3xl font-bold text-text-primary mt-2">
-                        {issuers.length > 0
-                            ? `${(issuers.reduce((acc, i: any) => acc + (i.documents?.length || 0), 0) * 15 / 1000).toFixed(1)}K`
-                            : '0'
-                        }
-                    </p>
-                </div>
-                <div className="card bg-accent-tertiary/10 border border-accent-tertiary/20">
-                    <span className="text-accent-tertiary text-sm font-medium">Cobertura</span>
-                    <p className="text-3xl font-bold text-text-primary mt-2">
-                        {issuers.length > 0 ? `${Math.round(issuers.filter((i: any) => i.documents?.length > 0).length / issuers.length * 100)}%` : '0%'}
-                    </p>
-                </div>
-            </div>
+                {/* Stats Cards */}
+                <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div className="card bg-accent-primary/10 border border-accent-primary/20">
+                        <span className="text-accent-primary text-sm font-medium">Emisores Activos</span>
+                        <p className="text-3xl font-bold text-text-primary mt-2">
+                            {stats.totalIssuers}
+                        </p>
+                    </div>
+                    <div className="card bg-status-success/10 border border-status-success/20">
+                        <span className="text-status-success text-sm font-medium">Docs Procesados</span>
+                        <p className="text-3xl font-bold text-text-primary mt-2">
+                            {stats.totalProcessedDocs}
+                        </p>
+                    </div>
+                    <div className="card bg-accent-secondary/10 border border-accent-secondary/20">
+                        <span className="text-accent-secondary text-sm font-medium">Chunks en DB</span>
+                        <p className="text-3xl font-bold text-text-primary mt-2">
+                            {stats.totalChunks > 0
+                                ? `${(stats.totalChunks / 1000).toFixed(1)}K`
+                                : '0'
+                            }
+                        </p>
+                    </div>
+                    <div className="card bg-accent-tertiary/10 border border-accent-tertiary/20">
+                        <span className="text-accent-tertiary text-sm font-medium">Cobertura</span>
+                        <p className="text-3xl font-bold text-text-primary mt-2">
+                            {Math.round(stats.overallCoverage)}%
+                        </p>
+                    </div>
+                </motion.div>
 
-            {/* Issuers List */}
-            <div className="card">
-                <h3 className="text-xl font-bold text-text-primary mb-6">Emisores con Datos Disponibles</h3>
+                {/* Issuers List Section */}
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-lg font-bold text-text-primary">Listado de Emisores</h3>
+                        <Link
+                            to="/library"
+                            className="text-accent-primary text-sm hover:underline flex items-center gap-1"
+                        >
+                            Ver biblioteca completa <ArrowRightIcon className="w-4 h-4" />
+                        </Link>
+                    </div>
 
-                <div className="space-y-3">
                     {issuers.length > 0 ? (
-                        issuers
-                            .sort((a: any, b: any) => (b.documents?.length || 0) - (a.documents?.length || 0))
-                            .map((issuer: any) => {
-                                const docCount = issuer.documents?.length || 0;
-                                const coverage = docCount > 0 ? '100' : '0';
-
-                                return (
+                        <div className="grid grid-cols-1 gap-4">
+                            {issuers.map((issuer) => (
+                                <motion.div key={issuer.id} variants={itemVariants}>
                                     <Link
-                                        key={issuer.id}
-                                        to={`/issuer/${encodeURIComponent(issuer.id)}`}
-                                        className="
-                      group block p-5 bg-bg-tertiary hover:bg-bg-elevated rounded-lg
-                      transition-all duration-200 border border-transparent
-                      hover:border-accent-primary hover:shadow-glow-cyan
-                    "
+                                        to={`/issuer/${issuer.id}`}
+                                        className="card bg-bg-elevated border border-border-subtle hover:border-accent-primary/30 transition-all group block"
                                     >
                                         <div className="flex items-center justify-between">
-                                            <div className="flex items-center gap-4 flex-1">
-                                                <div className="flex-shrink-0">
-                                                    <BuildingOfficeIcon className="w-10 h-10 text-accent-primary" />
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-12 h-12 rounded-xl bg-bg-primary border border-border-subtle flex items-center justify-center overflow-hidden">
+                                                    {issuer.logoUrl ? (
+                                                        <img
+                                                            src={issuer.logoUrl}
+                                                            alt={issuer.name}
+                                                            className="w-full h-full object-contain"
+                                                        />
+                                                    ) : (
+                                                        <BuildingOfficeIcon className="w-6 h-6 text-text-tertiary" />
+                                                    )}
                                                 </div>
-
-                                                <div className="flex-1 min-w-0">
-                                                    <h4 className="text-text-primary font-semibold text-lg mb-1 group-hover:text-accent-primary transition-colors">
+                                                <div>
+                                                    <h3 className="font-bold text-text-primary group-hover:text-accent-primary transition-colors">
                                                         {issuer.name}
-                                                    </h4>
-
-                                                    <div className="flex items-center gap-4 text-sm">
-                                                        <span className="text-text-secondary">
-                                                            {docCount} documentos procesados
+                                                    </h3>
+                                                    <div className="flex items-center gap-3 mt-1">
+                                                        <span className="text-xs font-mono text-accent-primary bg-accent-primary/10 px-2 py-0.5 rounded">
+                                                            {issuer.acronym}
                                                         </span>
-                                                        <span className="text-text-tertiary">•</span>
-                                                        <span className={`font-medium ${parseFloat(coverage) >= 80 ? 'text-status-success' :
-                                                            parseFloat(coverage) >= 50 ? 'text-accent-primary' :
-                                                                'text-status-warning'
-                                                            }`}>
-                                                            {coverage}% cobertura
+                                                        <span className="text-xs text-text-tertiary uppercase tracking-wider">
+                                                            {issuer.sector}
                                                         </span>
-                                                    </div>
-
-                                                    {/* Mock last processed date */}
-                                                    <div className="text-text-tertiary text-xs mt-1">
-                                                        Última actualización: {new Date().toLocaleDateString('es-NI', {
-                                                            year: 'numeric',
-                                                            month: 'short',
-                                                            day: 'numeric',
-                                                            hour: '2-digit',
-                                                            minute: '2-digit'
-                                                        })}
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-6">
-                                                {/* Progress Bar */}
-                                                <div className="hidden md:block w-32">
-                                                    <div className="h-2 bg-bg-primary rounded-full overflow-hidden">
+                                            <div className="text-right hidden md:block">
+                                                <div className="text-sm font-bold text-text-primary">
+                                                    {issuer.processed} documentos
+                                                </div>
+                                                <div className="flex items-center gap-2 mt-1">
+                                                    <div className="w-24 h-1.5 bg-bg-primary rounded-full overflow-hidden border border-border-subtle">
                                                         <div
-                                                            className="h-full bg-accent-primary transition-all duration-300"
-                                                            style={{ width: `${coverage}%` }}
+                                                            className={`h-full rounded-full ${issuer.processed >= FINANCE_CONSTANTS.COVERAGE_THRESHOLDS.HIGH
+                                                                ? 'bg-status-success'
+                                                                : 'bg-accent-primary'
+                                                                }`}
+                                                            style={{ width: `${Math.min(issuer.coverage, 100)}%` }}
                                                         />
                                                     </div>
-                                                </div>
-
-                                                {/* Icon */}
-                                                <div className="flex items-center gap-2 text-text-tertiary group-hover:text-accent-primary transition-colors">
-                                                    <ChartBarIcon className="w-5 h-5" />
-                                                    <span className="text-sm font-medium">Ver Métricas</span>
-                                                    <ArrowRightIcon className="w-4 h-4" />
+                                                    <span className="text-[10px] text-text-tertiary font-mono">
+                                                        {Math.round(issuer.coverage)}%
+                                                    </span>
                                                 </div>
                                             </div>
+
+                                            <ArrowRightIcon className="w-5 h-5 text-text-tertiary group-hover:text-accent-primary transition-all group-hover:translate-x-1" />
                                         </div>
                                     </Link>
-                                );
-                            })
+                                </motion.div>
+                            ))}
+                        </div>
                     ) : (
                         <div className="text-center py-12">
                             <BuildingOfficeIcon className="w-16 h-16 text-text-tertiary mx-auto mb-4" />
@@ -176,7 +181,7 @@ export default function Finance() {
                         </div>
                     )}
                 </div>
-            </div>
+            </motion.div>
 
             {/* Help Card */}
             <div className="card bg-accent-primary/10 border border-accent-primary/20">
@@ -207,6 +212,6 @@ export default function Finance() {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }

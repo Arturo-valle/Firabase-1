@@ -15,7 +15,8 @@ function normalizeIssuerName(name) {
         .replace(/, s\.a\./gi, '')
         .replace(/, s\.a/gi, '')
         .replace(/\s*\(.*?\)/g, '')
-        .replace(/,$/g, '')
+        .replace(/[^\w\s]/gi, '') // Remove all punctuation
+        .replace(/\s+/g, ' ') // Collapse spaces
         .trim();
 }
 

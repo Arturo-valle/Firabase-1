@@ -20,6 +20,7 @@ import {
     type ComparativeData,
 } from '../utils/dataParser';
 import { CpuChipIcon, DocumentArrowDownIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import { apiClient } from '../utils/apiClient';
 
 interface AIAnalysisProps {
     issuers: Issuer[];
@@ -128,19 +129,20 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ issuers, initialIssuerId }) => 
             return;
         }
 
+        const startTime = performance.now();
         setLoading(true);
         setError(null);
         setResponse(null);
 
         try {
             const type = selectedIssuers.length > 1 ? 'comparative' : analysisType;
+            // Determine endpoint based on selection
+            const endpoint = type === 'comparative' ? '/ai/compare' : '/ai/query';
             const normalizedIds = selectedIssuers.map(normalizeIssuerId);
             const issuerIdParam = normalizedIds.length === 1 ? normalizedIds[0] : normalizedIds;
 
-            const apiUrl = import.meta.env.VITE_API_URL || 'https://api-os3qsxfz6q-uc.a.run.app/ai/query';
-            const res = await fetch(apiUrl, {
+            const data = await apiClient<any>(endpoint, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     query,
                     issuerId: issuerIdParam,
@@ -148,20 +150,32 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ issuers, initialIssuerId }) => 
                 }),
             });
 
-            const data = await res.json();
 
-            if (!res.ok) throw new Error(data.error || 'Execution Failure');
+            // Calculate real latency properly
+            const endTime = performance.now();
+            const latencyInSeconds = ((endTime - startTime) / 1000).toFixed(3);
+
+            if (!data.metadata) data.metadata = {};
+            data.metadata.latency = latencyInSeconds;
 
             setResponse(data);
 
-            if (data.answer) {
-                const newChartData = {
+            if (data.structuredData) {
+                // Prefer Structured Output from Backend
+                setChartData({
+                    creditRating: data.structuredData.creditRating || [],
+                    ratios: data.structuredData.ratios || [],
+                    riskScores: data.structuredData.riskScores || [],
+                    comparative: data.structuredData.comparative || []
+                });
+            } else if (data.answer) {
+                // Fallback to legacy regex parsing
+                setChartData({
                     creditRating: parseCreditRatingData(data.answer),
                     ratios: parseFinancialRatios(data.answer),
                     riskScores: parseRiskScores(data.answer),
                     comparative: parseComparativeData(data.answer)
-                };
-                setChartData(newChartData);
+                });
             }
 
             const newEntry: QueryHistory = {
@@ -172,9 +186,15 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ issuers, initialIssuerId }) => 
                 saved: false,
                 issuers: selectedIssuers
             };
+
             const updatedHistory = [newEntry, ...history].slice(0, 50);
             setHistory(updatedHistory);
-            localStorage.setItem('queryHistory', JSON.stringify(updatedHistory));
+
+            try {
+                localStorage.setItem('queryHistory', JSON.stringify(updatedHistory));
+            } catch (storageError) {
+                console.warn('Failed to save history to localStorage:', storageError);
+            }
 
         } catch (err: any) {
             setError(err.message);
@@ -407,7 +427,7 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ issuers, initialIssuerId }) => 
                             <div className="space-y-4 text-xs font-mono">
                                 <div className="flex justify-between border-b border-white/5 pb-2">
                                     <span className="text-text-tertiary">LATENCY</span>
-                                    <span className="text-white">{(Math.random() * 0.5 + 0.1).toFixed(3)}s</span>
+                                    <span className="text-white">{response.metadata?.latency || '< 0.500'}s</span>
                                 </div>
                                 <div className="flex justify-between border-b border-white/5 pb-2">
                                     <span className="text-text-tertiary">CHUNKS_SCANNED</span>

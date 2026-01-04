@@ -8,9 +8,13 @@
   "scripts": {
     "build": "npm install --workspaces && npm run build -w webapp",
     "start": "node functions/src/index.js",
-    "analyze:facts": "node scripts/analyzeFacts.js"
+    "analyze:facts": "node scripts/analyzeFacts.js",
+    "cli": "node cli.js"
   },
   "engines": {
     "node": "20"
+  },
+  "dependencies": {
+    "firebase-tools": "^15.1.0"
   }
 }

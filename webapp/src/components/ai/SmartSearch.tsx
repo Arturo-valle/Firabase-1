@@ -1,34 +1,11 @@
 import { useState } from 'react';
 import { MagnifyingGlassIcon, SparklesIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
-import { API_BASE_URL } from '../../config';
-
-interface SearchResult {
-    answer: string;
-    sources: Array<{
-        issuer: string;
-        documentTitle: string;
-        relevance: number;
-    }>;
-    metadata: {
-        chunksUsed: number;
-        documentsFound: number;
-        yearsFound: string;
-    };
-    queryUnderstanding?: {
-        intent: string;
-        issuers: string[];
-        metrics: string[];
-        timeframe?: string;
-        enhancedQuery: string;
-    };
-}
-
+import { useAIResearch, SearchResult } from '../../hooks/useAIResearch';
 
 export default function SmartSearch() {
     const [query, setQuery] = useState('');
-    const [loading, setLoading] = useState(false);
+    const { loading, error, search } = useAIResearch();
     const [result, setResult] = useState<SearchResult | null>(null);
-    const [error, setError] = useState<string | null>(null);
 
     async function handleSearch(e: React.FormEvent) {
         e.preventDefault();
@@ -36,32 +13,15 @@ export default function SmartSearch() {
         if (!query.trim()) return;
 
         try {
-            setLoading(true);
-            setError(null);
             setResult(null);
-
-            const response = await fetch(`${API_BASE_URL}/ai/smart-search`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ query: query.trim() }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Search failed');
+            const searchResult = await search(query);
+            if (searchResult) {
+                setResult(searchResult);
             }
-
-            const data = await response.json();
-
-            setResult({
-                answer: data.results.answer,
-                sources: data.results.sources,
-                metadata: data.results.metadata,
-                queryUnderstanding: data.queryUnderstanding,
-            });
         } catch (err: any) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
+            // Error handling is managed by the hook's error state, 
+            // but we can add specific log if needed
+            console.error('Search failed:', err);
         }
     }
 

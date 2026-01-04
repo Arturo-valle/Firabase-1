@@ -14,8 +14,8 @@ const scrapeBcnExchangeRate = async () => {
   try {
     functions.logger.info("Scraping BCN for official exchange rate...");
     // The BCN site sometimes blocks requests without a user-agent.
-    const { data } = await axios.get(BCN_RATES_URL, { 
-      headers: { 'User-Agent': 'Mozilla/5.0' } 
+    const { data } = await axios.get(BCN_RATES_URL, {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
     });
     const $ = cheerio.load(data);
 
@@ -29,7 +29,7 @@ const scrapeBcnExchangeRate = async () => {
       functions.logger.error("Could not find or parse the exchange rate from the new BCN URL. The layout may have changed again.");
       return null;
     }
-    
+
     functions.logger.info(`Successfully scraped BCN exchange rate: ${rate}`);
     return rate;
 
@@ -39,4 +39,18 @@ const scrapeBcnExchangeRate = async () => {
   }
 };
 
-module.exports = { scrapeBcnExchangeRate };
+const scrapeBcnRates = async () => {
+  const rate = await scrapeBcnExchangeRate();
+  if (rate) {
+    const admin = require('firebase-admin');
+    const db = admin.firestore();
+    await db.collection('system').doc('market_metadata').set({
+      exchangeRate: rate,
+      lastRateUpdate: admin.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+    functions.logger.info(`Saved BCN rate ${rate} to system/market_metadata`);
+  }
+  return rate;
+};
+
+module.exports = { scrapeBcnExchangeRate, scrapeBcnRates };

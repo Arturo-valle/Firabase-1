@@ -1,12 +1,13 @@
 const axios = require('axios');
 const functions = require('firebase-functions');
 const { GoogleAuth } = require('google-auth-library');
-const { VertexAI } = require('@google-cloud/vertexai');
+const { GoogleGenAI } = require('@google/genai');
 
 async function diagnoseVertex(req, res) {
     const results = {
         timestamp: new Date().toISOString(),
         projectId: 'mvp-nic-market',
+        location: 'global',
         identity: null,
         scopes: null,
         tests: {}
@@ -28,12 +29,12 @@ async function diagnoseVertex(req, res) {
         const auth = new GoogleAuth({
             scopes: 'https://www.googleapis.com/auth/cloud-platform'
         });
-        const client = await auth.getClient();
-        results.scopes = client.scopes || 'unknown';
-        const accessToken = await client.getAccessToken();
+        const authClient = await auth.getClient();
+        results.scopes = authClient.scopes || 'unknown';
+        const accessToken = await authClient.getAccessToken();
         const token = accessToken.token;
 
-        // 3. List Locations (REST)
+        // 3. List Locations (REST) - Verificación de conectividad base
         try {
             const locUrl = `https://aiplatform.googleapis.com/v1/projects/${results.projectId}/locations`;
             const locRes = await axios.get(locUrl, { headers: { 'Authorization': `Bearer ${token}` } });
@@ -42,24 +43,28 @@ async function diagnoseVertex(req, res) {
             results.tests.listLocations = { success: false, error: e.message, status: e.response?.status };
         }
 
-        // 4. Test Standard Model (gemini-1.5-flash) in us-central1
+        // 4. Test Gemini 2.0 Flash Exp con @google/genai (Global Endpoint)
         try {
-            const v1 = new VertexAI({ project: results.projectId, location: 'us-central1' });
-            const m1 = v1.getGenerativeModel({ model: 'gemini-1.5-flash' });
-            await m1.generateContent('Hi');
-            results.tests.standardModel = { success: true, model: 'gemini-1.5-flash', location: 'us-central1' };
-        } catch (e) {
-            results.tests.standardModel = { success: false, error: e.message };
-        }
+            const client = new GoogleGenAI({
+                vertexai: true,
+                project: results.projectId,
+                location: 'global'
+            });
 
-        // 5. Test User Model (gemini-2.5-flash-lite) in us-central1
-        try {
-            const v2 = new VertexAI({ project: results.projectId, location: 'us-central1' });
-            const m2 = v2.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
-            await m2.generateContent('Hi');
-            results.tests.userModel = { success: true, model: 'gemini-2.5-flash-lite', location: 'us-central1' };
+
+            const response = await client.models.generateContent({
+                model: 'gemini-2.0-flash-exp',
+                contents: [{ role: 'user', parts: [{ text: 'Hola, responde con "OK"' }] }]
+            });
+
+            results.tests.gemini2flashExp = {
+                success: true,
+                model: 'gemini-2.0-flash-exp',
+                location: 'global',
+                response: response.text.trim()
+            };
         } catch (e) {
-            results.tests.userModel = { success: false, error: e.message };
+            results.tests.gemini3flashPreview = { success: false, error: e.message };
         }
 
         res.json(results);
@@ -68,5 +73,8 @@ async function diagnoseVertex(req, res) {
         res.status(500).json({ error: error.message, stack: error.stack, partialResults: results });
     }
 }
+
+module.exports = { diagnoseVertex };
+
 
 module.exports = { diagnoseVertex };

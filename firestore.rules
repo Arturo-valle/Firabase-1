@@ -5,7 +5,7 @@ service cloud.firestore {
     // Solo permitir acceso a usuarios autenticados.
     // Reglas más específicas se añadirán después.
     match /{document=**} {
-      allow read, write: if request.auth != null;
+      allow read, write: if false;
     }
   }
 }

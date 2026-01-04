@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { apiClient } from '../utils/apiClient';
 import { AIChat } from '../components/AIChat';
 import type { Issuer } from '../types';
 
@@ -14,12 +15,10 @@ export const MarketDashboard: React.FC<MarketDashboardProps> = ({ onSelectIssuer
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch issuers from our API
-                const response = await fetch('https://us-central1-mvp-nic-market.cloudfunctions.net/api/issuers');
-                const data = await response.json();
+                // Fetch issuers from our API using central apiClient
+                const data = await apiClient<{ issuers: Issuer[] }>('/issuers');
                 if (data.issuers) {
-                    // Filter only active ones if the API returns everything (though our scraper marks them)
-                    // We'll trust the API or filter by 'active' property if available
+                    // Filter only active ones if necessary
                     const active = data.issuers.filter((i: any) => i.active !== false);
                     setIssuers(active);
                 }

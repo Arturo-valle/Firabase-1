@@ -2,6 +2,7 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const { scrapeBolsanicFacts } = require("../scrapers/getBolsanicFacts");
 const { processIssuers } = require("./processDocuments");
+const { extractIssuerMetrics, extractHistoricalMetrics } = require("../services/metricsExtractor");
 
 /**
  * Task to scrape and index Hechos Relevantes.
@@ -96,10 +97,17 @@ async function indexFacts() {
         }
 
         await batch.commit();
-
         if (issuersToUpdate.size > 0) {
-            functions.logger.info(`Found new facts for ${issuersToUpdate.size} issuers. Triggering processing...`);
+            functions.logger.info(`Found new facts for ${issuersToUpdate.size} issuers. Triggering processing and metrics extraction...`);
             await processIssuers(Array.from(issuersToUpdate));
+
+            // NEW: Automatically update metrics and history for affected issuers
+            for (const id of issuersToUpdate) {
+                const doc = await db.collection('issuers').doc(id).get();
+                const name = doc.exists ? doc.data().name : id;
+                await extractIssuerMetrics(id, name).catch(e => functions.logger.error(`Metrics update failed for ${id}:`, e));
+                await extractHistoricalMetrics(id, name).catch(e => functions.logger.error(`History update failed for ${id}:`, e));
+            }
         } else {
             functions.logger.info("No new facts to index.");
         }

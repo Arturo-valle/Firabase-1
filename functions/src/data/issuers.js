@@ -7,7 +7,7 @@ const issuers = [
     { name: "Corporación Agricola", acronym: "Agri-Corp", sector: "Privado", detailUrl: "https://www.bolsanic.com/emisor-corporacionesagricolas/", variations: ["agri-corp", "agricorp", "corporación agrícola", "agri", "corporacion agricorp"] },
     { name: "FAMA", acronym: "FAMA", sector: "Privado", detailUrl: "https://www.bolsanic.com/emisor-financierafama/", variations: ["fama, s.a."] },
     { name: "Banco De La Producción, S.A.", acronym: "Banpro", sector: "Privado", detailUrl: "https://www.bolsanic.com/emisor-bancodelaproduccion/", variations: ["banpro", "banco de la producción", "banco de la producción, s.a.", "banco de la producción s.a.", "banco de la produccion", "bpdc"] },
-    { name: "HORIZONTE FONDO DE INVERSIÓN", acronym: "HORIZONTE", sector: "Privado", detailUrl: "https://www.bolsanic.com/emisor-horizontefondodeinversion/", variations: ["horizonte"] },
+    { name: "HORIZONTE FONDO DE INVERSIÓN", acronym: "HORIZONTE", sector: "Privado", detailUrl: "https://invercasasafi.com/fondos-de-inversion/", variations: ["horizonte"] },
     { name: "INVERCASA", acronym: "INVERCASA", sector: "Privado", detailUrl: null, variations: ["invercasa", "invercasasafi", "fondo inversión plus", "fondo inversión activa", "fondo de inversión inmobiliario", "nvercasa safi", "invercasa safi"] },
 
     // Inactive Issuers

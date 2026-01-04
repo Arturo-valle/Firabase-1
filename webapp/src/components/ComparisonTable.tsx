@@ -7,17 +7,26 @@ interface ComparisonTableProps {
     highlightBest?: boolean;
 }
 
+import { motion } from 'framer-motion';
+
 const ComparisonTable: React.FC<ComparisonTableProps> = ({ issuers, highlightBest = false }) => {
     if (!issuers || issuers.length === 0) return null;
 
+    // Helper to safely access nested metrics
+    const getMetricValue = (issuer: IssuerMetrics, section: keyof IssuerMetrics, key: string): number | undefined => {
+        const sectionData = issuer[section];
+        if (sectionData && typeof sectionData === 'object' && key in sectionData) {
+            return (sectionData as any)[key] as number;
+        }
+        return undefined;
+    };
+
     // Helper to find best value (max or min depending on metric)
-    const isBest = (val: number | undefined, metricKey: string, section: string) => {
+    const isBest = (val: number | undefined, metricKey: string, section: keyof IssuerMetrics) => {
         if (!highlightBest || val === undefined) return false;
 
-        const values = issuers.map(i => {
-            // @ts-ignore
-            return i[section]?.[metricKey];
-        }).filter(v => v !== undefined) as number[];
+        const values = issuers.map(i => getMetricValue(i, section, metricKey))
+            .filter(v => v !== undefined) as number[];
 
         if (values.length < 2) return false;
 
@@ -32,21 +41,44 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ issuers, highlightBes
     };
 
     const renderCell = (issuer: IssuerMetrics, section: keyof IssuerMetrics, key: string, formatter: (v: any) => string) => {
-        // @ts-ignore
-        const value = issuer[section]?.[key];
-        // @ts-ignore
+        const value = getMetricValue(issuer, section, key);
         const isWinner = isBest(value, key, section);
 
         return (
-            <td className={`p-4 text-right font-mono text-sm border-b border-white/5 ${isWinner ? 'text-accent-primary font-bold bg-accent-primary/5' : 'text-text-secondary'}`}>
+            <motion.td
+                initial={false}
+                animate={{
+                    backgroundColor: isWinner ? 'rgba(0, 240, 255, 0.05)' : 'rgba(0, 0, 0, 0)',
+                    color: isWinner ? '#00f0ff' : '#94a3b8'
+                }}
+                className={`p-4 text-right font-mono text-sm border-b border-white/5 ${isWinner ? 'font-bold' : ''}`}
+            >
                 {value !== undefined ? formatter(value) : '-'}
-            </td>
+            </motion.td>
         );
+    };
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.05 }
+        }
+    };
+
+    const rowVariants = {
+        hidden: { opacity: 0, x: -10 },
+        visible: { opacity: 1, x: 0 }
     };
 
     return (
         <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
-            <table className="w-full border-collapse">
+            <motion.table
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="w-full border-collapse"
+            >
                 <thead>
                     <tr>
                         <th className="p-4 text-left bg-black/80 backdrop-blur-md sticky left-0 z-20 min-w-[200px] border-b border-accent-primary/30 text-white font-bold">
@@ -61,59 +93,59 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ issuers, highlightBes
                 </thead>
                 <tbody className="divide-y divide-white/5">
                     {/* Capital Section */}
-                    <tr className="bg-white/5">
+                    <motion.tr variants={rowVariants} className="bg-white/5">
                         <td colSpan={issuers.length + 1} className="p-2 pl-4 text-xs font-bold text-text-tertiary uppercase tracking-wider">
                             Capital & Activos
                         </td>
-                    </tr>
-                    <tr>
+                    </motion.tr>
+                    <motion.tr variants={rowVariants}>
                         <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">Activos Totales</td>
                         {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'capital', 'activosTotales', formatCurrency)}</React.Fragment>)}
-                    </tr>
-                    <tr>
+                    </motion.tr>
+                    <motion.tr variants={rowVariants}>
                         <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">Pasivos Totales</td>
                         {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'capital', 'pasivosTotales', formatCurrency)}</React.Fragment>)}
-                    </tr>
-                    <tr>
+                    </motion.tr>
+                    <motion.tr variants={rowVariants}>
                         <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">Patrimonio</td>
                         {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'capital', 'patrimonio', formatCurrency)}</React.Fragment>)}
-                    </tr>
+                    </motion.tr>
 
                     {/* Profitability Section */}
-                    <tr className="bg-white/5">
+                    <motion.tr variants={rowVariants} className="bg-white/5">
                         <td colSpan={issuers.length + 1} className="p-2 pl-4 text-xs font-bold text-text-tertiary uppercase tracking-wider">
                             Rentabilidad
                         </td>
-                    </tr>
-                    <tr>
+                    </motion.tr>
+                    <motion.tr variants={rowVariants}>
                         <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">Utilidad Neta</td>
                         {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'rentabilidad', 'utilidadNeta', formatCurrency)}</React.Fragment>)}
-                    </tr>
-                    <tr>
+                    </motion.tr>
+                    <motion.tr variants={rowVariants}>
                         <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">ROE</td>
                         {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'rentabilidad', 'roe', formatPercentage)}</React.Fragment>)}
-                    </tr>
-                    <tr>
+                    </motion.tr>
+                    <motion.tr variants={rowVariants}>
                         <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">ROA</td>
                         {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'rentabilidad', 'roa', formatPercentage)}</React.Fragment>)}
-                    </tr>
+                    </motion.tr>
 
-                    {/* Liquidity & Solvency */}
-                    <tr className="bg-white/5">
+                    {/* Liquidez & Solvencia */}
+                    <motion.tr variants={rowVariants} className="bg-white/5">
                         <td colSpan={issuers.length + 1} className="p-2 pl-4 text-xs font-bold text-text-tertiary uppercase tracking-wider">
                             Liquidez & Solvencia
                         </td>
-                    </tr>
-                    <tr>
+                    </motion.tr>
+                    <motion.tr variants={rowVariants}>
                         <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">Ratio Circulante</td>
                         {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'liquidez', 'ratioCirculante', formatRatio)}</React.Fragment>)}
-                    </tr>
-                    <tr>
+                    </motion.tr>
+                    <motion.tr variants={rowVariants}>
                         <td className="p-4 bg-black/20 sticky left-0 text-text-primary text-sm font-medium">Deuda / Patrimonio</td>
                         {issuers.map((i, idx) => <React.Fragment key={idx}>{renderCell(i, 'solvencia', 'deudaPatrimonio', formatRatio)}</React.Fragment>)}
-                    </tr>
+                    </motion.tr>
                 </tbody>
-            </table>
+            </motion.table>
         </div>
     );
 };

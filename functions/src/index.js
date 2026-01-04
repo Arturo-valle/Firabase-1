@@ -13,6 +13,7 @@ const { syncIssuers } = require("./tasks/syncIssuers");
 const { indexFacts } = require("./tasks/indexFacts");
 const { onDocumentUpload } = require("./triggers/storage");
 const { backfillHistory } = require("./tasks/backfillHistory");
+const { diagnoseVertex } = require("./tasks/diagnoseVertex");
 
 /**
  * Main API Entry Point
@@ -20,8 +21,9 @@ const { backfillHistory } = require("./tasks/backfillHistory");
  */
 exports.api = onRequest({
   region: "us-central1",
-  timeoutSeconds: 300,
-  memory: "2Gi",
+  timeoutSeconds: 540,
+  memory: "2GiB",
+  concurrency: 4,
 }, app);
 
 /**
@@ -67,7 +69,7 @@ exports.indexFactsTask = onSchedule({
 exports.backfillHistoryTask = onRequest({
   region: "us-central1",
   timeoutSeconds: 540,
-  memory: "1GB",
+  memory: "4GiB",
 }, backfillHistory);
 
 /**
@@ -79,11 +81,24 @@ exports.indexFinancialsTask = onSchedule({
   schedule: "every 24 hours",
   region: "us-central1",
   timeoutSeconds: 540,
-  memory: "1GB",
+  memory: "4GiB",
 }, async (event) => {
   // Import dynamically to keep cold start fast
   const indexFinancialsModule = require("./tasks/indexFinancials");
   await indexFinancialsModule(null, null);
+});
+
+/**
+ * Manual Task: manualIndexFinancialsTask
+ * Manually triggered via HTTP request.
+ */
+exports.manualIndexFinancialsTask = onRequest({
+  region: "us-central1",
+  timeoutSeconds: 540,
+  memory: "4GiB",
+}, async (req, res) => {
+  const indexFinancialsModule = require("./tasks/indexFinancials");
+  await indexFinancialsModule(req, res);
 });
 
 /**
@@ -94,7 +109,7 @@ exports.indexFinancialsTask = onSchedule({
 exports.regenerateMetricsTask = onRequest({
   region: "us-central1",
   timeoutSeconds: 540,
-  memory: "1GB",
+  memory: "4GiB",
 }, require("./tasks/regenerateMetrics"));
 
 /**
@@ -107,7 +122,6 @@ exports.manualSyncTask = onRequest({
   region: "us-central1",
   timeoutSeconds: 540,
   memory: "2GB", // Higher memory for full sync
-  invoker: "public",
 }, async (req, res) => {
   try {
     await syncIssuers();
@@ -117,3 +131,32 @@ exports.manualSyncTask = onRequest({
     res.status(500).send(`Sync Failed: ${error.message}`);
   }
 });
+
+/**
+ * Manual Task: cleanupIssuersTask
+ * Removes issuers from Firestore that are not in the official whitelist.
+ */
+exports.cleanupIssuersTask = onRequest({
+  region: "us-central1",
+  timeoutSeconds: 300,
+  memory: "1GB",
+}, require("./tasks/cleanupIssuers"));
+
+/**
+ * Diagnostic Task: diagnoseVertexTask
+ * Verifies connectivity to Vertex AI and specific model accessibility.
+ */
+exports.diagnoseVertexTask = onRequest({
+  region: "us-central1",
+  timeoutSeconds: 60,
+  memory: "512MiB",
+}, diagnoseVertex);
+
+exports.listModelsTask = onRequest({
+  region: "us-central1",
+  timeoutSeconds: 60,
+  memory: "512MiB",
+}, require("./tasks/listModels"));
+
+
+

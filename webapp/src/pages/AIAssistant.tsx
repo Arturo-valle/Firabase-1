@@ -1,53 +1,38 @@
-import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import AIAnalysis from '../components/AIAnalysis';
-import { fetchIssuers } from '../utils/marketDataApi';
-import { transformIssuers } from '../utils/dataTransforms';
+import { useIssuers } from '../hooks/useIssuers';
+import { ErrorDisplay } from '../components/ErrorDisplay';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 
 export default function AIAssistant() {
     const [searchParams] = useSearchParams();
     const initialIssuerId = searchParams.get('issuerId') || undefined;
 
-    const [issuers, setIssuers] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        async function loadIssuers() {
-            try {
-                console.log('[AIAssistant] Fetching issuers...');
-                const data = await fetchIssuers();
-                console.log('[AIAssistant] Issuers data:', data);
-
-                // Transform issuers to match expected format
-                const issuersList = transformIssuers(data.issuers);
-
-                console.log('[AIAssistant] Transformed issuers list:', issuersList);
-                console.log('[AIAssistant] Issuer count:', issuersList.length);
-
-                setIssuers(issuersList);
-            } catch (error) {
-                console.error('[AIAssistant] Failed to load issuers:', error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        loadIssuers();
-    }, []);
+    // Use the refactored hook with built-in retry logic
+    const { issuers, loading, error, retry, isRetrying } = useIssuers({
+        retries: 3
+    });
 
     if (loading) {
+        return <LoadingSpinner message="Cargando ecosistema de emisores..." />;
+    }
+
+    if (error) {
         return (
-            <div className="flex items-center justify-center min-h-[400px]">
-                <div className="text-center">
-                    <div className="animate-spin w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4" />
-                    <p className="text-slate-600">Cargando emisores...</p>
-                </div>
-            </div>
+            <ErrorDisplay
+                error={error}
+                onRetry={retry}
+                isRetrying={isRetrying}
+            />
         );
     }
 
+    // Validate if initialIssuerId exists in the loaded list
+    const validIssuerId = issuers.some(i => i.id === initialIssuerId) ? initialIssuerId : undefined;
+
     return (
         <div className="space-y-6">
-            <AIAnalysis issuers={issuers} initialIssuerId={initialIssuerId} />
+            <AIAnalysis issuers={issuers} initialIssuerId={validIssuerId} />
         </div>
     );
 }
