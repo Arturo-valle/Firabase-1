@@ -44,7 +44,7 @@ const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen }) => {
             )}
 
             {/* Sidebar Container */}
-            <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-bg-secondary border-r border-border-subtle flex flex-col transform transition-transform duration-300 ease-in-out md:translate-x-0 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            <div className={`fixed inset-y-0 left-0 z-50 w-64 glass-panel border-r-0 rounded-none flex flex-col transform transition-transform duration-300 ease-in-out md:translate-x-0 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 {/* Logo Area */}
                 <div className="p-4 flex items-center justify-between mb-2">
                     <div className="flex items-center gap-3">
@@ -63,10 +63,10 @@ const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen }) => {
 
                 {/* New Thread Button */}
                 <div className="px-3 mb-6">
-                    <button className="w-full flex items-center justify-between bg-bg-primary hover:bg-bg-elevated text-text-secondary hover:text-text-primary border border-border-subtle rounded-full px-4 py-2.5 transition-all duration-200 group shadow-sm">
+                    <button className="w-full flex items-center justify-between bg-bg-tertiary/50 hover:bg-bg-tertiary text-text-secondary hover:text-text-primary border border-white/5 hover:border-text-muted/20 rounded-full px-4 py-2.5 transition-all duration-200 group shadow-sm">
                         <span className="text-sm font-medium">New Thread</span>
                         <div className="text-text-tertiary group-hover:text-text-primary transition-colors">
-                            <span className="text-xs border border-border-emphasis px-1.5 py-0.5 rounded text-text-tertiary">⌘ K</span>
+                            <span className="text-xs border border-border-emphasis/30 px-1.5 py-0.5 rounded text-text-tertiary">⌘ K</span>
                         </div>
                     </button>
                 </div>
@@ -104,8 +104,8 @@ const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen }) => {
                 </nav>
 
                 {/* Bottom Actions */}
-                <div className="p-3 border-t border-border-subtle space-y-1">
-                    <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-text-secondary hover:bg-bg-tertiary hover:text-text-primary transition-colors">
+                <div className="p-3 border-t border-border-subtle/50 space-y-1">
+                    <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-text-secondary hover:bg-bg-tertiary/50 hover:text-text-primary transition-colors">
                         <UserCircleIcon className="w-5 h-5" />
                         <span>Sign Up</span>
                     </button>
@@ -118,14 +118,14 @@ const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen }) => {
                         <Cog6ToothIcon className="w-5 h-5" />
                         <span>Cambiar Tema</span>
                     </button>
-                    <div className="px-3 py-2 mt-2 flex items-center justify-between">
+                    <div className="px-3 py-2 mt-2 flex items-center justify-between bg-bg-tertiary/30 rounded-xl border border-white/5">
                         <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-full bg-accent-primary/20 flex items-center justify-center text-accent-primary text-xs font-bold">
+                            <div className="w-8 h-8 rounded-full bg-accent-primary/10 flex items-center justify-center text-accent-primary text-xs font-bold shadow-[0_0_10px_rgba(var(--accent-primary),0.2)]">
                                 Pro
                             </div>
                             <div className="flex flex-col">
-                                <span className="text-xs font-medium text-text-primary">Upgrade</span>
-                                <span className="text-xs text-text-tertiary">Get Pro features</span>
+                                <span className="text-xs font-bold text-text-primary">Upgrade</span>
+                                <span className="text-[10px] text-text-tertiary uppercase tracking-wider">Get Pro features</span>
                             </div>
                         </div>
                     </div>

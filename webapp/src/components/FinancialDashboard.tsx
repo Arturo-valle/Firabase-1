@@ -141,7 +141,7 @@ const FinancialDashboard: React.FC<FinancialDashboardProps> = ({ issuers }) => {
             fetchIssuerHistory(selectedIssuer)
                 .then(data => {
                     const formattedDetails: HistoryPoint[] = (data as any[])
-                        .filter((item: any) => item.period)
+                        .filter((item: any) => item.period && item.activosTotales > 0)
                         .sort((a: any, b: any) => (a.period || '').localeCompare(b.period || ''))
                         .map((item: any) => ({
                             period: item.period,

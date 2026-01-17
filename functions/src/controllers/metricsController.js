@@ -7,7 +7,7 @@ functions.logger.info("Metrics Controller v2.0 - Loaded");
 
 const db = getFirestore();
 
-const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+const CACHE_TTL = 5 * 1000; // 5 seconds (Reduced for debugging)
 const metricsCache = new Map();
 const historyCache = new Map();
 
@@ -141,6 +141,8 @@ exports.extractHistory = async (req, res) => {
         const count = Array.isArray(history) ? history.length : 0;
         functions.logger.info(`Extraction complete for ${issuerId}. Count: ${count}`);
 
+        // Invalidate history cache
+        historyCache.delete(`history_${issuerId}`);
         res.json({ success: true, count, history });
     } catch (error) {
         functions.logger.error(`Error extracting history for ${issuerId}:`, error);

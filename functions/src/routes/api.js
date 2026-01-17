@@ -5,7 +5,7 @@ const issuersController = require('../controllers/issuersController');
 const aiController = require('../controllers/aiController');
 const metricsController = require('../controllers/metricsController');
 const systemController = require('../controllers/systemController');
-const { authMiddleware, adminMiddleware, apiLimiter } = require('../middleware/authMiddleware');
+const { authMiddleware, optionalAuthMiddleware, adminMiddleware, apiLimiter } = require('../middleware/authMiddleware');
 
 // --- Global Rate Limiting ---
 router.use(apiLimiter);
@@ -21,17 +21,20 @@ router.get('/bcn', metricsController.getBcnRates);
 router.get('/status', systemController.getSystemStatus);
 router.post('/metrics/compare', metricsController.compareMetrics);
 
-// --- Protected Endpoints (Requires Auth) ---
+// --- Optional Auth Endpoints (Hybrid: Guest or User) ---
+// AI Queries (Guests + Authenticated)
+router.post('/ai/query', optionalAuthMiddleware, aiController.queryAI);
+router.post('/ai/compare', optionalAuthMiddleware, aiController.compareAI);
+router.get('/ai/insights/:issuerId', optionalAuthMiddleware, aiController.getInsights);
+
+// --- Protected Endpoints (Requires Strict Auth) ---
 router.use(authMiddleware);
 
 // Issuers Write (Admin Only)
 router.post('/seed', adminMiddleware, issuersController.seedIssuers);
 router.post('/add-document/:issuerId', adminMiddleware, issuersController.addDocumentManual);
 
-// AI Queries (Authenticated Users)
-router.post('/ai/query', aiController.queryAI);
-router.post('/ai/compare', aiController.compareAI);
-router.get('/ai/insights/:issuerId', aiController.getInsights);
+// (Moved above)
 
 // Metrics Extraction & Management (Admin Only)
 router.post('/metrics/extract/:issuerId', adminMiddleware, metricsController.extractMetrics);

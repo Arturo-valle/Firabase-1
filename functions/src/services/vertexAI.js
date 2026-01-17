@@ -114,8 +114,7 @@ async function generateFinancialAnalysis(prompt, options = {}) {
             try {
                 return JSON.parse(text);
             } catch (e) {
-                functions.logger.error("Failed to parse Structured Output JSON", { text, error: e.message });
-                // Fallback to manual cleaning if it's slightly malformed
+                functions.logger.warn("Initial parse of Structured Output JSON failed, attempting cleaning...", { error: e.message });
             }
         }
 
@@ -126,17 +125,36 @@ async function generateFinancialAnalysis(prompt, options = {}) {
             return text;
         }
 
-        // Si ES JSON, aplicamos limpieza agresiva para asegurar que pase JSON.parse
-        const firstBrace = text.indexOf('{');
-        const lastBrace = text.lastIndexOf('}');
-        const firstArray = text.indexOf('[');
-        const lastArray = text.lastIndexOf(']');
+        // Si ES JSON, aplicamos limpieza agresiva y CONSCIENTE DEL ESQUEMA
+        const expectedType = options.responseSchema?.type || 'unknown';
+
+        let firstBrace = text.indexOf('{');
+        let lastBrace = text.lastIndexOf('}');
+        let firstArray = text.indexOf('[');
+        let lastArray = text.lastIndexOf(']');
 
         let jsonPart = text;
-        if (firstBrace !== -1 && lastBrace !== -1 && (firstArray === -1 || firstBrace < firstArray)) {
-            jsonPart = text.substring(firstBrace, lastBrace + 1);
-        } else if (firstArray !== -1 && lastArray !== -1) {
-            jsonPart = text.substring(firstArray, lastArray + 1);
+
+        if (expectedType === 'object') {
+            // Estrategia Estricta Para Objetos: Ignorar corchetes si encontramos llaves válidas
+            if (firstBrace !== -1 && lastBrace !== -1) {
+                jsonPart = text.substring(firstBrace, lastBrace + 1);
+            }
+        } else if (expectedType === 'array') {
+            // Estrategia Estricta Para Arrays
+            if (firstArray !== -1 && lastArray !== -1) {
+                jsonPart = text.substring(firstArray, lastArray + 1);
+            }
+        } else {
+            // Estrategia Heurística (Legacy / Fallback)
+            // Si hay llaves y corchetes, preferimos las llaves si los corchetes parecen ser solo citas cortas (heuristic)
+            const unlikelyToBeJsonArray = firstArray !== -1 && (text.substring(firstArray, firstArray + 15).includes('Documento') || text.substring(firstArray, firstArray + 10).includes('Doc'));
+
+            if (firstBrace !== -1 && lastBrace !== -1 && (firstArray === -1 || firstBrace < firstArray || unlikelyToBeJsonArray)) {
+                jsonPart = text.substring(firstBrace, lastBrace + 1);
+            } else if (firstArray !== -1 && lastArray !== -1) {
+                jsonPart = text.substring(firstArray, lastArray + 1);
+            }
         }
 
         // Limpiar comentarios y caracteres de control
@@ -152,7 +170,7 @@ async function generateFinancialAnalysis(prompt, options = {}) {
 
         return JSON.parse(jsonPart);
     } catch (error) {
-        functions.logger.error(`Error generating analysis with ${MODEL_NAME}:`, error);
+        functions.logger.error(`Error generating analysis:`, error);
         throw new Error(`Failed to generate analysis: ${error.message}`);
     }
 }

@@ -66,21 +66,40 @@ async function extractHistoricalMetrics(issuerId, issuerName) {
         const chunks = allDocs.map(doc => {
             const data = doc.data();
             const md = data.metadata || {};
+            const text = data.text || data.extractedText || '';
+            const title = md.title || md.documentTitle || data.factTitle || 'Desconocido';
+            const date = md.documentDate || md.date || (data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt) || '';
+
+            const isAuditedField = /audita|estados financier|informe de los auditores|prospecto|anual|memoria/i.test(title) ||
+                /informe de los auditores|auditado/i.test(text.substring(0, 2000));
+            const isFinancial = md.docType === 'FINANCIAL_REPORT' || /financiero|balance|resultado|patrimonio|pasivo|activo/i.test(text) || isAuditedField;
+
             return {
                 id: doc.id,
-                text: data.text,
-                title: md.title || md.documentTitle || 'Desconocido',
-                date: md.documentDate || md.date,
+                text,
+                title,
+                date,
                 // flags
-                isAudited: /auditado|estados financieros/i.test(md.title || ''),
-                isFinancial: md.docType === 'FINANCIAL_REPORT' || /financiero/i.test(data.text)
+                isAudited: isAuditedField,
+                isFinancial
             };
         });
 
-        // Diversity Selection (Top 1000 chunks logic)
-        const selectedChunks = chunks.slice(0, 1000); // Simplified for refactor PoC, can restore full logic
+        // Diversity Selection (Prioritize relevant chunks)
+        const prioritizedChunks = chunks.sort((a, b) => {
+            // Priority 1: Audited & Financial
+            if ((a.isAudited && a.isFinancial) && !(b.isAudited && b.isFinancial)) return -1;
+            if (!(a.isAudited && a.isFinancial) && (b.isAudited && b.isFinancial)) return 1;
+            // Priority 2: Financial
+            if (a.isFinancial && !b.isFinancial) return -1;
+            if (!a.isFinancial && b.isFinancial) return 1;
+            // Fallback: Date descending (if available) or existing order
+            return 0;
+        });
 
-        const context = selectedChunks.map(c => `\n---\nDOCUMENTO: ${c.title} | FECHA: ${c.date}\nCONTENIDO: ${c.text}`).join('\n').slice(0, 900000);
+        const selectedChunks = prioritizedChunks.slice(0, 800);
+
+        const context = selectedChunks.map(c => `\n---\nDOCUMENTO: ${c.title} | FECHA: ${c.date}\nCONTENIDO: ${c.text}`).join('\n').slice(0, 950000);
 
         const prompt = `
 Eres un analista financiero Senior (CFA). Tu misión es reconstruir la serie histórica del emisor "${issuerName}" para el periodo 2021-2025.
@@ -91,11 +110,13 @@ ${context}
 TAREA:
 Extrae los datos de Activos Totales, Utilidad Neta y Patrimonio para cada uno de los años solicitados (2021, 2022, 2023, 2024, 2025).
 
-REGLAS DE ORO:
-1. **Prioridad Auditada**: Los estados financieros auditados son la fuente de verdad. 
-2. **DATOS COMPARATIVOS**: Usa columnas comparativas ("2023" en reporte 2024) para reconstruir el pasado.
-3. **2025**: Busca reportes trimestrales.
-4. **Monedas**: Extrae valor bruto.
+REGLAS CRÍTICAS:
+1. **Prioridad Auditada**: Los estados financieros auditados son la fuente de verdad absoluta.
+2. **DATOS COMPARATIVOS**: Los reportes auditados suelen tener columnas comparativas (ej: Balance 2024 muestra datos de 2023). Úsalos para reconstruir años pasados con alta fidelidad.
+3. **Punto en el tiempo (As of)**: Los Activos y Patrimonio deben ser al cierre del periodo (31 de diciembre o fecha más reciente disponible).
+4. **Acumulado (YTD)**: La Utilidad Neta debe ser el total anual.
+5. **Monedas**: Extrae el valor numérico bruto. No asumas moneda; si ves C$ es NIO, si ves $ es USD (a menos que diga lo contrario).
+6. **2025**: Si hay datos trimestrales de 2025, úsalos como la cifra más reciente.
 
 FORMATO JSON (ARRAY):
 [
@@ -106,7 +127,7 @@ FORMATO JSON (ARRAY):
 
         const history = await callVertexAI(prompt, {
             temperature: 0,
-            maxOutputTokens: 3000,
+            maxOutputTokens: 3500,
             model: AI_CONFIG.REASONING_MODEL,
             responseSchema: HISTORICAL_METRICS_SCHEMA
         });
@@ -122,8 +143,31 @@ FORMATO JSON (ARRAY):
             return found || { period: String(year), date: `${year}-12-31`, activosTotales: null, utilidadNeta: null, patrimonio: null };
         });
 
+        // Write to Firestore with normalization
+        let RATE = 36.62;
+        try {
+            const mDoc = await db.collection('system').doc('market_metadata').get();
+            if (mDoc.exists && mDoc.data().exchangeRate) RATE = mDoc.data().exchangeRate;
+        } catch (e) { }
+
+        const convert = (val) => {
+            if (val === null || val === undefined) return null;
+            let num = typeof val === 'string' ? Number(val.replace(/[^0-9.-]/g, '')) : Number(val);
+            if (isNaN(num)) return null;
+            // If value is > 10B, it's almost certainly NIO and needs conversion
+            if (num > 10000000000) return Number((num / RATE).toFixed(2));
+            return num;
+        };
+
         for (const point of validatedHistory) {
-            batch.set(historyRef.doc(point.period), { ...point, extractedAt: new Date() }, { merge: true });
+            const normalizedPoint = {
+                ...point,
+                activosTotales: convert(point.activosTotales),
+                utilidadNeta: convert(point.utilidadNeta),
+                patrimonio: convert(point.patrimonio),
+                extractedAt: new Date()
+            };
+            batch.set(historyRef.doc(point.period), normalizedPoint, { merge: true });
         }
         await batch.commit();
 

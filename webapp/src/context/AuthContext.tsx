@@ -21,11 +21,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useEffect(() => {
         console.log("AuthProvider: Initializing...");
 
-        // Safety timeout: stop loading after 8 seconds if Firebase hangs
+        // Safety timeout: stop loading after 3 seconds if Firebase hangs
         const timeoutId = setTimeout(() => {
-            console.warn("AuthProvider: Timeout reached. Forcing loading to false.");
+            console.warn("AuthProvider: Timeout reached. Forcing loading to false. This might indicate a slow connection.");
             setLoading(false);
-        }, 8000);
+        }, 3000);
 
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             console.log("AuthProvider: Auth state changed", currentUser ? "User Logged In" : "No User");

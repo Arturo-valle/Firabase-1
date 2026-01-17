@@ -13,29 +13,55 @@ exports.getSystemStatus = async (req, res) => {
         const issuersSnapshot = await db.collection("issuers").get();
         const allIssuers = issuersSnapshot.docs.map(doc => {
             const data = doc.data();
-            delete data.id;
             return { ...data, id: doc.id };
         });
 
-        // Simple consolidation for status
         const consolidated = allIssuers.filter(i => WHITELIST.includes(i.id));
-        const totalDocs = consolidated.reduce((acc, i) => acc + (i.documents?.length || 0), 0);
+
+        // Fetch real counts from documentChunks
+        const processedStats = await Promise.all(consolidated.map(async (issuer) => {
+            const chunksSnap = await db.collection('documentChunks')
+                .where('issuerId', '==', issuer.id)
+                .count()
+                .get();
+
+            // Heuristic for documents: distinct titles in chunks is too slow, 
+            // so we use documentsProcessed if it exists, or just reports chunks
+            const chunksCount = chunksSnap.data().count;
+
+            return {
+                id: issuer.id,
+                name: issuer.name,
+                chunks: chunksCount,
+                totalDocs: issuer.documents?.length || 0,
+                processedDocs: issuer.documentsProcessed || 0
+            };
+        }));
+
+        const totalDocsAvailable = processedStats.reduce((acc, i) => acc + i.totalDocs, 0);
+        const totalDocsProcessed = processedStats.reduce((acc, i) => acc + i.processedDocs, 0);
+        const totalChunks = processedStats.reduce((acc, i) => acc + i.chunks, 0);
+
+        const coverage = totalDocsAvailable > 0
+            ? ((totalDocsProcessed / totalDocsAvailable) * 100).toFixed(2) + "%"
+            : "0%";
 
         res.json({
-            systemHealth: "Operational",
+            systemHealth: totalDocsProcessed < (totalDocsAvailable * 0.5) ? "Degraded" : "Operational",
             stats: {
                 totalIssuers: consolidated.length,
                 processedIssuers: consolidated.length,
-                coverage: "100%",
-                totalDocumentsAvailable: totalDocs,
-                totalDocumentsProcessed: totalDocs,
-                totalChunksGenerated: totalDocs * 15
+                coverage,
+                totalDocumentsAvailable: totalDocsAvailable,
+                totalDocumentsProcessed: totalDocsProcessed,
+                totalChunksGenerated: totalChunks
             },
-            processedIssuers: consolidated.map(i => ({
+            processedIssuers: processedStats.map(i => ({
                 id: i.id,
                 name: i.name,
-                processed: i.documents?.length || 0,
-                total: i.documents?.length || 0,
+                processed: i.processedDocs,
+                total: i.totalDocs,
+                chunks: i.chunks,
                 lastProcessed: new Date().toISOString()
             }))
         });

@@ -53,25 +53,36 @@ async function extractIssuerMetrics(issuerId, issuerName, sourceId = null) {
         const chunks = allDocs.map(doc => {
             const data = doc.data();
             const md = data.metadata || {};
-            // Helper logic inline
-            const isAudited = /auditado|estados financieros|informe de los auditores/i.test(md.title || md.documentTitle || '') ||
-                /informe de los auditores/i.test(data.text.substring(0, 1000));
+            const text = data.text || data.extractedText || '';
+            const title = md.title || md.documentTitle || data.factTitle || 'Desconocido';
+            const date = md.documentDate || md.date || (data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt) || '';
+
+            const isAuditedField = /audita|estados financier|informe de los auditores|prospecto|anual|memoria/i.test(title) ||
+                /informe de los auditores|auditado/i.test(text.substring(0, 2000));
+
+            const isFinancial = md.docType === 'FINANCIAL_REPORT' || /financiero|balance|resultado|patrimonio|pasivo|activo/i.test(text) || isAuditedField;
 
             return {
-                text: data.text,
-                title: md.title || md.documentTitle,
-                date: md.documentDate || md.date,
-                isAudited,
-                // other flags
-                isFinancial: md.docType === 'FINANCIAL_REPORT' || md.documentType === 'Estados Financieros' || /financiero|balance|resultado/i.test(data.text)
+                text,
+                title,
+                date,
+                isAudited: isAuditedField,
+                isFinancial
             };
         });
 
-        // Simple sort for now (will import robust sort utils later if needed)
-        // ... (Logic remains similar to original for consistency)
+        // Robust Sort: Audited Financials first, then by date
+        chunks.sort((a, b) => {
+            if (a.isAudited !== b.isAudited) return a.isAudited ? -1 : 1;
+            if (a.isFinancial !== b.isFinancial) return a.isFinancial ? -1 : 1;
+            return new Date(b.date) - new Date(a.date);
+        });
+
+        // Limit chunks for context to avoid overloading AI but keeping high quality
+        const selectedChunks = chunks.slice(0, 100);
 
         // Build Context
-        const context = chunks.slice(0, 50).map(c => `[${c.date}] ${c.title}: ${c.text}`).join('\n\n');
+        const context = selectedChunks.map(c => `[${c.date}] ${c.title}: ${c.text.substring(0, 5000)}...`).join('\n\n');
 
         // --- PROMPT ENGINEERING ---
         const prompt = `

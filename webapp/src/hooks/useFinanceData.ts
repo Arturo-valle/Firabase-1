@@ -13,6 +13,8 @@ export function useFinanceData() {
             const viewModels: FinanceIssuerViewModel[] = rawIssuers
                 .map(issuer => ({
                     ...issuer,
+                    sector: issuer.sector || 'N/A',
+                    acronym: issuer.acronym || 'N/A',
                     processed: issuer.documents.length,
                     total: issuer.documents.length,
                     coverage: 100,

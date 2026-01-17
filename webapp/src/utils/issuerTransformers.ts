@@ -35,9 +35,14 @@ export const ISSUER_METADATA: Record<string, { acronym: string; sector: string }
  * Normalizes an issuer name to its base ID.
  */
 export const getFrontendBaseName = (name: string): string => {
+    if (!name) return '';
+
     let normalized = name.toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
+        .replace(/,?\s*s\.a\.?$/gi, '') // Remove S.A. / S.A suffixes
+        .replace(/,?\s*sociedad anonima.*$/gi, '') // Remove Sociedad Anonima suffixes
+        .replace(/\.$/, '') // Remove trailing dot
         .trim();
 
     const separators = [' - ', ' – ', ' — ', '(', ','];
@@ -110,7 +115,13 @@ export const consolidateIssuers = (rawIssuers: any[]): Issuer[] => {
     const consolidatedMap = new Map<string, Issuer>();
 
     rawIssuers.forEach((issuer: any) => {
-        const baseId = getFrontendBaseName(issuer.name);
+        // Normalize incoming ID for comparison
+        const incomingId = (issuer.id || '').toLowerCase();
+
+        // Prioritize existing valid ID from backend, otherwise derive from name
+        let baseId = incomingId && WHITELIST.includes(incomingId)
+            ? incomingId
+            : getFrontendBaseName(issuer.name);
 
         if (!WHITELIST.includes(baseId)) return;
 
@@ -160,7 +171,10 @@ export const sanitizeIssuersList = (rawIssuers: any[]): Issuer[] => {
     if (!rawIssuers || !Array.isArray(rawIssuers)) return [];
 
     return rawIssuers.map((issuer: any) => {
-        const id = issuer.id || getFrontendBaseName(issuer.name || '');
+        const incomingId = (issuer.id || '').toLowerCase();
+        const id = (incomingId && WHITELIST.includes(incomingId))
+            ? incomingId
+            : getFrontendBaseName(issuer.name || '');
         const metadata = ISSUER_METADATA[id];
 
         return {
@@ -180,14 +194,17 @@ export const sanitizeIssuersList = (rawIssuers: any[]): Issuer[] => {
  */
 export const transformIssuer = (issuer: any): Issuer => {
     if (!issuer) throw new Error('No issuer data provided');
-    const id = issuer.id || getFrontendBaseName(issuer.name || '');
+    const incomingId = (issuer.id || '').toLowerCase();
+    const id = (incomingId && WHITELIST.includes(incomingId))
+        ? incomingId
+        : getFrontendBaseName(issuer.name || '');
     const metadata = ISSUER_METADATA[id];
 
     return {
         id,
         name: DISPLAY_NAMES[id] || issuer.name || 'Sin Nombre',
         sector: metadata?.sector || issuer.sector || 'Privado',
-        acronym: metadata?.acronym || issuer.acronym || '',
+        acronym: metadata?.acronym || issuer.acronym || 'N/A',
         documents: (issuer.documents || []).map(transformDocument),
         logoUrl: issuer.logoUrl || '',
         isActive: issuer.isActive ?? true,

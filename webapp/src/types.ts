@@ -14,9 +14,9 @@ export interface Document {
 export interface Issuer {
   id: string;         // A unique identifier, typically the issuer's name
   name: string;
-  acronym: string;
-  sector: string;
-  logoUrl?: string;    // Optional: URL for the issuer's logo
+  acronym?: string;   // Optional: Backend might not return it
+  sector?: string;    // Optional: Backend might not return it
+  logoUrl?: string;   // Optional: URL for the issuer's logo
   documents: Document[]; // An array of documents related to the issuer
   isActive?: boolean;    // Optional: whether the issuer is active
   error?: string;       // An optional error message if data scraping failed for this issuer

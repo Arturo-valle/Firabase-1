@@ -24,77 +24,64 @@ const OCR_TEMP_FOLDER = 'ocr-temp';
  * @param {string} documentTitle - Title for logging and temp file naming
  * @returns {Promise<string>} - Extracted text from the PDF
  */
-async function extractTextWithOCR(pdfBuffer, documentTitle = 'document') {
+async function extractTextWithOCR(pdfBuffer, documentTitle = 'document', gcsUri = null) {
     const startTime = Date.now();
 
     try {
-        // Generate unique filename for temp storage
-        const hash = crypto.createHash('md5').update(pdfBuffer).digest('hex').substring(0, 8);
-        const safeName = documentTitle.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 30);
-        const tempFileName = `${OCR_TEMP_FOLDER}/${safeName}_${hash}.pdf`;
+        let inputUri = gcsUri;
+        let tempFile = null;
+
+        // 1. If no GS URI provided, upload to temp
+        if (!inputUri) {
+            functions.logger.info(`[OCR] No GCS URI provided, uploading buffer to temp...`);
+            const hash = crypto.createHash('md5').update(pdfBuffer).digest('hex').substring(0, 8);
+            const safeName = documentTitle.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 30);
+            const tempFileName = `${OCR_TEMP_FOLDER}/${safeName}_${hash}.pdf`;
+
+            const bucket = storage.bucket(BUCKET_NAME);
+            tempFile = bucket.file(tempFileName);
+            await tempFile.save(pdfBuffer, { contentType: 'application/pdf' });
+            inputUri = `gs://${BUCKET_NAME}/${tempFileName}`;
+        }
+
+        const hash = crypto.createHash('md5').update(inputUri).digest('hex').substring(0, 8);
         const outputPrefix = `${OCR_TEMP_FOLDER}/output_${hash}`;
 
-        functions.logger.info(`[OCR] Starting OCR for: ${documentTitle}`);
-
-        // 1. Upload PDF to GCS
-        const bucket = storage.bucket(BUCKET_NAME);
-        const file = bucket.file(tempFileName);
-
-        await file.save(pdfBuffer, {
-            contentType: 'application/pdf',
-            metadata: {
-                cacheControl: 'no-cache',
-                source: 'ocr-temp-upload'
-            }
-        });
-
-        functions.logger.info(`[OCR] Uploaded to gs://${BUCKET_NAME}/${tempFileName}`);
+        functions.logger.info(`[OCR] Starting OCR for: ${documentTitle} via ${inputUri}`);
 
         // 2. Configure Vision API async request
         const inputConfig = {
             mimeType: 'application/pdf',
-            gcsSource: {
-                uri: `gs://${BUCKET_NAME}/${tempFileName}`
-            }
+            gcsSource: { uri: inputUri }
         };
 
         const outputConfig = {
-            gcsDestination: {
-                uri: `gs://${BUCKET_NAME}/${outputPrefix}/`
-            },
-            batchSize: 100 // Process 100 pages per output file
+            gcsDestination: { uri: `gs://${BUCKET_NAME}/${outputPrefix}/` },
+            batchSize: 100
         };
-
-        const features = [{ type: 'DOCUMENT_TEXT_DETECTION' }];
 
         const request = {
             requests: [{
                 inputConfig,
-                features,
+                features: [{ type: 'DOCUMENT_TEXT_DETECTION' }],
                 outputConfig
             }]
         };
 
-        // 3. Execute async batch annotation
+        // 3. Execute
         functions.logger.info(`[OCR] Starting Vision API async batch annotation...`);
         const [operation] = await visionClient.asyncBatchAnnotateFiles(request);
+        await operation.promise();
 
-        // 4. Wait for operation to complete (with timeout)
-        const [filesResponse] = await operation.promise();
-
-        functions.logger.info(`[OCR] Vision API completed. Processing results...`);
-
-        // 5. Read output JSON files from GCS
+        // 4. Read results
+        const bucket = storage.bucket(BUCKET_NAME);
         const [outputFiles] = await bucket.getFiles({ prefix: `${outputPrefix}/` });
 
         let fullText = '';
-
         for (const outputFile of outputFiles) {
             if (outputFile.name.endsWith('.json')) {
                 const [content] = await outputFile.download();
                 const result = JSON.parse(content.toString());
-
-                // Extract text from each page
                 if (result.responses) {
                     for (const response of result.responses) {
                         if (response.fullTextAnnotation && response.fullTextAnnotation.text) {
@@ -105,42 +92,28 @@ async function extractTextWithOCR(pdfBuffer, documentTitle = 'document') {
             }
         }
 
-        // 6. Cleanup temp files
+        // 5. Cleanup
         try {
-            await file.delete();
-            for (const outputFile of outputFiles) {
-                await outputFile.delete();
-            }
-            functions.logger.info(`[OCR] Cleaned up temp files`);
-        } catch (cleanupError) {
-            functions.logger.warn(`[OCR] Cleanup warning: ${cleanupError.message}`);
-        }
+            if (tempFile) await tempFile.delete();
+            for (const file of outputFiles) await file.delete();
+        } catch (e) { functions.logger.warn(`[OCR] Cleanup error: ${e.message}`); }
 
-        const duration = ((Date.now() - startTime) / 1000).toFixed(1);
-        functions.logger.info(`[OCR] SUCCESS: Extracted ${fullText.length} chars in ${duration}s for ${documentTitle}`);
-
+        functions.logger.info(`[OCR] SUCCESS: Extracted ${fullText.length} chars for ${documentTitle}`);
         return fullText.trim();
 
     } catch (error) {
-        functions.logger.error(`[OCR] Vision API FAILED for ${documentTitle}, attempting Gemini OCR:`, error.message);
-
-        // FALLBACK TO GEMINI OCR
-        try {
-            return await geminiOCR(pdfBuffer, documentTitle);
-        } catch (gemError) {
-            functions.logger.error(`[OCR] Gemini OCR also FAILED:`, gemError.message);
-            return '';
-        }
+        functions.logger.error(`[OCR] Vision API FAILED for ${documentTitle}, attempting Gemini OCR GCS:`, error.message);
+        return await geminiOCR(pdfBuffer, documentTitle, gcsUri);
     }
 }
 
 /**
  * Uses Gemini 3 Flash to perform OCR on a PDF buffer
  */
-async function geminiOCR(pdfBuffer, documentTitle) {
-    functions.logger.info(`[GEMINI OCR] Starting extraction for: ${documentTitle}`);
+async function geminiOCR(pdfBuffer, documentTitle, gcsUri = null) {
+    functions.logger.info(`[GEMINI OCR SDK] Starting extraction for: ${documentTitle} (GCS: ${!!gcsUri})`);
 
-    // Note: Using standard SDK pattern consistent with vertexAI.js
+    // Switch to Vertex SDK pattern
     const { GoogleGenAI } = require('@google/genai');
     const client = new GoogleGenAI({
         vertexai: true,
@@ -148,37 +121,45 @@ async function geminiOCR(pdfBuffer, documentTitle) {
         location: 'global'
     });
 
-    const prompt = `Eres un asistente experto en OCR. Tu tarea es extraer TODO el contenido de texto legible de este PDF financiero. 
-Manten la estructura de tablas y el orden de los párrafos.
-Si el documento está en español, extraelo en español.
-SALIDA: Solo el texto extraído.`;
-
     try {
-        const result = await client.models.generateContent({
+        const parts = [
+            { text: "Eres un sistema OCR de alta precisión. Extrae todo el texto de este documento PDF de forma íntegra. Mantén la estructura y tablas." }
+        ];
+
+        if (gcsUri) {
+            parts.push({
+                fileData: {
+                    mimeType: 'application/pdf',
+                    fileUri: gcsUri
+                }
+            });
+        } else {
+            parts.push({
+                inlineData: {
+                    mimeType: 'application/pdf',
+                    data: pdfBuffer.toString('base64')
+                }
+            });
+        }
+
+        const response = await client.models.generateContent({
             model: 'gemini-2.0-flash-exp',
             contents: [{
                 role: 'user',
-                parts: [
-                    { text: prompt },
-                    {
-                        inlineData: {
-                            mimeType: 'application/pdf',
-                            data: pdfBuffer.toString('base64')
-                        }
-                    }
-                ]
+                parts: parts
             }]
         });
 
-        const text = result.text;
+        if (!response || !response.text) {
+            throw new Error("No text returned from Gemini SDK");
+        }
 
-        if (!text) throw new Error("Empty text in Gemini response");
-
-        functions.logger.info(`[GEMINI OCR] SUCCESS: Extracted ${text.length} chars for ${documentTitle}`);
+        const text = response.text;
+        functions.logger.info(`[GEMINI OCR SDK] SUCCESS: Extracted ${text.length} chars for ${documentTitle}`);
         return text;
 
     } catch (e) {
-        functions.logger.error(`[GEMINI OCR] Execution failed:`, e);
+        functions.logger.error(`[GEMINI OCR SDK] FAILED for ${documentTitle}:`, e.message);
         throw e;
     }
 }

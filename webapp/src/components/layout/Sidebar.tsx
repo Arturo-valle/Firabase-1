@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     HomeIcon,
     MagnifyingGlassIcon,
@@ -40,27 +41,41 @@ export default function Sidebar() {
     const isActive = (route: string) => location.pathname === route;
 
     return (
-        <div
+        <motion.div
+            initial={false}
+            animate={{ width: isExpanded ? 240 : 80 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className={`
-        fixed left-3 top-3 bottom-3 
-        bg-black/60 backdrop-blur-xl border border-white/10
-        transition-all duration-300 ease-out z-50 rounded-2xl shadow-elevated
-        flex flex-col justify-between py-6
-        ${isExpanded ? 'w-64' : 'w-20'}
-      `}
+                fixed left-3 top-3 bottom-3 
+                glass-panel
+                z-50 shadow-2xl shadow-black/50
+                flex flex-col justify-between py-6
+                overflow-hidden
+            `}
             onMouseEnter={() => setIsExpanded(true)}
             onMouseLeave={() => setIsExpanded(false)}
         >
             {/* Logo */}
             <div className={`flex items-center px-5 mb-8 ${isExpanded ? 'justify-start' : 'justify-center'}`}>
-                <div className="w-10 h-10 bg-gradient-to-br from-accent-primary to-blue-600 rounded-xl flex items-center justify-center shadow-glow-cyan flex-shrink-0">
-                    <span className="text-black font-bold text-xl font-mono">C</span>
-                </div>
-                {isExpanded && (
-                    <span className="ml-3 text-white font-bold text-xl tracking-tight animate-fade-in whitespace-nowrap">
-                        Centra<span className="text-accent-primary">Capital</span>
-                    </span>
-                )}
+                <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-10 h-10 bg-gradient-to-br from-accent-primary to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-accent-primary/20 flex-shrink-0 z-10"
+                >
+                    <span className="text-white font-bold text-xl font-mono">C</span>
+                </motion.div>
+                <AnimatePresence>
+                    {isExpanded && (
+                        <motion.span
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -10 }}
+                            className="ml-3 text-text-primary font-bold text-xl tracking-tight whitespace-nowrap"
+                        >
+                            Centra<span className="text-accent-primary">Capital</span>
+                        </motion.span>
+                    )}
+                </AnimatePresence>
             </div>
 
             {/* Navigation Items */}
@@ -70,89 +85,119 @@ export default function Sidebar() {
                     const active = isActive(item.route);
 
                     return (
-                        <Link
-                            key={item.id}
-                            to={item.route}
-                            className={`
-                  flex items-center px-3 py-3 rounded-xl
-                  transition-all duration-200 group relative
-                  ${active
-                                    ? 'bg-accent-primary text-black font-bold shadow-glow-cyan'
-                                    : 'text-text-secondary hover:bg-white/10 hover:text-white'
-                                }
-                  ${!isExpanded && 'justify-center'}
-                `}
-                        >
-                            <Icon className={`w-6 h-6 flex-shrink-0 ${active ? 'animate-pulse-slow' : ''}`} />
+                        <Link key={item.id} to={item.route}>
+                            <motion.div
+                                layout
+                                className={`
+                                    flex items-center px-3 py-3 rounded-xl
+                                    relative group cursor-pointer
+                                    ${active ? 'text-accent-primary font-bold' : 'text-text-secondary hover:text-text-primary'}
+                                    ${!isExpanded && 'justify-center'}
+                                `}
+                            >
+                                {active && (
+                                    <motion.div
+                                        layoutId="activeTab"
+                                        className="absolute inset-0 bg-accent-primary/10 border border-accent-primary/20 rounded-xl"
+                                        initial={false}
+                                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                    />
+                                )}
 
-                            {isExpanded && (
-                                <>
-                                    <span className="ml-3 text-sm">{item.label}</span>
-                                    {item.badge && (
-                                        <span className="ml-auto text-[10px] bg-accent-secondary/20 text-accent-secondary px-2 py-0.5 rounded-full border border-accent-secondary/30">
-                                            {item.badge}
-                                        </span>
+                                <Icon className={`w-6 h-6 flex-shrink-0 z-10 ${active ? 'animate-pulse-slow' : ''}`} />
+
+                                <AnimatePresence>
+                                    {isExpanded && (
+                                        <motion.div
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: -10 }}
+                                            className="ml-3 text-sm z-10 flex-1 flex justify-between items-center"
+                                        >
+                                            <span>{item.label}</span>
+                                            {item.badge && (
+                                                <span className="text-[10px] bg-accent-secondary/10 text-accent-secondary px-2 py-0.5 rounded-full border border-accent-secondary/20">
+                                                    {item.badge}
+                                                </span>
+                                            )}
+                                        </motion.div>
                                     )}
-                                </>
-                            )}
+                                </AnimatePresence>
 
-                            {/* Tooltip for collapsed state */}
-                            {!isExpanded && (
-                                <div className="
-                    absolute left-full ml-4 px-3 py-2 bg-bg-elevated/90 backdrop-blur border border-white/10 rounded-lg
-                    text-white text-xs font-medium whitespace-nowrap
-                    opacity-0 group-hover:opacity-100 pointer-events-none
-                    transition-all duration-200 translate-x-2 group-hover:translate-x-0 z-50
-                  ">
-                                    {item.label}
-                                </div>
-                            )}
+                                {/* Tooltip for collapsed state */}
+                                {!isExpanded && (
+                                    <div className="
+                                        absolute left-full ml-4 px-3 py-2 bg-bg-elevated/90 backdrop-blur border border-border-subtle rounded-lg
+                                        text-text-primary text-xs font-medium whitespace-nowrap
+                                        opacity-0 group-hover:opacity-100 pointer-events-none
+                                        transition-all duration-200 translate-x-2 group-hover:translate-x-0 z-50 shadow-lg
+                                    ">
+                                        {item.label}
+                                    </div>
+                                )}
+                            </motion.div>
                         </Link>
                     );
                 })}
             </nav>
 
             {/* Bottom Navigation */}
-            <div className="px-3 pt-4 mt-4 border-t border-white/5 space-y-2">
+            <div className="px-3 pt-4 mt-4 border-t border-border-subtle space-y-2">
                 {bottomNavItems.map((item) => {
                     const Icon = item.icon;
                     const active = isActive(item.route);
 
                     return (
-                        <Link
-                            key={item.id}
-                            to={item.route}
-                            className={`
-                  flex items-center px-3 py-3 rounded-xl
-                  transition-all duration-200 group relative
-                  ${active
-                                    ? 'bg-accent-primary text-black font-bold'
-                                    : 'text-text-secondary hover:bg-white/10 hover:text-white'
-                                }
-                  ${!isExpanded && 'justify-center'}
-                `}
-                        >
-                            <Icon className="w-6 h-6 flex-shrink-0" />
+                        <Link key={item.id} to={item.route}>
+                            <motion.div
+                                layout
+                                className={`
+                                    flex items-center px-3 py-3 rounded-xl
+                                    relative group cursor-pointer
+                                    ${active ? 'text-accent-primary font-bold' : 'text-text-secondary hover:text-text-primary'}
+                                    ${!isExpanded && 'justify-center'}
+                                `}
+                            >
+                                {active && (
+                                    <motion.div
+                                        layoutId="activeTabBottom"
+                                        className="absolute inset-0 bg-accent-primary/10 border border-accent-primary/20 rounded-xl"
+                                        initial={false}
+                                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                    />
+                                )}
 
-                            {isExpanded && (
-                                <span className="ml-3 text-sm">{item.label}</span>
-                            )}
+                                <Icon className="w-6 h-6 flex-shrink-0 z-10" />
 
-                            {/* Tooltip for collapsed state */}
-                            {!isExpanded && (
-                                <div className="
-                    absolute left-full ml-4 px-3 py-2 bg-bg-elevated/90 backdrop-blur border border-white/10 rounded-lg
-                    text-white text-xs font-medium whitespace-nowrap
-                    opacity-0 group-hover:opacity-100 pointer-events-none
-                    transition-all duration-200 translate-x-2 group-hover:translate-x-0 z-50
-                  ">
-                                    {item.label}
-                                </div>
-                            )}
+                                <AnimatePresence>
+                                    {isExpanded && (
+                                        <motion.div
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: -10 }}
+                                            className="ml-3 text-sm z-10"
+                                        >
+                                            {item.label}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+
+                                {/* Tooltip for collapsed state */}
+                                {!isExpanded && (
+                                    <div className="
+                                        absolute left-full ml-4 px-3 py-2 bg-bg-elevated/90 backdrop-blur border border-border-subtle rounded-lg
+                                        text-text-primary text-xs font-medium whitespace-nowrap
+                                        opacity-0 group-hover:opacity-100 pointer-events-none
+                                        transition-all duration-200 translate-x-2 group-hover:translate-x-0 z-50 shadow-lg
+                                    ">
+                                        {item.label}
+                                    </div>
+                                )}
+                            </motion.div>
                         </Link>
                     );
                 })}
             </div>
-        </div>
+        </motion.div>
     );
 }

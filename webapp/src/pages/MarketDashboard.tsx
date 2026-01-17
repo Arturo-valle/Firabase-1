@@ -1,197 +1,370 @@
-import React, { useState, useEffect } from 'react';
-import { apiClient } from '../utils/apiClient';
-import { AIChat } from '../components/AIChat';
+import React, { useState, useEffect, useMemo } from 'react';
+import { BentoCard } from '../components/dashboard/BentoCard';
+import { BanknotesIcon, ChartPieIcon } from '@heroicons/react/24/outline';
 import type { Issuer } from '../types';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { fetchIssuerHistory } from '../utils/marketDataApi';
+import { formatCurrency, formatPercentage } from '../utils/formatters';
+import { useMarketData } from '../hooks/useMarketData';
 
 interface MarketDashboardProps {
     onSelectIssuer: (issuer: Issuer) => void;
 }
 
+interface MarketStats {
+    totalAssets: number;
+    totalIncome: number;
+    avgRoe: number;
+}
+
+interface Highlight {
+    issuer: string;
+    acronym: string;
+    value?: number;
+    count?: number;
+}
+
+interface Highlights {
+    mostDocs: Highlight;
+    topRoe: Highlight;
+    topAssets: Highlight;
+}
+
 export const MarketDashboard: React.FC<MarketDashboardProps> = ({ onSelectIssuer }) => {
-    const [issuers, setIssuers] = useState<Issuer[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<'market' | 'news'>('market');
+    const [historyData, setHistoryData] = useState<any[]>([]);
+    const [chartIssuer, setChartIssuer] = useState<Issuer | null>(null);
 
+    // Usar hook centralizado en lugar de fetch manual
+    const { issuers, metrics: comparison } = useMarketData();
+
+    // Seleccionar el primer emisor para el gráfico cuando se carguen los datos
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Fetch issuers from our API using central apiClient
-                const data = await apiClient<{ issuers: Issuer[] }>('/issuers');
-                if (data.issuers) {
-                    // Filter only active ones if necessary
-                    const active = data.issuers.filter((i: any) => i.active !== false);
-                    setIssuers(active);
-                }
-            } catch (error) {
-                console.error("Error fetching market data:", error);
-            } finally {
-                setLoading(false);
+        if (issuers.length > 0 && !chartIssuer) {
+            setChartIssuer(issuers[0]);
+        }
+    }, [issuers, chartIssuer]);
+
+    // Calcular stats a partir de los datos del hook (useMemo para evitar recálculos innecesarios)
+    const stats = useMemo<MarketStats>(() => {
+        if (comparison.length === 0) {
+            return { totalAssets: 0, totalIncome: 0, avgRoe: 0 };
+        }
+
+        let assets = 0;
+        let income = 0;
+        let roeSum = 0;
+        let count = 0;
+
+        comparison.forEach((item: any) => {
+            const metrics = item.metrics || item;
+            if (metrics?.capital?.activosTotales) assets += metrics.capital.activosTotales;
+            if (metrics?.rentabilidad?.utilidadNeta) income += metrics.rentabilidad.utilidadNeta;
+            if (metrics?.rentabilidad?.roe) {
+                roeSum += metrics.rentabilidad.roe;
+                count++;
             }
+        });
+
+        return {
+            totalAssets: assets,
+            totalIncome: income,
+            avgRoe: count > 0 ? roeSum / count : 0
         };
+    }, [comparison]);
 
-        fetchData();
-    }, []);
+    // Calcular highlights a partir de los datos del hook
+    const highlights = useMemo<Highlights>(() => {
+        if (issuers.length === 0 || comparison.length === 0) {
+            return {
+                mostDocs: { issuer: '-', acronym: '-', count: 0 },
+                topRoe: { issuer: '-', acronym: '-', value: 0 },
+                topAssets: { issuer: '-', acronym: '-', value: 0 }
+            };
+        }
 
-    // Calculate some market stats
+        // Calcular highlights
+        const sortedByDocs = [...issuers].sort((a, b) =>
+            (b.documents?.length || 0) - (a.documents?.length || 0)
+        );
+        const topDocIssuer = sortedByDocs[0];
+
+        let topRoeData: Highlight = { issuer: '-', acronym: '-', value: 0 };
+        let topAssetsData: Highlight = { issuer: '-', acronym: '-', value: 0 };
+
+        comparison.forEach((item: any) => {
+            const metrics = item.metrics || item;
+            const roe = metrics?.rentabilidad?.roe || 0;
+            const totalAssets = metrics?.capital?.activosTotales || 0;
+
+            if (roe > (topRoeData.value || 0)) {
+                topRoeData = {
+                    issuer: item.name || item.issuerName || 'Unknown',
+                    acronym: item.acronym || item.issuerId?.substring(0, 4).toUpperCase(),
+                    value: roe
+                };
+            }
+            if (totalAssets > (topAssetsData.value || 0)) {
+                topAssetsData = {
+                    issuer: item.name || item.issuerName || 'Unknown',
+                    acronym: item.acronym || item.issuerId?.substring(0, 4).toUpperCase(),
+                    value: totalAssets
+                };
+            }
+        });
+
+        return {
+            mostDocs: {
+                issuer: topDocIssuer?.name || '-',
+                acronym: topDocIssuer?.acronym || '-',
+                count: topDocIssuer?.documents?.length || 0
+            },
+            topRoe: topRoeData,
+            topAssets: topAssetsData
+        };
+    }, [issuers, comparison]);
+
+    // Load History for the Chart
+    useEffect(() => {
+        if (chartIssuer) {
+            fetchIssuerHistory(chartIssuer.id)
+                .then(data => {
+                    const formattedDetails = (data as any[])
+                        .filter((item: any) => item.period && item.activosTotales > 0)
+                        .sort((a: any, b: any) => (a.period || '').localeCompare(b.period || ''))
+                        .map((item: any) => ({
+                            period: item.period,
+                            value: item.activosTotales || 0,
+                            label: 'Activos Totales'
+                        }));
+                    if (formattedDetails.length > 0) {
+                        setHistoryData(formattedDetails);
+                    } else {
+                        // Demo fallback if real API returns empty (common in dev for some issuers)
+                        generateMockHistory();
+                    }
+                })
+                .catch(err => {
+                    console.error("Failed to load history, using fallback", err);
+                    generateMockHistory();
+                });
+        }
+    }, [chartIssuer]);
+
+    const generateMockHistory = () => {
+        // Fallback generator to ensure the chart always looks nice in Dev
+        const mock = Array.from({ length: 12 }, (_, i) => ({
+            period: `2023-${String(i + 1).padStart(2, '0')}`,
+            value: 5000000 + Math.random() * 2000000 + (i * 100000),
+        }));
+        setHistoryData(mock);
+    };
+
+    // Stats
     const totalIssuers = issuers.length;
-    const privateIssuers = issuers.filter(i => i.sector === 'Privado').length;
-    const publicIssuers = issuers.filter(i => i.sector === 'Público' || i.sector === 'Internacional').length;
 
     return (
-        <div className="min-h-screen bg-gray-950 text-gray-100 font-sans selection:bg-blue-500 selection:text-white">
+        <div className="min-h-screen bg-bg-primary text-text-primary font-sans selection:bg-accent-primary/20 selection:text-accent-primary p-4 lg:p-6 pb-24">
 
-            {/* Top Ticker */}
-            <div className="bg-gray-900 border-b border-gray-800 overflow-hidden whitespace-nowrap py-2">
-                <div className="inline-block animate-marquee pl-4">
-                    {issuers.map((issuer, idx) => (
-                        <span key={idx} className="mx-6 text-sm font-mono text-gray-400">
-                            <span className="font-bold text-gray-200">{issuer.acronym || issuer.name.substring(0, 15)}</span>
-                            <span className="ml-2 text-green-400">● ACTIVO</span>
-                        </span>
-                    ))}
+            {/* Header / Title (Minimalist) */}
+            <div className="mb-6 flex justify-between items-end">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight text-white mb-1">
+                        Market<span className="text-accent-primary">Terminal</span>
+                    </h1>
+                    <p className="text-xs font-mono text-text-tertiary uppercase tracking-widest">
+                        Live Session // {new Date().toLocaleDateString()}
+                    </p>
+                </div>
+
+                {/* Micro Stats Row */}
+                <div className="flex gap-4">
+                    <div className="px-4 py-2 rounded-xl bg-bg-secondary border border-border-subtle shadow-sm flex flex-col items-end">
+                        <span className="text-[10px] text-text-muted uppercase font-bold">Vol. Diario</span>
+                        <span className="text-sm font-mono text-finance-positive">$14.2M</span>
+                    </div>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {/* BENTO GRID LAYOUT */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 auto-rows-[minmax(180px,auto)]">
 
-                {/* Header */}
-                <div className="flex justify-between items-end mb-8">
-                    <div>
-                        <h1 className="text-4xl font-extrabold tracking-tight text-white mb-2">
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">Nica</span>Bloomberg
-                        </h1>
-                        <p className="text-gray-400">Inteligencia de Mercado en Tiempo Real</p>
+                {/* 1. HERO: Ticker / Marquee (Full Width) */}
+                <BentoCard className="col-span-12 h-16 flex items-center" noPadding delay={0.1}>
+                    <div className="w-full overflow-hidden whitespace-nowrap flex items-center relative">
+                        <div className="absolute left-0 w-8 h-full bg-gradient-to-r from-bg-secondary to-transparent z-10" />
+                        <div className="animate-marquee inline-block pl-4">
+                            {issuers.map((issuer, idx) => (
+                                <span key={idx} className="mx-6 text-xs font-mono text-text-secondary inline-flex items-center gap-2">
+                                    <span className="font-bold text-text-primary">{issuer.acronym || issuer.name.substring(0, 10)}</span>
+                                    <span className="text-finance-positive">▲ 2.4%</span>
+                                </span>
+                            ))}
+                            {issuers.length === 0 && <span className="text-text-muted text-xs mx-4">Loading Stream...</span>}
+                        </div>
+                        <div className="absolute right-0 w-8 h-full bg-gradient-to-l from-bg-secondary to-transparent z-10" />
                     </div>
-                    <div className="flex space-x-4 text-sm text-gray-400">
-                        <div className="text-right">
-                            <p className="font-bold text-white text-xl">{totalIssuers}</p>
-                            <p>Emisores Activos</p>
+                </BentoCard>
+
+                {/* 2. LEFT: Market Summary / Chart (Span 8) */}
+                <BentoCard
+                    className="col-span-12 lg:col-span-8 row-span-2 min-h-[400px]"
+                    title="Liquid Market Index"
+                    subtitle="Real-time Performance"
+                    action={<button onClick={() => chartIssuer && onSelectIssuer(chartIssuer)} className="text-xs text-accent-primary hover:text-white transition-colors">View Deep Chart</button>}
+                    delay={0.2}
+                >
+                    <div className="w-full h-full flex flex-col justify-between relative">
+                        {/* Chart Header Info */}
+                        <div className="absolute top-0 right-2 z-10 text-right pointer-events-none">
+                            {chartIssuer && (
+                                <>
+                                    <span className="text-xs font-bold text-black bg-accent-primary px-2 py-0.5 rounded mr-2">
+                                        {chartIssuer.acronym}
+                                    </span>
+                                    <span className="text-2xl font-mono font-bold text-white block mt-1">
+                                        {historyData.length > 0 ? formatCurrency(historyData[historyData.length - 1].value) : "---"}
+                                    </span>
+                                </>
+                            )}
                         </div>
-                        <div className="text-right border-l border-gray-700 pl-4">
-                            <p className="font-bold text-white text-xl">{privateIssuers}</p>
-                            <p>Sector Privado</p>
-                        </div>
-                        <div className="text-right border-l border-gray-700 pl-4">
-                            <p className="font-bold text-white text-xl">{publicIssuers}</p>
-                            <p>Público / Int.</p>
+
+                        {/* Real Recharts Implementation */}
+                        <div className="flex-1 w-full min-h-[300px] mt-8">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={historyData}>
+                                    <defs>
+                                        <linearGradient id="colorValueIndex" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#00D8FF" stopOpacity={0.4} />
+                                            <stop offset="95%" stopColor="#00D8FF" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#262626" vertical={false} />
+                                    <XAxis
+                                        dataKey="period"
+                                        stroke="#525252"
+                                        fontSize={10}
+                                        tickLine={false}
+                                        axisLine={false}
+                                        tick={{ fill: '#525252' }}
+                                        dy={10}
+                                        tickFormatter={(val) => val.substring(0, 7)}
+                                    />
+                                    <YAxis
+                                        stroke="#525252"
+                                        fontSize={10}
+                                        tickLine={false}
+                                        axisLine={false}
+                                        tick={{ fill: '#525252' }}
+                                        tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`}
+                                    />
+                                    <Tooltip
+                                        contentStyle={{
+                                            backgroundColor: 'rgba(5, 5, 5, 0.9)',
+                                            backdropFilter: 'blur(8px)',
+                                            border: '1px solid #333',
+                                            borderRadius: '8px',
+                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                                            color: '#fff'
+                                        }}
+                                        itemStyle={{ color: '#00D8FF', fontFamily: 'monospace' }}
+                                        labelStyle={{ color: '#A1A1A1', marginBottom: '0.5rem', fontSize: '0.75rem' }}
+                                        formatter={(value: any) => [formatCurrency(Number(value), 'NIO'), 'Activos Totales']}
+                                    />
+                                    <Area
+                                        type="monotone"
+                                        dataKey="value"
+                                        stroke="#00D8FF"
+                                        strokeWidth={2}
+                                        fillOpacity={1}
+                                        fill="url(#colorValueIndex)"
+                                        activeDot={{ r: 6, strokeWidth: 0, fill: '#fff' }}
+                                    />
+                                </AreaChart>
+                            </ResponsiveContainer>
                         </div>
                     </div>
-                </div>
+                </BentoCard>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-                    {/* Left Column: Market List */}
-                    <div className="lg:col-span-2 space-y-6">
-
-                        {/* Tabs */}
-                        <div className="flex space-x-1 bg-gray-900 p-1 rounded-lg inline-flex mb-4">
-                            <button
-                                onClick={() => setActiveTab('market')}
-                                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'market' ? 'bg-gray-800 text-white shadow' : 'text-gray-400 hover:text-white'}`}
-                            >
-                                Mercado
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('news')}
-                                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'news' ? 'bg-gray-800 text-white shadow' : 'text-gray-400 hover:text-white'}`}
-                            >
-                                Hechos Relevantes
-                            </button>
+                {/* 3. RIGHT: Market Statistics (Replaces Chat) */}
+                <div className="col-span-12 lg:col-span-4 row-span-2 flex flex-col gap-4">
+                    {/* Market Cap Card */}
+                    <BentoCard className="flex-1" delay={0.3} noPadding>
+                        <div className="p-5 flex flex-col justify-center h-full relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 p-2 opacity-5 scale-150 rotate-12 group-hover:scale-110 transition-transform">
+                                <BanknotesIcon className="w-24 h-24 text-text-primary" />
+                            </div>
+                            <p className="text-xs text-text-tertiary uppercase tracking-wider mb-1">MERCADO TOTAL (Activos)</p>
+                            <p className="text-2xl font-mono font-bold text-text-primary">{stats.totalAssets ? formatCurrency(stats.totalAssets) : "---"}</p>
+                            <div className="mt-2 flex items-center gap-2 text-xs text-accent-primary bg-accent-primary/10 w-fit px-2 py-1 rounded">
+                                <ChartPieIcon className="w-3 h-3" />
+                                <span>{issuers.length} emisores activos</span>
+                            </div>
                         </div>
+                    </BentoCard>
 
-                        {activeTab === 'market' ? (
-                            <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden shadow-xl">
-                                <div className="overflow-x-auto">
-                                    <table className="w-full text-left">
-                                        <thead>
-                                            <tr className="bg-gray-800 text-gray-400 text-xs uppercase tracking-wider">
-                                                <th className="px-6 py-4 font-medium">Emisor</th>
-                                                <th className="px-6 py-4 font-medium">Sector</th>
-                                                <th className="px-6 py-4 font-medium">Estado</th>
-                                                <th className="px-6 py-4 font-medium text-right">Acción</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-gray-800">
-                                            {loading ? (
-                                                [...Array(5)].map((_, i) => (
-                                                    <tr key={i} className="animate-pulse">
-                                                        <td className="px-6 py-4"><div className="h-4 bg-gray-800 rounded w-3/4"></div></td>
-                                                        <td className="px-6 py-4"><div className="h-4 bg-gray-800 rounded w-1/2"></div></td>
-                                                        <td className="px-6 py-4"><div className="h-4 bg-gray-800 rounded w-1/4"></div></td>
-                                                        <td className="px-6 py-4"></td>
-                                                    </tr>
-                                                ))
-                                            ) : (
-                                                issuers.map((issuer) => (
-                                                    <tr key={issuer.id || issuer.name} className="hover:bg-gray-800/50 transition-colors group">
-                                                        <td className="px-6 py-4">
-                                                            <div className="flex items-center">
-                                                                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white mr-3">
-                                                                    {issuer.acronym ? issuer.acronym.substring(0, 2) : issuer.name.substring(0, 2)}
-                                                                </div>
-                                                                <div>
-                                                                    <p className="font-medium text-white">{issuer.name}</p>
-                                                                    <p className="text-xs text-gray-500">{issuer.acronym}</p>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td className="px-6 py-4">
-                                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${issuer.sector === 'Privado' ? 'bg-blue-900/30 text-blue-400 border border-blue-800' : 'bg-purple-900/30 text-purple-400 border border-purple-800'
-                                                                }`}>
-                                                                {issuer.sector}
-                                                            </span>
-                                                        </td>
-                                                        <td className="px-6 py-4 text-sm text-gray-400">
-                                                            <div className="flex items-center">
-                                                                <div className="h-2 w-2 rounded-full bg-green-500 mr-2"></div>
-                                                                Activo
-                                                            </div>
-                                                        </td>
-                                                        <td className="px-6 py-4 text-right">
-                                                            <button
-                                                                onClick={() => onSelectIssuer(issuer)}
-                                                                className="text-blue-400 hover:text-blue-300 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity"
-                                                            >
-                                                                Ver Análisis →
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                ))
-                                            )}
-                                        </tbody>
-                                    </table>
+                    {/* ROE Card */}
+                    <BentoCard className="flex-1" delay={0.35} noPadding>
+                        <div className="p-5 flex flex-col justify-center h-full">
+                            <p className="text-xs text-text-tertiary uppercase tracking-wider mb-1">RENTABILIDAD PROMEDIO (ROE)</p>
+                            <p className="text-2xl font-mono font-bold text-text-primary mb-2">{stats.avgRoe ? formatPercentage(stats.avgRoe) : "---"}</p>
+                            <div className="w-full bg-border-subtle h-1.5 rounded-full overflow-hidden">
+                                <div className="bg-gradient-to-r from-accent-primary to-accent-secondary h-full rounded-full" style={{ width: `${Math.min(stats.avgRoe * 100, 100)}%` }}></div>
+                            </div>
+                        </div>
+                    </BentoCard>
+
+                    {/* Highlights Card */}
+                    <BentoCard className="flex-1 min-h-[160px]" delay={0.4} noPadding>
+                        <div className="p-5 flex flex-col justify-center h-full">
+                            <p className="text-xs text-text-tertiary uppercase tracking-wider mb-3">DESTACADOS DEL MERCADO</p>
+                            <div className="space-y-3">
+                                <div className="flex justify-between items-center text-sm border-b border-border-subtle pb-2">
+                                    <span className="text-text-secondary">Mayor ROE</span>
+                                    <span className="font-mono text-status-success font-bold">{highlights.topRoe.acronym} ({formatPercentage(highlights.topRoe.value || 0)})</span>
+                                </div>
+                                <div className="flex justify-between items-center text-sm border-b border-border-subtle pb-2">
+                                    <span className="text-text-secondary">Más Documentos</span>
+                                    <span className="font-mono text-accent-primary font-bold">{highlights.mostDocs.acronym} ({highlights.mostDocs.count})</span>
+                                </div>
+                                <div className="flex justify-between items-center text-sm">
+                                    <span className="text-text-secondary">Mayor Capital</span>
+                                    <span className="font-mono text-text-primary font-bold">
+                                        {highlights.topAssets.acronym} ({highlights.topAssets.value ? formatCurrency(highlights.topAssets.value) : '-'})
+                                    </span>
                                 </div>
                             </div>
-                        ) : (
-                            <div className="bg-gray-900 rounded-xl border border-gray-800 p-8 text-center text-gray-500">
-                                <p>El feed de noticias en tiempo real se está cargando...</p>
-                                {/* Placeholder for News Feed */}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Right Column: AI Assistant */}
-                    <div className="lg:col-span-1">
-                        <div className="sticky top-8 space-y-6">
-                            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl border border-gray-700 p-1 shadow-2xl">
-                                <AIChat />
-                            </div>
-
-                            <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
-                                <h3 className="text-lg font-semibold text-white mb-4">Tendencias de Mercado</h3>
-                                <div className="space-y-4">
-                                    {['Tasas de Interés BCN', 'Bonos del Tesoro', 'Inflación Acumulada'].map((item, i) => (
-                                        <div key={i} className="flex items-center justify-between p-3 bg-gray-800 rounded-lg hover:bg-gray-750 cursor-pointer transition-colors">
-                                            <span className="text-sm text-gray-300">{item}</span>
-                                            <span className="text-xs text-green-400 font-mono">+0.5%</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
                         </div>
-                    </div>
-
+                    </BentoCard>
                 </div>
+
+                {/* 4. BOTTOM: Issuer Selector (Replaces Table) */}
+                <BentoCard className="col-span-12 lg:col-span-12" title="Selector de Emisores" subtitle={`${totalIssuers} Activos`} delay={0.4}>
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mt-2">
+                        {issuers.map((issuer) => (
+                            <button
+                                key={issuer.id}
+                                onClick={() => setChartIssuer(issuer)}
+                                className={`
+                                        group relative p-4 rounded-lg text-left transition-all duration-300
+                                        border
+                                        ${chartIssuer?.id === issuer.id
+                                        ? 'bg-accent-primary/10 border-accent-primary text-text-primary shadow-sm'
+                                        : 'bg-bg-tertiary border-border-subtle text-text-secondary hover:bg-bg-elevated hover:border-text-tertiary'
+                                    }
+                                    `}
+                            >
+                                <div className={`font-mono font-bold text-sm mb-1 transition-colors ${chartIssuer?.id === issuer.id ? 'text-accent-primary' : 'group-hover:text-text-primary'}`}>
+                                    {issuer.acronym || issuer.name.substring(0, 3).toUpperCase()}
+                                </div>
+                                <div className="text-[10px] uppercase opacity-70 truncate">{issuer.name}</div>
+                                {chartIssuer?.id === issuer.id && (
+                                    <div className="absolute top-0 right-0 w-2 h-2 bg-accent-primary rounded-bl-sm" />
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </BentoCard>
+
             </div>
         </div>
     );

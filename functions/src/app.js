@@ -10,7 +10,9 @@ const app = express();
 const allowedOrigins = [
     'https://centracapital.app', // Dominio principal (ejemplo)
     'https://mvp-nic-market.web.app',
-    'https://mvp-nic-market.firebaseapp.com'
+    'https://mvp-nic-market.firebaseapp.com',
+    'http://localhost:5000', // Local Preview
+    'http://localhost:5173'  // Local Dev
 ];
 
 app.use(cors({

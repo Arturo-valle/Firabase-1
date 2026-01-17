@@ -38,7 +38,11 @@ async function searchRelevantDocuments(query, issuerId = null, topK = 40) {
                 }
             }
 
-            q = q.limit(collName === 'fact_vectors' ? 500 : 1000);
+            // [Modified] Increase limit significantly (8000) if searching for specific issuer 
+            // to ensure we load ALL chunks into memory for accurate cosine similarity.
+            // For global queries, keep strict limits to protect performance.
+            const limit = issuerId ? 8000 : (collName === 'fact_vectors' ? 500 : 1000);
+            q = q.limit(limit);
             allSnapshots.push(await q.get());
         }
 

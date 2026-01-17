@@ -98,94 +98,65 @@ async function processDocument(document, issuerName, issuerId) {
         // 1. Download PDF
         const pdfBuffer = await downloadPDF(document.url);
 
-        const { ImageAnnotatorClient } = require('@google-cloud/vision');
-
-        /**
-         * Extrae texto de un buffer de imagen/PDF usando Google Cloud Vision (OCR)
-         * @param {Buffer} buffer 
-         * @returns {Promise<string>} Texto extraído
-         */
-        async function extractTextWithOCR(buffer) {
-            try {
-                const client = new ImageAnnotatorClient();
-
-                // Vision API expects base64 encoded content for raw image bytes
-                // But for PDF (document_text_detection), it usually wants GCS URI or strict PDF support.
-                // Direct buffer support for PDF in Vision API is tricky (supported via sync requests for small files or async for large).
-                // Let's assume standard images first? No, these are PDFs.
-                // Vision API "pdf" support usually requires AsyncBatchAnnotateFile (GCS -> GCS).
-                // FOR SIMPLICITY/SPEED: We will use 'pdf-parse' for text. If it fails, it's an image-only PDF.
-                // Converting PDF page to image in Cloud Functions without external binaries (like ImageMagick/Ghostscript) is HARD.
-
-                // ALTERNATIVE: Use a node-native PDF to Image (e.g. pdf2pic) ? Requires graphicsmagick.
-
-                // BETTER APPROACH FOR CLOUD FUNCTIONS STRIPPED ENV:
-                // Use the 'pdf-parse' we already have.
-                // If it returns empty, it means no text layer.
-                // IF we have no easy way to convert PDF->Image in Node (without binaries), we can't send it to Vision API as IMAGE.
-                // Vision API DOES support PDF files directly now in some clients, but usually async.
-
-                // LET'S TRY: Send the PDF buffer directly to Vision API as 'application/pdf'.
-                // (This only works for small files in REST, node client might expect GCS).
-
-                // If this is too complex for a quick fix, we fallback to:
-                // "Please upload OCR'd documents".
-
-                // BUT WAIT, users said "No simulation".
-
-                // Let's try sending the buffer as content for document_text_detection.
-                const [result] = await client.documentTextDetection({
-                    image: { content: buffer }
-                });
-
-                // Note: Sending PDF content to 'image' field usually fails. 
-                // Logic check: If PDF is scanned, it needs to be treated as file.
-                // However, for single page checks, we assume maybe we can't easily do it.
-
-                // REVISED PLAN: Just log the warning for now.
-                // Implementing full PDF OCR in Cloud Functions without GCS intermediate storage is complex.
-                // We will log a VERY CLEAR warning that will show up in the logs.
-
-                return ""; // Placeholder until robust PDF OCR is ready
-            } catch (e) {
-                functions.logger.error("OCR Check Failed:", e);
-                return "";
-            }
-        }
-
-
-
         // 2. Extract text
         let text = await extractTextFromPDF(pdfBuffer);
 
         if (!text || text.length < 100) {
             functions.logger.warn(`Document ${document.title} has insufficient text content (${text ? text.length : 0} chars). Attempting OCR...`);
+            await runOCR();
+        } else {
+            // New logic: Even if we have text, if it's mostly garbage or results in 0 chunks, try OCR
+            const initialChunks = chunkText(text);
+            const { appearsScanned } = require('./ocrService');
 
-            // Import OCR service and attempt extraction
+            if (initialChunks.length === 0 || appearsScanned(text)) {
+                functions.logger.info(`Document ${document.title} appears scanned or has no meaningful content. Attempting OCR...`);
+                await runOCR();
+            }
+        }
+
+        async function runOCR() {
             try {
-                const { extractTextWithOCR, appearsScanned } = require('./ocrService');
-
-                // Only attempt OCR if text appears to be from a scanned document
-                if (!text || text.length < 10 || appearsScanned(text)) {
-                    functions.logger.info(`[OCR FALLBACK] Starting Cloud Vision OCR for: ${document.title}`);
-                    const ocrText = await extractTextWithOCR(pdfBuffer, document.title);
-
-                    if (ocrText && ocrText.length > 100) {
-                        text = ocrText;
-                        functions.logger.info(`[OCR SUCCESS] Extracted ${text.length} chars via OCR for ${document.title}`);
-                    } else {
-                        functions.logger.warn(`[OCR FAILED] Could not extract text via OCR for ${document.title}`);
+                let gcsUri = null;
+                if (document.url && document.url.includes('firebasestorage.app')) {
+                    try {
+                        const urlObj = new URL(document.url);
+                        const pathParts = urlObj.pathname.split('/');
+                        const bucketName = pathParts[1];
+                        const filePath = decodeURIComponent(pathParts.slice(2).join('/'));
+                        if (bucketName && filePath) {
+                            gcsUri = `gs://${bucketName}/${filePath}`;
+                        }
+                    } catch (e) {
+                        functions.logger.debug(`Could not derive GCS URI from URL: ${document.url}`);
                     }
+                }
+
+                const { extractTextWithOCR } = require('./ocrService');
+
+                // Gemini/Vision limits check (approx 50MB for many Google APIs)
+                if (pdfBuffer.length > 50 * 1024 * 1024 && !gcsUri) {
+                    functions.logger.warn(`[OCR SKIP] PDF too large for OCR (${(pdfBuffer.length / 1024 / 1024).toFixed(2)}MB). Limit is 50MB.`);
+                    return;
+                }
+
+                const ocrText = await extractTextWithOCR(pdfBuffer, document.title, gcsUri);
+
+                if (ocrText && ocrText.length > 100) {
+                    text = ocrText;
+                    functions.logger.info(`[OCR SUCCESS] Extracted ${text.length} chars via OCR for ${document.title}`);
+                } else {
+                    functions.logger.warn(`[OCR FAILED] Could not extract text via OCR for ${document.title}`);
                 }
             } catch (ocrError) {
                 functions.logger.error(`[OCR ERROR] ${ocrError.message}`);
             }
+        }
 
-            // Final check: if still no text, skip document
-            if (!text || text.length < 10) {
-                functions.logger.warn(`SKIPPING ${document.title}: No text layer found even after OCR.`);
-                return [];
-            }
+        // Final check: if still no text, skip document
+        if (!text || text.length < 10) {
+            functions.logger.warn(`SKIPPING ${document.title}: No text layer found even after OCR.`);
+            return [];
         }
 
         // --- INTELLIGENT INGESTION START ---
@@ -237,9 +208,8 @@ Solo devuelve el JSON válido, sin texto adicional markdown (\`\`\`).`;
                     isJson: true
                 });
 
-                // Clean json block if present
-                const jsonStr = llmResponse.replace(/```json/g, '').replace(/```/g, '').trim();
-                structuredData = JSON.parse(jsonStr);
+                // llmResponse is already parsed by generateFinancialAnalysis if options.isJson=true
+                structuredData = llmResponse;
 
                 if (structuredData && structuredData.is_financial_doc) {
                     functions.logger.info(`Smart Ingestion: Extracted metrics for ${structuredData.fiscal_year}`);
@@ -289,35 +259,34 @@ Solo devuelve el JSON válido, sin texto adicional markdown (\`\`\`).`;
         const chunks = chunkText(text);
         functions.logger.info(`Created ${chunks.length} standard chunks for ${document.title}`);
 
-        // 4. Generate embeddings for each chunk
+        // 4. Generate embeddings for each chunk (Parallelized in small batches)
         const processedChunks = [];
+        if (superChunk) processedChunks.push(superChunk);
 
-        // Add Super Chunk if available
-        if (superChunk) {
-            processedChunks.push(superChunk);
-            functions.logger.info('Added Super Chunk to processed list');
-        }
-
-        for (let i = 0; i < chunks.length; i++) {
+        const EMB_BATCH_SIZE = 5;
+        for (let i = 0; i < chunks.length; i += EMB_BATCH_SIZE) {
+            const batch = chunks.slice(i, i + EMB_BATCH_SIZE);
             try {
-                const embedding = await generateEmbeddings(chunks[i]);
-
-                processedChunks.push({
-                    chunkIndex: i,
-                    text: chunks[i],
-                    embedding: embedding,
-                    metadata: {
-                        issuerName: issuerName,
-                        documentTitle: document.title,
-                        documentUrl: document.url,
-                        documentDate: document.date,
-                        documentType: document.type,
-                        processedAt: new Date().toISOString(),
-                    },
+                const embeddings = await Promise.all(batch.map(c => generateEmbeddings(c)));
+                embeddings.forEach((emb, idx) => {
+                    processedChunks.push({
+                        chunkIndex: i + idx,
+                        text: batch[idx],
+                        embedding: emb,
+                        metadata: {
+                            issuerName,
+                            documentTitle: document.title,
+                            documentUrl: document.url,
+                            documentDate: document.date,
+                            documentType: document.type || 'RELEVANT_FACT',
+                            processedAt: new Date().toISOString(),
+                        },
+                    });
                 });
-            } catch (error) {
-                functions.logger.error(`Error processing chunk ${i} of ${document.title}:`, error.message);
-                // Continue with next chunk
+                if (i % 25 === 0) functions.logger.info(`Embedding progress: ${i + batch.length}/${chunks.length} chunks`);
+            } catch (err) {
+                functions.logger.error(`Error in embedding batch starting at ${i}:`, err.message);
+                // Continue with next batch
             }
         }
 
@@ -413,8 +382,13 @@ async function processIssuerDocuments(issuerId, issuerName, documents, maxDocume
         }
 
         // High priority: Annual reports and comprehensive financial docs
-        if (combined.includes('memoria anual') || combined.includes('informe anual')) {
+        if (combined.includes('memoria anual') || combined.includes('informe anual') || combined.includes('anual')) {
             score += 70;
+        }
+
+        // Prospectos & Suplementos
+        if (combined.includes('prospecto') || combined.includes('suplemento')) {
+            score += 65;
         }
 
         // Medium priority: Risk ratings and financial analysis

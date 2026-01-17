@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import jsPDF from 'jspdf';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -123,7 +125,61 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ issuers, initialIssuerId }) => 
         return id.toLowerCase().trim();
     };
 
+    // Data Context
+    const { user } = useAuth();
+    const navigate = useNavigate();
+
+    // Verify Limits logic
+    const getUsageKey = () => {
+        const today = new Date().toISOString().split('T')[0];
+        if (user) return `ai_usage_${user.uid}_${today}`;
+        return `ai_usage_guest_${today}`;
+    };
+
+    const getDailyLimit = () => user ? 3 : 2;
+
+    const getUsageCount = () => {
+        const key = getUsageKey();
+        return parseInt(localStorage.getItem(key) || '0', 10);
+    };
+
+    const [usageCount, setUsageCount] = useState(0);
+
+    useEffect(() => {
+        setUsageCount(getUsageCount());
+    }, [user]); // Re-check when user changes
+
     const handleAnalyze = async () => {
+        // Compatibility check for auth loading
+        // If auth is still loading, wait or show loading state is handled by parent usually, 
+        // but here we just rely on 'user' from useAuth which is null if loading or unauth.
+
+        // LIMIT CHECK
+        const currentUsage = getUsageCount();
+        const limit = getDailyLimit();
+
+        console.log('AI Analysis Limit Check:', {
+            isGuest: !user,
+            currentUsage,
+            limit,
+            key: getUsageKey(),
+            willBlock: currentUsage >= limit
+        });
+
+        if (currentUsage >= limit) {
+            const message = user
+                ? `Límite diario alcanzado (${limit}/${limit}). Vuelve mañana.`
+                : `Límite de invitado alcanzado (${limit}/${limit}). Inicia sesión para más consultas.`;
+
+            console.warn('Blocking request due to limits:', message);
+            setError(message);
+            if (!user) {
+                console.log('Redirecting guest to login...');
+                setTimeout(() => navigate('/login'), 3000);
+            }
+            return;
+        }
+
         if (!query.trim() || selectedIssuers.length === 0) {
             setError('System Error: Input query and target selection required.');
             return;
@@ -159,6 +215,11 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ issuers, initialIssuerId }) => 
             data.metadata.latency = latencyInSeconds;
 
             setResponse(data);
+
+            // INCREMENT USAGE ON SUCCESS
+            const newCount = currentUsage + 1;
+            localStorage.setItem(getUsageKey(), newCount.toString());
+            setUsageCount(newCount);
 
             if (data.structuredData) {
                 // Prefer Structured Output from Backend
@@ -315,12 +376,12 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ issuers, initialIssuerId }) => 
                             </div>
                             <button
                                 onClick={handleAnalyze}
-                                disabled={loading}
+                                disabled={loading || usageCount >= getDailyLimit()}
                                 className={`
                                     w-full h-12 flex items-center justify-center gap-2 rounded-lg font-bold font-mono tracking-widest text-sm
                                     transition-all duration-300
-                                    ${loading
-                                        ? 'bg-white/5 text-text-tertiary cursor-wait border border-white/5'
+                                    ${loading || usageCount >= getDailyLimit()
+                                        ? 'bg-white/5 text-text-tertiary cursor-not-allowed border border-white/5'
                                         : 'bg-accent-primary text-black hover:bg-accent-hover shadow-glow-cyan hover:scale-[1.02]'
                                     }
                                 `}
@@ -333,7 +394,10 @@ const AIAnalysis: React.FC<AIAnalysisProps> = ({ issuers, initialIssuerId }) => 
                                 ) : (
                                     <>
                                         <SparklesIcon className="w-5 h-5" />
-                                        EJECUTAR
+                                        {usageCount >= getDailyLimit()
+                                            ? 'LÍMITE ALCANZADO'
+                                            : user ? `EJECUTAR (${usageCount}/${getDailyLimit()})` : `GUEST RUN (${usageCount}/${getDailyLimit()})`
+                                        }
                                     </>
                                 )}
                             </button>

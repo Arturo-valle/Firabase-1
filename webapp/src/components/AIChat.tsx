@@ -62,19 +62,19 @@ export const AIChat: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col h-[600px] glass-panel rounded-xl overflow-hidden border border-white/5 shadow-2xl relative">
+        <div className="flex flex-col h-[600px] glass-panel rounded-xl overflow-hidden border border-border-default shadow-2xl relative bg-bg-secondary">
             {/* Ambient Background */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-accent-primary/5 blur-[80px] rounded-full pointer-events-none"></div>
 
             {/* Header */}
-            <div className="p-4 border-b border-white/10 bg-black/40 flex items-center justify-between backdrop-blur-md z-10">
+            <div className="p-4 border-b border-border-subtle bg-bg-tertiary/80 flex items-center justify-between backdrop-blur-md z-10">
                 <div className="flex items-center space-x-3">
                     <div className="relative">
                         <div className="w-2.5 h-2.5 bg-status-success rounded-full"></div>
                         <div className="absolute inset-0 bg-status-success rounded-full animate-ping opacity-75"></div>
                     </div>
                     <div>
-                        <h3 className="font-bold text-white text-sm tracking-wide">SECURE_CHANNEL // AI_ASSISTANT</h3>
+                        <h3 className="font-bold text-text-primary text-sm tracking-wide">SECURE_CHANNEL // AI_ASSISTANT</h3>
                         <p className="text-[10px] text-text-tertiary font-mono">ENCRYPTED • ONLINE • v2.4.0</p>
                     </div>
                 </div>
@@ -89,7 +89,7 @@ export const AIChat: React.FC = () => {
                             <TrashIcon className="w-4 h-4" />
                         </button>
                     )}
-                    <div className="px-2 py-1 bg-white/5 rounded text-[10px] font-mono text-accent-primary border border-accent-primary/20">
+                    <div className="px-2 py-1 bg-bg-tertiary rounded text-[10px] font-mono text-accent-primary border border-accent-primary/20">
                         GEMINI_PRO
                     </div>
                 </div>
@@ -99,7 +99,7 @@ export const AIChat: React.FC = () => {
             <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar scroll-smooth">
                 {messages.length === 0 && (
                     <div className="flex flex-col items-center justify-center h-full text-text-tertiary space-y-4 opacity-50">
-                        <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+                        <div className="w-20 h-20 rounded-full bg-bg-tertiary flex items-center justify-center border border-border-subtle">
                             <SparklesIcon className="w-8 h-8 text-accent-secondary" />
                         </div>
                         <div className="text-center font-mono text-xs">
@@ -112,8 +112,8 @@ export const AIChat: React.FC = () => {
                 {messages.map((msg, idx) => (
                     <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}>
                         <div className={`max-w-[85%] rounded-2xl p-5 shadow-lg border relative ${msg.role === 'user'
-                                ? 'bg-accent-primary/10 border-accent-primary/30 text-white rounded-br-none'
-                                : 'bg-black/60 border-white/10 text-text-secondary rounded-bl-none'
+                            ? 'bg-accent-primary/10 border-accent-primary/30 text-white rounded-br-none'
+                            : 'bg-bg-tertiary border-border-subtle text-text-secondary rounded-bl-none'
                             }`}>
                             {msg.role === 'assistant' && (
                                 <span className="absolute -top-3 left-0 text-[10px] font-mono font-bold text-accent-secondary bg-black px-2 py-0.5 border border-white/10 rounded ml-4">
@@ -127,7 +127,7 @@ export const AIChat: React.FC = () => {
 
                             {/* Sources */}
                             {msg.sources && msg.sources.length > 0 && (
-                                <div className="mt-4 pt-4 border-t border-white/5">
+                                <div className="mt-4 pt-4 border-t border-border-subtle">
                                     <p className="text-[10px] text-text-tertiary uppercase font-bold mb-2 tracking-wider flex items-center gap-1">
                                         <span>⚡</span> Fuentes Detectadas:
                                     </p>
@@ -162,7 +162,7 @@ export const AIChat: React.FC = () => {
             </div>
 
             {/* Input Area */}
-            <form onSubmit={handleSearch} className="p-4 bg-black/40 border-t border-white/10 relative z-20">
+            <form onSubmit={handleSearch} className="p-4 bg-bg-tertiary/50 border-t border-border-subtle relative z-20">
                 <div className="relative group">
                     <input
                         type="text"
@@ -170,10 +170,10 @@ export const AIChat: React.FC = () => {
                         onChange={(e) => setQuery(e.target.value)}
                         placeholder="Escriba su consulta financiera..."
                         className="
-                            w-full bg-white/5 text-white border border-white/10 rounded-xl py-3 pl-4 pr-12 
+                            w-full bg-bg-tertiary text-text-primary border border-border-subtle rounded-xl py-3 pl-4 pr-12 
                             focus:outline-none focus:border-accent-primary/50 focus:ring-1 focus:ring-accent-primary/50
                             placeholder:text-text-tertiary font-mono text-sm transition-all
-                            group-focus-within:bg-black/80
+                            group-focus-within:bg-bg-elevated
                         "
                     />
                     <button

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Issuer, MetricsData } from '../types';
 import MetricCard from './MetricCard';
+import CustomSelect from './ui/CustomSelect';
 import { formatDate } from '../utils/formatters';
 import { useIssuerMetrics } from '../hooks/useIssuerMetrics';
 import StandardizerSkeleton from './StandardizerSkeleton';
@@ -75,6 +76,14 @@ const MetricsStandardizer: React.FC<MetricsStandardizerProps> = ({ issuers }) =>
         issuers.find(i => i.id === selectedIssuerId),
         [issuers, selectedIssuerId]);
 
+    // Transform issuers to SelectOption format
+    const issuerOptions = useMemo(() =>
+        issuers.map(issuer => ({
+            value: issuer.id,
+            label: `${issuer.name}${issuer.acronym ? ` (${issuer.acronym})` : ''}`
+        })),
+        [issuers]);
+
     const cardContainerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -114,18 +123,13 @@ const MetricsStandardizer: React.FC<MetricsStandardizerProps> = ({ issuers }) =>
                     Selecciona un Emisor
                 </label>
                 <div className="flex gap-4 items-end">
-                    <select
+                    <CustomSelect
+                        options={issuerOptions}
                         value={selectedIssuerId}
-                        onChange={(e) => setSelectedIssuerId(e.target.value)}
-                        className="input flex-1"
-                    >
-                        <option value="">-- Seleccionar emisor --</option>
-                        {issuers.map(issuer => (
-                            <option key={issuer.id} value={issuer.id}>
-                                {issuer.name} {issuer.acronym ? `(${issuer.acronym})` : ''}
-                            </option>
-                        ))}
-                    </select>
+                        onChange={setSelectedIssuerId}
+                        placeholder="-- Seleccionar emisor --"
+                        className="flex-1"
+                    />
 
                     {selectedIssuerId && (
                         <button

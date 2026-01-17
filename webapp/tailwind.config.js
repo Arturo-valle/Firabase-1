@@ -30,9 +30,14 @@ export default {
           danger: 'rgb(var(--status-danger) / <alpha-value>)',
           info: 'rgb(var(--status-info) / <alpha-value>)',
         },
+        // NEW Finance Semantic Colors
+        finance: {
+          positive: 'rgb(var(--finance-positive) / <alpha-value>)',
+          negative: 'rgb(var(--finance-negative) / <alpha-value>)',
+        },
         border: {
-          DEFAULT: 'rgb(var(--border-default) / <alpha-value>)',
-          subtle: 'rgb(var(--border-subtle) / <alpha-value>)',
+          DEFAULT: 'rgb(var(--border-default) / var(--border-opacity-default))', // Alpha embedded
+          subtle: 'rgb(var(--border-subtle) / var(--border-opacity-subtle))',
           emphasis: 'rgb(var(--border-emphasis) / <alpha-value>)',
         }
       },

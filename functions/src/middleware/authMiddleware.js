@@ -43,6 +43,36 @@ const authMiddleware = async (req, res, next) => {
 };
 
 /**
+ * Middleware de autenticación opcional.
+ * Si hay token, lo verifica y populates req.user.
+ * Si no hay token, continúa sin error (req.user será undefined).
+ */
+const optionalAuthMiddleware = async (req, res, next) => {
+    if (req.method === 'OPTIONS') return next();
+
+    const authHeader = req.headers.authorization;
+
+    // Si no hay header o no es Bearer, continuamos como invitado (sin req.user)
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return next();
+    }
+
+    const idToken = authHeader.split('Bearer ')[1];
+    try {
+        const decodedToken = await admin.auth().verifyIdToken(idToken);
+        req.user = decodedToken;
+        return next();
+    } catch (error) {
+        // Si el token es inválido pero fue enviado, ¿deberíamos rechazar o tratar como invitado?
+        // Por seguridad, si envían credenciales malas, mejor avisar (403) para evitar confusiones de debug,
+        // o loguear aviso y tratar como invitado. 
+        // En este caso, trataremos como invitado pero advertimos.
+        console.warn(`OptionalAuth: Invalid token provided. Treating as guest. Error: ${error.message}`);
+        return next();
+    }
+};
+
+/**
  * Middleware para restringir rutas solo a administradores.
  * Verifica si el token contiene la custom claim 'admin: true'.
  */
@@ -58,4 +88,4 @@ const adminMiddleware = (req, res, next) => {
     });
 };
 
-module.exports = { authMiddleware, adminMiddleware, apiLimiter };
+module.exports = { authMiddleware, optionalAuthMiddleware, adminMiddleware, apiLimiter };

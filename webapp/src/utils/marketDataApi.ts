@@ -28,6 +28,7 @@ export interface IssuerDetail {
     name: string;
     documents: Document[];
     isActive: boolean;
+    acronym?: string;
     sector?: string;
     rating?: string;
 }

@@ -1,4 +1,6 @@
 import { API_BASE_URL } from '../config';
+import { auth } from '../lib/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 
 interface RequestOptions extends RequestInit {
     params?: Record<string, string | number>;
@@ -36,18 +38,25 @@ export async function apiClient<T>(endpoint: string, options: RequestOptions = {
 
     // Inyección de token de Firebase Auth
     try {
-        const { auth } = await import('../lib/firebase');
-        const user = auth.currentUser;
+        let user = auth.currentUser;
+
+        // Si no hay usuario sincrónico, esperar un momento por si la auth se está inicializando
+        if (!user) {
+            user = await new Promise((resolve) => {
+                const unsubscribe = onAuthStateChanged(auth, (u) => {
+                    unsubscribe();
+                    resolve(u);
+                });
+                // Fallback timeout por si onAuthStateChanged tarda mucho
+                setTimeout(() => resolve(null), 1000);
+            });
+        }
 
         if (user) {
             const token = await user.getIdToken();
             headers['Authorization'] = `Bearer ${token}`;
-            // console.debug('Token injected for user:', user.email);
         } else {
-            console.warn('No authenticated user found in apiClient via standard auth.currentUser');
-
-            // Intento de fallback: esperar un momento si la auth se está inicializando
-            // (Opcional, pero útil si hay condiciones de carrera al inicio)
+            console.warn('No authenticated user found in apiClient (Token not injected)');
         }
     } catch (authError) {
         console.error("Failed to get auth token in apiClient:", authError);

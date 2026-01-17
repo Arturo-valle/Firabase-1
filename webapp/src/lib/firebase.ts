@@ -2,23 +2,24 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
-// Estas configuraciones deberían venir de variables de entorno .env
-// Por ahora, usamos una estructura base que el usuario puede completar.
+// Estas configuraciones vienen de variables de entorno .env (VITE_ prefix para Vite)
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "",
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "",
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "",
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "",
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "",
-    appId: import.meta.env.VITE_FIREBASE_APP_ID || ""
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyApEY9Q8XcCnljc3RJQwZnrBvC0UMw55uk",
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "mvp-nic-market.firebaseapp.com",
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "mvp-nic-market",
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "mvp-nic-market.firebasestorage.app",
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "771683909511",
+    appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:771683909511:web:2bfded8a5c9d6c56de5d22"
 };
+
+console.log("🔥 Initializing Firebase for Project:", firebaseConfig.projectId);
 
 // Runtime Validation
 const requiredKeys = ['apiKey', 'authDomain', 'projectId', 'appId'] as const;
 const missingKeys = requiredKeys.filter(key => !firebaseConfig[key]);
 
 if (missingKeys.length > 0) {
-    const errorMsg = `CRITICAL CONFIG ERROR: Missing Firebase keys: ${missingKeys.join(', ')}. Check your .env setup or Hosting secrets.`;
+    const errorMsg = `CRITICAL CONFIG ERROR: Missing Firebase keys: ${missingKeys.join(', ')}.`;
     console.error(errorMsg);
     throw new Error(errorMsg);
 }
